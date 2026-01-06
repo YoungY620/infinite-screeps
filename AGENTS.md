@@ -8,21 +8,107 @@
 
 ## ⚠️ 硬性约束
 
-### 目录限制
-- **所有操作必须限制在** `/Users/moonshot/dev/infinite-screeps/` 目录内
-- 禁止访问此目录之外的任何文件
-- 代码、脚本、文档、数据全部在此目录内
+### 游戏限制 (免费玩家)
+- **CPU: 20/tick** ⚠️ 极其有限，必须精打细算
+- 房间: 最多 1 个
+- 必须通过 API 获取当前 shard、房间等动态信息
 
 ### Git 规范
 - 每次修改后必须 `git add -A && git commit`
 - 提交信息格式: `[type] description`
 - type: feat / fix / refactor / docs / stats
-- 远程仓库: https://github.com/YoungY620/infinite-screeps
 
-### 游戏限制 (免费玩家)
-- **CPU: 20/tick** ⚠️ 极其有限，必须精打细算
-- Shard: shard3
-- 房间: 最多 1 个
+## 📚 Screeps 游戏文档
+
+### 官方资源
+| 资源 | URL | 说明 |
+|------|-----|------|
+| **官方文档** | https://docs.screeps.com/ | 游戏规则和 API 参考 |
+| **文档源码** | https://github.com/screeps/docs | Markdown 源文件，方便检索 |
+| **游戏引擎** | https://github.com/screeps/screeps | 理解底层机制的权威来源 |
+
+### 文档源码结构 (github.com/screeps/docs)
+```
+screeps/docs/
+├── api/                    # API 参考文档
+│   ├── source/
+│   │   ├── Creep.md       # Creep 类 API
+│   │   ├── Room.md        # Room 类 API
+│   │   ├── Spawn.md       # Spawn 类 API
+│   │   ├── Structure*.md  # 各种建筑 API
+│   │   └── ...
+├── source/                 # 游戏指南文档
+│   ├── introduction.md    # 游戏介绍
+│   ├── creeps.md          # Creep 系统
+│   ├── control.md         # 控制器和 GCL
+│   ├── defense.md         # 防御策略
+│   ├── mining.md          # 采矿系统
+│   ├── power.md           # Power 系统
+│   ├── market.md          # 市场交易
+│   └── ...
+```
+
+### 关键游戏规则
+
+#### 保护期机制
+| 类型 | 持续时间 | 效果 |
+|------|----------|------|
+| **Safe Mode** | 20,000 ticks (~20小时) | 敌人无法攻击，初始自动激活 |
+| **Novice Zone** | 最长 7 天 | 绿色墙壁区域，老玩家无法进入 |
+| **Respawn Zone** | 最长 7 天 | 重生玩家专用保护区 |
+
+#### 控制器升级
+| Level | 能量需求 | 解锁建筑 |
+|-------|----------|----------|
+| 1→2 | 200 | 5 Extension |
+| 2→3 | 45,000 | 10 Extension, 1 Tower |
+| 3→4 | 135,000 | 20 Extension, 1 Storage |
+| 4→5 | 405,000 | 30 Extension, 2 Tower, 2 Link |
+
+#### CPU 消耗参考
+| 操作 | 大约 CPU | 说明 |
+|------|----------|------|
+| `Game.getObjectById()` | 0.1 | 推荐使用 |
+| `room.find()` | 0.2-2 | 取决于 filter 复杂度 |
+| `findClosestByPath()` | 1-10+ | 🔴 最耗 CPU！ |
+| `moveTo()` | 0.5-3 | 内部调用寻路 |
+| `creep.say()` | 0.2 | 视觉效果 |
+| Memory 读写 | 0.1-0.5 | 每 tick 首次解析 |
+
+#### CPU 优化策略
+1. **缓存目标 ID** 到 Memory，用 `Game.getObjectById()` 获取
+2. **reusePath**: `moveTo(target, { reusePath: 5 })` 复用路径
+3. **减少 find 调用**: 缓存结果到 Memory
+4. **条件执行**: 非紧急逻辑每 N tick 执行一次
+
+#### Creep Body Parts
+| Part | 成本 | 效果 |
+|------|------|------|
+| MOVE | 50 | 移动速度 |
+| WORK | 100 | 采集 2/tick, 建造 5/tick, 升级 1/tick |
+| CARRY | 50 | 容量 50 |
+| ATTACK | 80 | 近战 30 damage |
+| RANGED_ATTACK | 150 | 远程 10 damage |
+| HEAL | 250 | 治疗 12/tick |
+| TOUGH | 10 | 便宜的血量 |
+| CLAIM | 600 | 占领/攻击控制器 |
+
+### HTTP API 端点
+```
+基础 URL: https://screeps.com/api/
+
+认证:
+  Header: X-Token: <token>
+  Token 从 .env 文件读取
+
+常用端点:
+  GET  /auth/me                    # 用户信息
+  GET  /user/rooms                 # 拥有的房间
+  GET  /user/memory?shard=shard3   # 读取 Memory
+  GET  /game/room-objects?room=XXX&shard=shard3  # 房间对象
+  POST /user/code                  # 上传代码
+  POST /user/console               # 执行控制台命令
+```
 
 ## 🧠 决策原则
 
@@ -40,29 +126,32 @@
 3. **分析当前代码** - 理解现有逻辑为什么这样写
 4. **评估 CPU 影响** - 预估改动对 CPU 消耗的影响
 
-**禁止盲目修改代码！** 不了解游戏规则和当前状态就改代码，可能导致：
-- CPU 超限，代码无法执行
-- Creep 行为异常，殖民地崩溃
-- 浪费宝贵的能量和时间
+**禁止盲目修改代码！**
+
+### 保护期策略
+- **保护期内**: 激进发展，最大化 Creep 数量，快速升级
+- **保护期结束前**: 必须建造 Tower 和防御设施
+- **储备 Safe Mode**: 紧急时可手动激活
 
 ## 📁 目录结构
 
-你需要自己创建和维护目录结构。建议：
-- `knowledge/` - 经验、策略、学习笔记
-- `screeps/` - 游戏代码 (上传到服务器)
-- `tools/` - 工具脚本
-
-但这不是强制的，你可以根据需要重构。
+```
+项目根目录/
+├── screeps/          # 游戏代码 (上传到服务器)
+│   └── main.js
+├── knowledge/        # 经验、策略、学习笔记
+├── logs/             # Session 日志
+├── tools/            # 工具脚本
+└── .env              # 凭证 (SCREEPS_TOKEN)
+```
 
 ## 📝 日志记录
 
 **每个 session 必须记录日志到 `logs/` 目录**
 
-日志文件由启动脚本指定，格式为 `session_N_YYYYMMDD_HHMMSS.md`
-
 日志格式：
 ```markdown
-# Session: [session_id]
+# Session Log - YYYYMMDD_HHMMSS
 
 ## 🕐 [时间] 阶段标题
 
@@ -77,55 +166,23 @@
 ### ⚡ 行动
 - 执行了什么
 - 结果
-
----
 ```
-
-日志会被 git 提交，是你思考过程的永久记录。
 
 ## 🔄 每个 Session 必须执行
 
-### 0. 创建日志文件
-立即创建日志文件，开始记录。
+1. **创建日志文件** - 立即开始记录
+2. **全面审视** - 遍历项目文件，阅读代码和文档
+3. **检查游戏状态** - 调用 API 获取当前状态
+4. **采取行动** - 根据状态决策并执行
+5. **知识固化** - 更新 knowledge/ 目录
+6. **Git 提交** - `git add -A && git commit`
 
-### 1. 全面审视
-**每次 session 开始时，必须：**
-- 遍历项目中所有文件和目录
-- 阅读所有代码和文档
-- 理解当前状态
+## 🔑 凭证获取
 
-### 2. 总结重构
-**每次修改代码/文档时，视为重构机会：**
-- 重新审视整体架构
-- 考虑是否需要重组
-- 删除冗余，保持简洁
-- 更新知识文档
-
-### 3. 知识固化
-**将重要信息写入文件：**
-- 成功的策略
-- 失败的教训
-- 代码设计决策
-- 游戏状态快照
-
-这是你跨 session 记忆的唯一方式！
-
-## 🌐 学习资源
-
-Screeps 是经典游戏，网络上有大量资源：
-- 官方文档: https://docs.screeps.com/
-- **文档源码**: https://github.com/screeps/docs （文档的 Markdown 源文件，方便检索）
-- **游戏引擎源码**: https://github.com/screeps/screeps （理解游戏底层机制的权威来源）
-- GitHub 开源 Bot
-- 社区论坛
-
-**主动搜索学习，下载参考代码。阅读游戏源码可以精确理解游戏规则和 CPU 消耗机制。**
-
-## 🔑 凭证
-
-- Screeps Token: `.env` 文件中的 `SCREEPS_TOKEN`
-- 当前用户: payyy
-- 当前房间: W13N45 (shard3)
+- Token 存储在 `.env` 文件: `SCREEPS_TOKEN=xxx`
+- 通过 API `/auth/me` 获取当前用户名
+- 通过 API `/user/rooms` 获取当前房间
+- **不要在代码中硬编码用户信息，因为死亡后可能改变**
 
 ## 🚨 优先级
 
@@ -138,19 +195,17 @@ Screeps 是经典游戏，网络上有大量资源：
 
 **如果没有紧急任务，不要空转消耗 token！**
 
-当殖民地运行稳定、暂时无事可做时，应该：
-1. 编写/使用监听程序（轮询或信号触发）
-2. 让监听程序在后台运行，等待特定条件触发
-3. 只有当检测到异常或需要决策时才唤醒 Agent
+当殖民地运行稳定时，应该：
+1. 编写监听程序（轮询或信号触发）
+2. 让程序在后台运行，等待特定条件触发
+3. 只有异常或需要决策时才唤醒 Agent
 
-示例场景：
+触发条件示例：
 - Creep 数量低于阈值
 - CPU 使用率异常
 - 控制器即将降级
 - 检测到敌人
 
-**这样可以大幅节省 token，同时保持对游戏的监控。**
-
 ---
 
-**记住：生存第一，永不放弃。每个 session 都要全面审视、总结重构、固化知识。**
+**记住：生存第一，永不放弃。充分利用保护期，为防御做好准备。**
