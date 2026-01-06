@@ -21,13 +21,28 @@ screeps/
 - **配置**: [WORK, CARRY, MOVE] = 200 能量
 - **数量目标**: 1
 
+#### Builder (建造者)
+- **职责**: 建造 Construction Sites
+- **备选行为**: 没有建造点时升级控制器
+- **配置**: [WORK, CARRY, MOVE] = 200 能量
+- **数量目标**: 1
+
 ### 主循环流程
 
 ```
 1. 清理死亡 Creep 内存
 2. 统计各角色数量
-3. 孵化缺少的 Creep (按优先级)
-4. 运行所有 Creep 行为
+3. 规划 Extension (Level 2+)
+4. 孵化缺少的 Creep (按优先级)
+5. 运行所有 Creep 行为
+```
+
+### Extension 布局 (Spawn1 周围)
+
+```
+        (24,22)  Spawn  (26,22)
+                (25,23)
+        (24,24)        (26,24) (27,23)
 ```
 
 ### 状态机模式
@@ -42,15 +57,15 @@ screeps/
 
 ## 待改进
 
-### 短期 (Level 1-2)
-- [ ] 添加 Builder 角色建造 Extension
+### 短期 (Level 2)
+- [x] 添加 Builder 角色建造 Extension ✅
 - [ ] 优化路径缓存减少 CPU
 - [ ] 添加能量源分配避免拥挤
 
 ### 中期 (Level 3+)
 - [ ] Tower 防御系统
+- [ ] Container 在能量源旁边
 - [ ] 多房间探索
-- [ ] Container/Storage 使用
 
 ### CPU 优化计划
 1. 缓存 Source 和 Spawn 位置到 Memory
