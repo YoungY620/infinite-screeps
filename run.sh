@@ -69,12 +69,31 @@ start_stats_recorder() {
     done
 }
 
+# 后台定期 git push
+start_git_sync() {
+    while true; do
+        sleep 600  # 每 10 分钟同步一次
+        cd "$PROJECT_DIR"
+        git add -A
+        git commit -m "[auto] sync $(date +%H:%M)" 2>/dev/null || true
+        git push 2>/dev/null || true
+    done
+}
+
 start_stats_recorder &
 STATS_PID=$!
+
+start_git_sync &
+GIT_PID=$!
 
 cleanup() {
     echo "[$(date)] Stopping..."
     kill $STATS_PID 2>/dev/null || true
+    kill $GIT_PID 2>/dev/null || true
+    cd "$PROJECT_DIR"
+    git add -A
+    git commit -m "[auto] final sync" 2>/dev/null || true
+    git push 2>/dev/null || true
     exit 0
 }
 
