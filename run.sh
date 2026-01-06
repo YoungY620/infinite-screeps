@@ -84,9 +84,8 @@ while true; do
     # 记录 session 开始
     echo "[$(date)] Session $SESSION_ID started" >> "$PROJECT_DIR/knowledge/sessions.log"
     
-    # 运行 kimi session (带超时)
-    timeout $SESSION_TIMEOUT kimi -y --prompt "$(cat << PROMPT
-你是 Screeps 游戏的永恒 AI Agent。
+    # 构建提示词
+    PROMPT="你是 Screeps 游戏的永恒 AI Agent。
 
 ## Session 信息
 - Session ID: $SESSION_ID
@@ -143,9 +142,10 @@ while true; do
 ## 工作目录
 $PROJECT_DIR
 
-开始工作。首先创建日志文件。
-PROMPT
-)" || true
+开始工作。首先创建日志文件。"
+
+    # 运行 kimi session (print 模式，带超时)
+    timeout $SESSION_TIMEOUT kimi --print -w "$PROJECT_DIR" -c "$PROMPT" || true
     
     # 记录 session 结束
     echo "[$(date)] Session $SESSION_ID ended" >> "$PROJECT_DIR/knowledge/sessions.log"
