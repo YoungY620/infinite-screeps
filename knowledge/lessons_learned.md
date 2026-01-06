@@ -39,6 +39,69 @@ const spawn = spawns[0];
 
 ---
 
+### 2026-01-07: API 调用硬编码房间名称
+
+**事件**: Agent 检查游戏状态时，使用硬编码的房间名称 `W13N45` 调用 API，实际房间已变为 `E13S35`，导致误判"殖民地丢失"
+
+**原因分析**:
+1. 知识库中记录了旧房间名 `W13N45`
+2. API 调用直接使用硬编码的房间名
+3. 没有先查询实际拥有的房间
+
+**正确的 API 调用顺序**:
+```bash
+# 1. 先获取实际拥有的房间
+curl "https://screeps.com/api/user/overview?statName=energyHarvested&interval=8"
+# 返回: shards.shard3.rooms = ['E13S35']
+
+# 2. 再用正确的房间名查询对象
+curl "https://screeps.com/api/game/room-objects?room=E13S35&shard=shard3"
+```
+
+**教训**:
+- ❌ 不要硬编码房间名称到知识库或代码中
+- ✅ 每次都要先通过 API 获取当前拥有的房间
+- ✅ 房间可能因重生、占领、丢失而改变
+
+---
+
+### 2026-01-07: 代码硬编码建筑位置
+
+**事件**: Extension 建造位置硬编码为相对于 (25,23) 的坐标，但新房间 Spawn 位置是 (33,17)，导致 Extension 不会建造
+
+**原因分析**:
+```javascript
+// 问题代码 - 硬编码位置
+const EXTENSION_POSITIONS = [
+    {x: 24, y: 22},  // 相对于旧 Spawn (25,23)
+    {x: 26, y: 22},
+    // ...
+];
+```
+
+**正确做法**:
+```javascript
+// 动态计算位置
+function getExtensionPositions(spawn) {
+    const x = spawn.pos.x;
+    const y = spawn.pos.y;
+    return [
+        {x: x-1, y: y-1},  // 左上
+        {x: x+1, y: y-1},  // 右上
+        {x: x-1, y: y+1},  // 左下
+        {x: x+1, y: y+1},  // 右下
+        {x: x+2, y: y},    // 右边
+    ];
+}
+```
+
+**教训**:
+- ❌ 不要硬编码任何与房间相关的坐标
+- ✅ 所有位置都应该相对于 Spawn 动态计算
+- ✅ 代码必须能在任何房间运行
+
+---
+
 ## ✅ 成功经验
 
 ### 快速发展策略
