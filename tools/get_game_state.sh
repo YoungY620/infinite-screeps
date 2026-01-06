@@ -222,16 +222,26 @@ def make_room_name(x, y):
 coords = parse_room_name(current_room)
 if coords:
     x, y = coords
+    # 8 个相邻房间
     adjacent = [
-        make_room_name(x - 1, y),
-        make_room_name(x + 1, y),
-        make_room_name(x, y - 1),
-        make_room_name(x, y + 1),
+        (make_room_name(x - 1, y - 1), "↖"),
+        (make_room_name(x, y - 1), "↑"),
+        (make_room_name(x + 1, y - 1), "↗"),
+        (make_room_name(x - 1, y), "←"),
+        (make_room_name(x + 1, y), "→"),
+        (make_room_name(x - 1, y + 1), "↙"),
+        (make_room_name(x, y + 1), "↓"),
+        (make_room_name(x + 1, y + 1), "↘"),
     ]
     
-    print("## 5. 周围房间侦查")
+    print("## 5. 周围房间侦查 (8个方向)")
     print()
-    for adj_room in adjacent:
+    
+    my_user_id = None
+    if 'spawn' in objects_by_type:
+        my_user_id = objects_by_type['spawn'][0].get('user')
+    
+    for adj_room, direction in adjacent:
         adj_data = api_get(f'/game/room-objects?room={adj_room}&shard={current_shard}')
         adj_objects = adj_data.get('objects', [])
         
@@ -241,13 +251,79 @@ if coords:
             t = obj.get('type')
             summary[t] = summary.get(t, 0) + 1
         
-        print(f"### {adj_room}")
-        if summary:
-            print("```json")
-            print(pretty_json(summary))
-            print("```")
-        else:
+        # 提取关键信息
+        adj_controller = None
+        adj_spawns = []
+        adj_towers = []
+        adj_creeps = []
+        adj_hostile_creeps = []
+        
+        for obj in adj_objects:
+            t = obj.get('type')
+            if t == 'controller':
+                adj_controller = obj
+            elif t == 'spawn':
+                adj_spawns.append(obj)
+            elif t == 'tower':
+                adj_towers.append(obj)
+            elif t == 'creep':
+                if obj.get('user') == my_user_id:
+                    adj_creeps.append(obj)
+                else:
+                    adj_hostile_creeps.append(obj)
+        
+        print(f"### {adj_room} ({direction})")
+        
+        if not adj_objects:
             print("*空房间或无法访问*")
+            print()
+            continue
+        
+        print("```json")
+        room_info = {
+            "对象统计": summary,
+        }
+        
+        # Controller 详情
+        if adj_controller:
+            ctrl_info = {
+                "level": adj_controller.get('level', 0),
+                "user": adj_controller.get('user'),
+                "safeMode": adj_controller.get('safeMode'),
+                "reservation": adj_controller.get('reservation'),
+            }
+            # 清除 None 值
+            ctrl_info = {k: v for k, v in ctrl_info.items() if v is not None}
+            room_info["controller"] = ctrl_info
+        
+        # Spawn 详情
+        if adj_spawns:
+            room_info["spawns"] = [{
+                "name": s.get('name'),
+                "user": s.get('user'),
+                "hits": s.get('hits'),
+                "hitsMax": s.get('hitsMax'),
+            } for s in adj_spawns]
+        
+        # Tower 详情
+        if adj_towers:
+            room_info["towers"] = [{
+                "x": t.get('x'),
+                "y": t.get('y'),
+                "energy": t.get('store', {}).get('energy', 0),
+            } for t in adj_towers]
+        
+        # 敌对 Creep
+        if adj_hostile_creeps:
+            room_info["hostile_creeps"] = [{
+                "name": c.get('name'),
+                "user": c.get('user'),
+                "body": [p.get('type') for p in c.get('body', [])],
+                "hits": c.get('hits'),
+            } for c in adj_hostile_creeps[:10]]  # 最多 10 个
+        
+        print(pretty_json(room_info))
+        print("```")
         print()
 
 # ========== 6. 任务指令 ==========
