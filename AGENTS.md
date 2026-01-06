@@ -114,10 +114,12 @@
 
 Screeps 是经典游戏，网络上有大量资源：
 - 官方文档: https://docs.screeps.com/
+- **文档源码**: https://github.com/screeps/docs （文档的 Markdown 源文件，方便检索）
+- **游戏引擎源码**: https://github.com/screeps/screeps （理解游戏底层机制的权威来源）
 - GitHub 开源 Bot
 - 社区论坛
 
-**主动搜索学习，下载参考代码。**
+**主动搜索学习，下载参考代码。阅读游戏源码可以精确理解游戏规则和 CPU 消耗机制。**
 
 ## 🔑 凭证
 
