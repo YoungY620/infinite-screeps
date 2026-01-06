@@ -4,7 +4,82 @@
 
 **在 Screeps 游戏服务器中生存尽可能长的时间，并追求高质量的生存。**
 
-想尽一切办法活下去。
+## ⚔️ 生存至上原则 【最高优先级】
+
+### 不惜一切代价生存
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  你处于一个充满敌意的世界                                            │
+│  周围都是可能随时发动猛烈攻击的老玩家                                 │
+│  保护期一过，你就是待宰的羔羊                                         │
+│                                                                      │
+│  唯一的目标：活下去                                                  │
+│  唯一的失败：殖民地被摧毁                                            │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 生存策略
+
+**1. 利用一切可利用的游戏机制**
+- Safe Mode: 紧急时刻的救命稻草，必须储备
+- Novice/Respawn Zone: 利用保护期最大化发展
+- Tower: 自动防御，24/7 不间断
+- Rampart: 保护关键建筑不被摧毁
+- 市场交易: 购买资源、雇佣 NPC 防御
+- 联盟外交: 与其他玩家结盟互助
+
+**2. 预判敌人的攻击**
+- 敌人会在保护期结束后立即进攻
+- 敌人可能派遣大量高级 Creep 进行碾压
+- 敌人可能持续骚扰，消耗你的资源
+- 敌人可能攻击你的能量源，切断补给
+
+**3. 永远保持警惕**
+- 每次检查游戏状态时，扫描敌人
+- 监控房间边界的敌对 Creep
+- 追踪敌人的攻击模式
+- 提前准备防御代码
+
+**4. 失去房间不等于游戏结束**
+- 如果被摧毁，立即重生
+- 学习失败教训，优化策略
+- 选择更安全的位置重新开始
+- 永不放弃
+
+### 资源优先级
+
+```
+生存 > 一切
+
+能量分配优先级:
+1. Tower 能量 (防御)
+2. Spawn 能量 (补充 Creep)
+3. 升级 Controller (防止降级)
+4. 建造新建筑
+```
+
+### 防御检查清单
+
+```
+Level 3 之前必须完成:
+□ 至少 1 个 Tower
+□ Rampart 覆盖 Spawn
+□ Rampart 覆盖 Tower
+□ 储备至少 1 次 Safe Mode
+
+Level 4 之前必须完成:
+□ 2 个 Tower
+□ 完整的 Rampart 防线
+□ Storage 储备能量
+□ 防御代码 (自动攻击敌人)
+
+随时准备:
+□ 紧急激活 Safe Mode 的代码
+□ 撤退/重生的备用计划
+```
+
+---
 
 ## ⚠️ 硬性约束
 
@@ -274,10 +349,43 @@ screeps/docs/
 
 **禁止盲目修改代码！**
 
-### 保护期策略
-- **保护期内**: 激进发展，最大化 Creep 数量，快速升级
-- **保护期结束前**: 必须建造 Tower 和防御设施
-- **储备 Safe Mode**: 紧急时可手动激活
+### 保护期策略 【生死攸关】
+
+**保护期是你唯一的发展窗口，必须最大化利用！**
+
+```
+保护期时间线:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Day 1-3         Day 4-5         Day 6-7         保护期结束
+激进发展        建造防御        测试防御        ⚔️ 敌人来袭
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**阶段目标:**
+
+| 阶段 | 时间 | 必须完成 |
+|------|------|----------|
+| **激进发展** | Day 1-3 | Level 3+, 最大化 Creep, 建完 Extension |
+| **建造防御** | Day 4-5 | Tower, Rampart, 防御代码 |
+| **测试防御** | Day 6-7 | 模拟攻击测试, 修复漏洞 |
+| **战斗准备** | 保护期结束前 | 储备能量, Safe Mode 待命 |
+
+**保护期内:**
+- 疯狂发展，不用担心防御
+- 最大化 Creep 数量，榨干每一点能量
+- 快速升级 Controller 到 Level 3
+
+**保护期结束前 48 小时:**
+- Tower 必须建成并装满能量
+- Rampart 必须覆盖 Spawn 和 Tower
+- 防御代码必须测试通过
+- Safe Mode 随时准备激活
+
+**保护期结束后:**
+- 预期遭受攻击，保持警惕
+- Tower 自动防御，Creep 继续工作
+- 如果防御失败，立即激活 Safe Mode
+- Safe Mode 期间修复防御、补充资源
 
 ---
 
@@ -355,5 +463,105 @@ screeps/docs/
 3. 只有异常或需要决策时才唤醒 Agent
 
 ---
+
+## 🛡️ 防御策略详解
+
+### 敌人攻击类型
+
+| 攻击类型 | 威胁等级 | 应对策略 |
+|----------|----------|----------|
+| **小规模骚扰** | 🟡 低 | Tower 自动处理 |
+| **中规模进攻** | 🟠 中 | Tower + 战斗 Creep |
+| **大规模入侵** | 🔴 高 | Safe Mode + 修复 |
+| **持续围攻** | 🔴 极高 | Safe Mode + 求援/撤退 |
+
+### Tower 防御代码模板
+
+```javascript
+function runTower(tower) {
+    // 1. 最高优先级: 攻击敌人
+    const enemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+    if (enemy) {
+        tower.attack(enemy);
+        return;  // 攻击时不做其他事
+    }
+    
+    // 2. 治疗友方 Creep
+    const injured = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
+        filter: c => c.hits < c.hitsMax
+    });
+    if (injured) {
+        tower.heal(injured);
+        return;
+    }
+    
+    // 3. 修复建筑 (只在能量充足时)
+    if (tower.store[RESOURCE_ENERGY] > 500) {
+        const damaged = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: s => s.hits < s.hitsMax * 0.8 && 
+                        s.structureType !== STRUCTURE_WALL
+        });
+        if (damaged) {
+            tower.repair(damaged);
+        }
+    }
+}
+```
+
+### Safe Mode 紧急激活
+
+```javascript
+// 当 Spawn 受到攻击时紧急激活 Safe Mode
+function checkEmergency(room) {
+    const spawn = room.find(FIND_MY_SPAWNS)[0];
+    if (!spawn) return;
+    
+    // 检查 Spawn 血量
+    if (spawn.hits < spawn.hitsMax * 0.5) {
+        // 紧急！激活 Safe Mode
+        const result = room.controller.activateSafeMode();
+        if (result === OK) {
+            console.log('🚨 EMERGENCY: Safe Mode activated!');
+            Game.notify('Safe Mode activated due to Spawn damage!');
+        }
+    }
+    
+    // 检查敌人数量
+    const enemies = room.find(FIND_HOSTILE_CREEPS);
+    if (enemies.length > 5) {
+        // 大规模入侵，考虑激活 Safe Mode
+        console.log('⚠️ WARNING: ' + enemies.length + ' hostile creeps detected!');
+    }
+}
+```
+
+### 可利用的游戏机制
+
+| 机制 | 用途 | 如何利用 |
+|------|------|----------|
+| **Safe Mode** | 紧急保护 | 储备多次，危机时激活 |
+| **Rampart** | 保护建筑 | 覆盖所有关键建筑 |
+| **Wall** | 阻挡敌人 | 封锁入口，限制敌人路径 |
+| **Tower** | 自动攻击 | 7 格内 600 伤害，13 格内 150 伤害 |
+| **Heal Creep** | 治疗 | 保持防御 Creep 存活 |
+| **Market** | 购买资源 | 紧急购买能量或 Ghodium |
+| **Ghodium** | 生成 Safe Mode | 1000 Ghodium = 1 次 Safe Mode |
+| **Notify** | 邮件告警 | 遭受攻击时发送通知 |
+
+---
+
+## 🔥 生存格言
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                      │
+│   "不惜一切代价，利用任何游戏特性、资源、手段，活下去。"              │
+│                                                                      │
+│   - 敌人会来，做好准备                                               │
+│   - 失败了就反思，重来                                               │
+│   - 永不放弃                                                         │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
 **记住：生存第一，永不放弃。仔细阅读文档，充分利用保护期，为防御做好准备。重大事件必须反思。**
