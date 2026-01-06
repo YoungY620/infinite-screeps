@@ -6,7 +6,7 @@ set -e
 
 PROJECT_DIR="/Users/moonshot/dev/infinite-screeps"
 STATS_DIR="$PROJECT_DIR/knowledge/stats"
-SESSION_TIMEOUT=1800  # 30分钟切换一次 session
+SESSION_TIMEOUT=86400  # 24小时切换一次 session
 POLL_INTERVAL=300     # 5分钟记录一次统计
 
 cd "$PROJECT_DIR"
