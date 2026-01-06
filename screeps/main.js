@@ -1,11 +1,12 @@
 /**
- * Screeps Eternal - Aggressive Development Mode
+ * Screeps Eternal - Aggressive Development Mode v2
  * 
  * 策略: 利用保护期激进发展，同时为保护期结束做防御准备
  * 
- * 阶段 1 (Level 2): 快速建造 Extension，增加能量容量
- * 阶段 2 (Level 3): 立即建造 Tower，开始防御准备
- * 阶段 3 (Level 3+): 建造 Rampart 保护关键建筑
+ * v2 改进:
+ * - 动态获取 Spawn 位置，不再硬编码
+ * - 增加容错性和日志记录
+ * - 支持任意房间布局
  */
 
 // ========== 配置 ==========
@@ -19,7 +20,7 @@ function getCreepTargets(room) {
         // 保护期激进发展
         return {
             harvester: 4,  // 最大化能量采集
-            builder: constructionSites > 0 ? 3 : 1,  // 有建造任务时增加
+            builder: constructionSites > 0 ? 3 : 1,
             upgrader: 3    // 快速升级
         };
     } else if (level === 3) {
@@ -42,7 +43,6 @@ function getCreepTargets(room) {
 // 根据可用能量动态调整 body
 function getBody(role, energyAvailable) {
     if (energyAvailable >= 550) {
-        // 大型 Creep
         if (role === 'harvester') {
             return [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE]; // 550
         } else if (role === 'upgrader') {
@@ -51,35 +51,37 @@ function getBody(role, energyAvailable) {
             return [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]; // 500
         }
     } else if (energyAvailable >= 400) {
-        // 中型 Creep
         return [WORK, WORK, CARRY, CARRY, MOVE, MOVE]; // 400
     } else if (energyAvailable >= 300) {
         return [WORK, WORK, CARRY, MOVE]; // 300
     } else {
-        // 最小配置
         return [WORK, CARRY, MOVE]; // 200
     }
 }
 
-// 建筑规划位置 (相对于 Spawn1 at 25,23)
-const BUILD_PLANS = {
-    extensions: [
-        {x: 24, y: 22}, {x: 26, y: 22},
-        {x: 24, y: 24}, {x: 26, y: 24}, {x: 27, y: 23},
-        // Level 3 增加的 5 个
-        {x: 23, y: 22}, {x: 27, y: 22},
-        {x: 23, y: 24}, {x: 27, y: 24}, {x: 28, y: 23}
-    ],
-    towers: [
-        {x: 25, y: 21}  // Tower 在 Spawn 上方，便于防御
-    ],
-    ramparts: [
-        // 保护 Spawn
-        {x: 25, y: 23},
-        // 保护 Tower
-        {x: 25, y: 21}
-    ]
-};
+// 动态计算建筑位置（基于 Spawn 位置）
+function getBuildPositions(spawn) {
+    const sx = spawn.pos.x;
+    const sy = spawn.pos.y;
+    
+    return {
+        extensions: [
+            // 第一圈 (5个 for Level 2)
+            {x: sx - 1, y: sy - 1}, {x: sx + 1, y: sy - 1},
+            {x: sx - 1, y: sy + 1}, {x: sx + 1, y: sy + 1}, {x: sx + 2, y: sy},
+            // 第二圈 (5个 for Level 3)
+            {x: sx - 2, y: sy - 1}, {x: sx + 2, y: sy - 1},
+            {x: sx - 2, y: sy + 1}, {x: sx + 2, y: sy + 1}, {x: sx + 3, y: sy}
+        ],
+        towers: [
+            {x: sx, y: sy - 2}  // Tower 在 Spawn 上方
+        ],
+        ramparts: [
+            {x: sx, y: sy},      // 保护 Spawn
+            {x: sx, y: sy - 2}   // 保护 Tower
+        ]
+    };
+}
 
 // ========== 主循环 ==========
 
@@ -93,16 +95,24 @@ module.exports.loop = function () {
         }
     }
     
-    const spawn = Game.spawns['Spawn1'];
-    if (!spawn) return;
-    
+    // 2. 获取 Spawn (容错: 支持任意名称的 Spawn)
+    const spawns = Object.values(Game.spawns);
+    if (spawns.length === 0) {
+        // 没有 Spawn，记录错误并退出
+        if (!Memory.lastError || Game.time - Memory.lastError.time > 100) {
+            Memory.lastError = { time: Game.time, msg: 'No spawns available' };
+            console.log('[ERROR] No spawns available!');
+        }
+        return;
+    }
+    const spawn = spawns[0];
     const room = spawn.room;
     const controller = room.controller;
     
-    // 2. 获取动态目标
+    // 3. 获取动态目标
     const CREEP_TARGETS = getCreepTargets(room);
     
-    // 3. 统计各角色数量
+    // 4. 统计各角色数量
     const counts = { harvester: 0, builder: 0, upgrader: 0 };
     for (const name in Game.creeps) {
         const role = Game.creeps[name].memory.role;
@@ -111,23 +121,21 @@ module.exports.loop = function () {
         }
     }
     
-    // 4. 建筑规划 (每 50 ticks 检查一次)
+    // 5. 建筑规划 (每 50 ticks 检查一次)
     if (Game.time % 50 === 0) {
-        planBuildings(room, controller.level);
+        planBuildings(room, controller.level, spawn);
     }
     
-    // 5. 孵化 Creep
+    // 6. 孵化 Creep
     if (!spawn.spawning) {
-        // 计算可用能量 (Spawn + Extensions)
         const energyAvailable = room.energyAvailable;
         const energyCapacity = room.energyCapacityAvailable;
         
-        // 优先级: harvester > builder (有建造点时) > upgrader
+        // 优先级: harvester > builder > upgrader
         const priority = ['harvester', 'builder', 'upgrader'];
         
         for (const role of priority) {
             if (counts[role] < CREEP_TARGETS[role]) {
-                // 等能量充足再孵化更大的 Creep
                 const minEnergy = energyCapacity >= 400 ? 
                     Math.min(energyCapacity, energyAvailable) : 200;
                 
@@ -138,7 +146,7 @@ module.exports.loop = function () {
                         memory: { role: role }
                     });
                     if (result === OK) {
-                        console.log(`Spawning ${role}: ${name} [${body.length} parts]`);
+                        console.log(`[SPAWN] ${role}: ${name} [${body.length} parts]`);
                     }
                 }
                 break;
@@ -146,7 +154,7 @@ module.exports.loop = function () {
         }
     }
     
-    // 6. 运行所有 Creep (CPU 优化版本)
+    // 7. 运行所有 Creep
     for (const name in Game.creeps) {
         const creep = Game.creeps[name];
         const role = creep.memory.role;
@@ -160,19 +168,31 @@ module.exports.loop = function () {
         }
     }
     
-    // 7. Tower 自动防御
+    // 8. Tower 自动防御
     runTowers(room);
     
-    // 8. CPU 监控 (每 100 ticks)
+    // 9. 状态监控 (每 100 ticks)
     if (Game.time % 100 === 0) {
         const cpuUsed = Game.cpu.getUsed();
-        console.log(`[CPU] ${cpuUsed.toFixed(1)}/20 | Creeps: ${Object.keys(Game.creeps).length} | Level: ${controller.level} | Progress: ${controller.progress}/${controller.progressTotal}`);
+        const creepCount = Object.keys(Game.creeps).length;
+        console.log(`[STATUS] CPU: ${cpuUsed.toFixed(1)}/20 | Creeps: ${creepCount} | Level: ${controller.level} | Progress: ${controller.progress}/${controller.progressTotal}`);
+        
+        // 记录状态到 Memory
+        Memory.stats = {
+            time: Game.time,
+            cpu: cpuUsed,
+            creeps: creepCount,
+            level: controller.level,
+            progress: controller.progress
+        };
     }
 };
 
 // ========== 建筑规划 ==========
 
-function planBuildings(room, level) {
+function planBuildings(room, level, spawn) {
+    const BUILD_PLANS = getBuildPositions(spawn);
+    
     // Extension 规划
     const maxExtensions = CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level];
     const currentExtensions = room.find(FIND_MY_STRUCTURES, {
@@ -188,9 +208,11 @@ function planBuildings(room, level) {
         for (const pos of BUILD_PLANS.extensions) {
             if (placed >= neededExtensions) break;
             if (canBuildAt(room, pos.x, pos.y)) {
-                room.createConstructionSite(pos.x, pos.y, STRUCTURE_EXTENSION);
-                console.log(`[BUILD] Extension site at (${pos.x},${pos.y})`);
-                placed++;
+                const result = room.createConstructionSite(pos.x, pos.y, STRUCTURE_EXTENSION);
+                if (result === OK) {
+                    console.log(`[BUILD] Extension at (${pos.x},${pos.y})`);
+                    placed++;
+                }
             }
         }
     }
@@ -208,8 +230,10 @@ function planBuildings(room, level) {
         if (currentTowers + towerSites < maxTowers) {
             for (const pos of BUILD_PLANS.towers) {
                 if (canBuildAt(room, pos.x, pos.y)) {
-                    room.createConstructionSite(pos.x, pos.y, STRUCTURE_TOWER);
-                    console.log(`[BUILD] 🏰 TOWER site at (${pos.x},${pos.y}) - DEFENSE PRIORITY!`);
+                    const result = room.createConstructionSite(pos.x, pos.y, STRUCTURE_TOWER);
+                    if (result === OK) {
+                        console.log(`[BUILD] 🏰 TOWER at (${pos.x},${pos.y}) - PRIORITY!`);
+                    }
                     break;
                 }
             }
@@ -231,6 +255,9 @@ function planBuildings(room, level) {
 }
 
 function canBuildAt(room, x, y) {
+    // 边界检查
+    if (x < 1 || x > 48 || y < 1 || y > 48) return false;
+    
     const structures = room.lookForAt(LOOK_STRUCTURES, x, y);
     const sites = room.lookForAt(LOOK_CONSTRUCTION_SITES, x, y);
     const terrain = room.getTerrain().get(x, y);
@@ -252,7 +279,7 @@ function runTowers(room) {
             continue;
         }
         
-        // 其次修复受损建筑 (低于 50% 才修)
+        // 修复受损建筑 (低于 50% 才修)
         const damaged = tower.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: s => s.hits < s.hitsMax * 0.5 && 
                         s.structureType !== STRUCTURE_WALL &&
@@ -264,17 +291,12 @@ function runTowers(room) {
     }
 }
 
-// ========== Creep 行为 (CPU 优化版) ==========
+// ========== Creep 行为 ==========
 
-/**
- * Harvester: 采集能量 -> 填充 Spawn/Extension/Tower
- * CPU 优化: 缓存目标到 Memory
- */
 function runHarvester(creep) {
-    // 状态切换
     if (creep.memory.working && creep.store[RESOURCE_ENERGY] === 0) {
         creep.memory.working = false;
-        delete creep.memory.targetId;  // 清除缓存
+        delete creep.memory.targetId;
     }
     if (!creep.memory.working && creep.store.getFreeCapacity() === 0) {
         creep.memory.working = true;
@@ -282,10 +304,8 @@ function runHarvester(creep) {
     }
     
     if (creep.memory.working) {
-        // 送能量
         let target = Game.getObjectById(creep.memory.targetId);
         
-        // 目标无效或已满，重新查找
         if (!target || (target.store && target.store.getFreeCapacity(RESOURCE_ENERGY) === 0)) {
             target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: s => (s.structureType === STRUCTURE_SPAWN ||
@@ -301,14 +321,12 @@ function runHarvester(creep) {
                 creep.moveTo(target, { reusePath: 5 });
             }
         } else {
-            // 存储满了，转去升级控制器
             const controller = creep.room.controller;
             if (creep.upgradeController(controller) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(controller, { reusePath: 5 });
             }
         }
     } else {
-        // 采集能量 - 缓存 Source
         let source = Game.getObjectById(creep.memory.sourceId);
         if (!source || source.energy === 0) {
             source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
@@ -323,9 +341,6 @@ function runHarvester(creep) {
     }
 }
 
-/**
- * Upgrader: 采集能量 -> 升级控制器
- */
 function runUpgrader(creep) {
     if (creep.memory.working && creep.store[RESOURCE_ENERGY] === 0) {
         creep.memory.working = false;
@@ -353,9 +368,6 @@ function runUpgrader(creep) {
     }
 }
 
-/**
- * Builder: 采集能量 -> 建造 (优先 Tower)
- */
 function runBuilder(creep) {
     if (creep.memory.working && creep.store[RESOURCE_ENERGY] === 0) {
         creep.memory.working = false;
@@ -370,7 +382,6 @@ function runBuilder(creep) {
         let target = Game.getObjectById(creep.memory.targetId);
         
         if (!target) {
-            // 优先建造 Tower
             const sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
             target = sites.find(s => s.structureType === STRUCTURE_TOWER) ||
                      sites.find(s => s.structureType === STRUCTURE_EXTENSION) ||
@@ -383,7 +394,6 @@ function runBuilder(creep) {
                 creep.moveTo(target, { reusePath: 5 });
             }
         } else {
-            // 没有建造点，转为升级控制器
             const controller = creep.room.controller;
             if (creep.upgradeController(controller) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(controller, { reusePath: 5 });
