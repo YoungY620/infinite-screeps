@@ -1,87 +1,87 @@
-# Screeps Eternal Agent
+# Infinite Screeps - Agent System
 
-## 🎯 核心使命
-
-**在 Screeps 游戏服务器中生存尽可能长的时间，并追求高质量的生存。**
-
-想尽一切办法活下去。
-
-## ⚠️ 硬性约束
-
-### 目录限制
-- **所有操作必须限制在** `/Users/moonshot/dev/infinite-screeps/` 目录内
-- 禁止访问此目录之外的任何文件
-
-### Git 规范
-- 每次修改后必须 `git add -A && git commit -m "[type] desc"`
-- type: feat / fix / refactor / docs / knowledge
-
-### 游戏限制 (免费玩家)
-- CPU: 20/tick
-- Shard: shard3
-- 房间: 最多 1 个
-
-## 📁 目录结构
+## Architecture
 
 ```
-infinite-screeps/
-├── AGENTS.md          # 本文件 - Agent 指南
-├── prompt.md          # 提示词模板
-├── .env               # 凭证 (SCREEPS_TOKEN)
-├── screeps/           # 游戏代码 (上传到服务器)
-├── knowledge/         # 知识固化 (经验、策略、笔记)
-├── logs/              # 原始模型输出 (自动保存，勿修改)
-├── run.sh             # 主运行脚本
-├── start.sh           # tmux 启动
-└── stop.sh            # tmux 停止
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   Screeps       │     │  Event Monitor  │     │    AI Agent     │
+│   Game Server   │     │  (Node.js)      │     │    (kimi)       │
+├─────────────────┤     ├─────────────────┤     ├─────────────────┤
+│ main.js emits   │────>│ WebSocket       │────>│ Reads events/   │
+│ [EVENT:TYPE]    │     │ listens for     │     │ pending.json    │
+│ via console.log │     │ console events  │     │ Takes action    │
+└─────────────────┘     └─────────────────┘     └─────────────────┘
 ```
 
-## 🔄 每个 Session 必须执行
+## Components
 
-### 1. 全面审视
-- 遍历项目所有文件
-- 阅读 knowledge/ 中的经验文档
-- 理解当前代码和状态
+### Game Code (`screeps/main.js`)
+- Runs in Screeps server
+- Emits events via `console.log("[EVENT:TYPE:VALUE]")`
+- Event types: HOSTILE, SPAWN_ATTACKED, NO_SPAWN, NO_CREEPS, RCL_UP, EXTENSION_BUILT, TOWER_BUILT, etc.
 
-### 2. 检查游戏
-- 调用 Screeps API 获取游戏状态
-- 分析威胁、资源、发展阶段
+### Event Monitor (`src/event-monitor.js`)
+- Node.js script using screeps-api WebSocket
+- Subscribes to `console` and `room:shard3/W13N45`
+- Parses [EVENT:...] messages
+- Writes to `events/pending.json` with priority
 
-### 3. 采取行动
-- 修改 screeps/ 中的代码
-- 上传到游戏服务器
+### Event Watcher (`event-watcher.sh`)
+- Manages event-monitor.js (WebSocket)
+- Backup REST API polling every 60s
+- Triggers agent restart on high-priority events
 
-### 4. 知识固化
-**将重要信息写入 knowledge/ 目录：**
-- 成功的策略
-- 失败的教训
-- 代码设计决策
-- 游戏状态分析
+### Agent Loop (`agent-loop.sh`)
+- Runs kimi with prompt.md every 30 min
+- Logs to logs/ directory
+- Git commits after each session
 
-这是你跨 session 记忆的唯一方式！
+## Event Priorities
 
-### 5. 总结重构
-每次修改时，视为重构机会：
-- 审视整体架构
-- 删除冗余代码
-- 更新文档
+| Priority | Events | Action |
+|----------|--------|--------|
+| 10 | HOSTILE, SPAWN_ATTACKED, NO_SPAWN | Immediate restart |
+| 9 | NO_CREEPS | Immediate restart |
+| 7-8 | LOW_ENERGY, CONTROLLER_DOWNGRADE | Restart |
+| 4-5 | RCL_UP, TOWER_BUILT | Restart |
+| 1-3 | SPAWN_COMPLETE, EXTENSION_BUILT | Logged only |
 
-## 🌐 学习资源
+## Running
 
-Screeps 是经典游戏，网络上有大量资源：
-- 官方文档: https://docs.screeps.com/
-- GitHub 开源 Bot
-- 社区论坛
+```bash
+# Start
+./start.sh
 
-**主动搜索学习，下载参考代码。**
+# Stop  
+./stop.sh
 
-## 🚨 优先级
+# View sessions
+tmux attach -t screeps-agent
+tmux attach -t screeps-watcher
+```
 
-1. **生存** - 防止殖民地被摧毁
-2. **稳定** - 能量收入、Creep 数量
-3. **发展** - 升级控制器
-4. **优化** - 代码重构
+## Scripts
 
----
+| Script | Purpose |
+|--------|--------|
+| `start.sh` | Start agent + watcher |
+| `stop.sh` | Stop all |
+| `agent-loop.sh` | Agent main loop (30min interval) |
+| `event-watcher.sh` | WebSocket + polling monitor |
+| `src/event-monitor.js` | WebSocket client |
 
-**记住：生存第一，永不放弃。**
+## Environment Variables (.env)
+
+```
+SCREEPS_TOKEN=xxx
+SHARD=shard3
+ROOM=W13N45
+```
+
+## Current Status
+
+- Room: E13S35 (shard3)
+- RCL: 3 (Tower unlocked!)
+- Extensions: 7/10 (building 2 more)
+- Tower: 1
+- Creeps: 8

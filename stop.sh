@@ -1,17 +1,29 @@
 #!/bin/bash
-# 停止 Agent
+# Stop Screeps Eternal System
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SESSION_NAME="screeps-agent"
-SESSION_FILE="$PROJECT_DIR/.tmux-session"
-
 cd "$PROJECT_DIR"
 
-if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-    tmux kill-session -t "$SESSION_NAME"
-    rm -f "$SESSION_FILE"
-    echo "✅ 已停止: $SESSION_NAME"
+AGENT_SESSION="screeps-agent"
+WATCHER_SESSION="screeps-watcher"
+
+echo "🛑 Stopping Screeps Eternal System"
+
+# Stop Agent
+if tmux has-session -t "$AGENT_SESSION" 2>/dev/null; then
+    tmux kill-session -t "$AGENT_SESSION"
+    echo "✅ Agent stopped"
 else
-    rm -f "$SESSION_FILE"
-    echo "⚠️  未运行"
+    echo "⚠️  Agent not running"
 fi
+
+# Stop Watcher
+if tmux has-session -t "$WATCHER_SESSION" 2>/dev/null; then
+    tmux kill-session -t "$WATCHER_SESSION"
+    echo "✅ Watcher stopped"
+else
+    echo "⚠️  Watcher not running"
+fi
+
+echo ""
+echo "All stopped."

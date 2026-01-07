@@ -6,7 +6,7 @@ set -e
 PROJECT_DIR="/Users/moonshot/dev/infinite-screeps"
 STATS_DIR="$PROJECT_DIR/knowledge/stats"
 LOGS_DIR="$PROJECT_DIR/logs"
-SESSION_TIMEOUT=86400  # 24小时切换一次 session
+SESSION_TIMEOUT=1800   # 30分钟一次常规 session
 POLL_INTERVAL=300      # 5分钟记录一次统计
 
 cd "$PROJECT_DIR"
@@ -69,6 +69,6 @@ while true; do
     git push 2>/dev/null || true
     
     echo ""
-    echo "[$(date)] Session ended, next in 10s..."
-    sleep 10
+    echo "[$(date)] Session ended, next in 30 minutes..."
+    sleep 1800  # 30分钟间隔
 done

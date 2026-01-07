@@ -1,24 +1,34 @@
 #!/bin/bash
-# 在 tmux 中启动 Agent
+# Start Screeps Eternal System (Agent + Watcher)
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-SESSION_NAME="screeps-agent"
-SESSION_FILE="$PROJECT_DIR/.tmux-session"
-
 cd "$PROJECT_DIR"
 
-# 检查是否已运行
-if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-    echo "⚠️  已在运行: $SESSION_NAME"
-    echo "   查看: tmux attach -t $SESSION_NAME"
-    echo "   停止: ./stop.sh"
-    exit 1
+AGENT_SESSION="screeps-agent"
+WATCHER_SESSION="screeps-watcher"
+
+echo "🚀 Starting Screeps Eternal System"
+echo ""
+
+# Start Agent
+if tmux has-session -t "$AGENT_SESSION" 2>/dev/null; then
+    echo "⚠️  Agent already running"
+else
+    tmux new-session -d -s "$AGENT_SESSION" "./agent-loop.sh"
+    echo "✅ Agent started"
 fi
 
-# 启动
-tmux new-session -d -s "$SESSION_NAME" "./run.sh"
-echo "$SESSION_NAME" > "$SESSION_FILE"
+# Start Watcher
+if tmux has-session -t "$WATCHER_SESSION" 2>/dev/null; then
+    echo "⚠️  Watcher already running"
+else
+    tmux new-session -d -s "$WATCHER_SESSION" "./event-watcher.sh"
+    echo "✅ Watcher started"
+fi
 
-echo "✅ 已启动: $SESSION_NAME"
-echo "   查看: tmux attach -t $SESSION_NAME"
-echo "   停止: ./stop.sh"
+echo ""
+echo "📋 Sessions:"
+echo "   Agent:   tmux attach -t $AGENT_SESSION"
+echo "   Watcher: tmux attach -t $WATCHER_SESSION"
+echo ""
+echo "   Stop: ./stop.sh"
