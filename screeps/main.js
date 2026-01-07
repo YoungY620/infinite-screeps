@@ -429,9 +429,9 @@ function runTowers(room) {
         });
         if (damaged && tower.store[RESOURCE_ENERGY] > 500) { tower.repair(damaged); continue; }
         
-        // 空闲时加固 Ramparts (目标 10K HP)
+        // 空闲时加固 Ramparts (目标 100K HP，与 builder 保持一致)
         const weakRampart = tower.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-            filter: s => s.structureType === STRUCTURE_RAMPART && s.hits < 10000
+            filter: s => s.structureType === STRUCTURE_RAMPART && s.hits < 100000
         });
         if (weakRampart && tower.store[RESOURCE_ENERGY] > 700) tower.repair(weakRampart);
     }
@@ -503,6 +503,16 @@ function runBuilder(creep) {
     
     if (creep.memory.working) {
         let target = Game.getObjectById(creep.memory.targetId);
+        
+        // 验证目标是否仍然有效
+        if (target) {
+            // 如果是 Rampart 且已达到目标 HP，清除缓存
+            if (target.structureType === STRUCTURE_RAMPART && target.hits >= 100000) {
+                target = null;
+                delete creep.memory.targetId;
+            }
+        }
+        
         if (!target) {
             // 优先级: 工地 > 弱 Ramparts > 升级控制器
             const sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
@@ -510,11 +520,16 @@ function runBuilder(creep) {
                      sites.find(s => s.structureType === STRUCTURE_EXTENSION) ||
                      sites[0];
             
-            // 如果没有工地，修复 Ramparts (目标 50K HP)
+            // 如果没有工地，修复 Ramparts (目标 100K HP)
             if (!target) {
-                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                    filter: s => s.structureType === STRUCTURE_RAMPART && s.hits < 50000
+                // 找最弱的 Rampart 优先修复
+                const weakRamparts = creep.room.find(FIND_MY_STRUCTURES, {
+                    filter: s => s.structureType === STRUCTURE_RAMPART && s.hits < 100000
                 });
+                if (weakRamparts.length > 0) {
+                    weakRamparts.sort((a, b) => a.hits - b.hits);
+                    target = weakRamparts[0];
+                }
             }
             creep.memory.targetId = target ? target.id : null;
         }
