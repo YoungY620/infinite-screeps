@@ -6,7 +6,7 @@ set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 LOGS_DIR="$PROJECT_DIR/logs"
-INTERVAL=${INTERVAL:-300}  # 默认 5 分钟
+INTERVAL=${INTERVAL:-60}  # 默认 60 秒
 
 cd "$PROJECT_DIR"
 mkdir -p "$LOGS_DIR"
