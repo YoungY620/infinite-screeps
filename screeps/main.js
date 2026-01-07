@@ -401,15 +401,22 @@ function runTowers(room) {
     const towers = room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === STRUCTURE_TOWER });
     
     for (const tower of towers) {
+        // 优先攻击敌人
         const enemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         if (enemy) { tower.attack(enemy); continue; }
         
+        // 修复受损建筑 (不含 walls)
         const damaged = tower.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: s => s.hits < s.hitsMax * 0.5 && 
-                        s.structureType !== STRUCTURE_WALL &&
-                        s.structureType !== STRUCTURE_RAMPART
+                        s.structureType !== STRUCTURE_WALL
         });
-        if (damaged && tower.store[RESOURCE_ENERGY] > 500) tower.repair(damaged);
+        if (damaged && tower.store[RESOURCE_ENERGY] > 500) { tower.repair(damaged); continue; }
+        
+        // 空闲时加固 Ramparts (目标 10K HP)
+        const weakRampart = tower.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+            filter: s => s.structureType === STRUCTURE_RAMPART && s.hits < 10000
+        });
+        if (weakRampart && tower.store[RESOURCE_ENERGY] > 700) tower.repair(weakRampart);
     }
 }
 
@@ -480,15 +487,32 @@ function runBuilder(creep) {
     if (creep.memory.working) {
         let target = Game.getObjectById(creep.memory.targetId);
         if (!target) {
+            // 优先级: 工地 > 弱 Ramparts > 升级控制器
             const sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
             target = sites.find(s => s.structureType === STRUCTURE_TOWER) ||
                      sites.find(s => s.structureType === STRUCTURE_EXTENSION) ||
                      sites[0];
+            
+            // 如果没有工地，修复 Ramparts (目标 50K HP)
+            if (!target) {
+                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    filter: s => s.structureType === STRUCTURE_RAMPART && s.hits < 50000
+                });
+            }
             creep.memory.targetId = target ? target.id : null;
         }
+        
         if (target) {
-            if (creep.build(target) === ERR_NOT_IN_RANGE) creep.moveTo(target, {reusePath: 5});
+            // 判断是建造还是修复
+            if (target.progressTotal !== undefined) {
+                // Construction site
+                if (creep.build(target) === ERR_NOT_IN_RANGE) creep.moveTo(target, {reusePath: 5});
+            } else {
+                // Repair rampart
+                if (creep.repair(target) === ERR_NOT_IN_RANGE) creep.moveTo(target, {reusePath: 5});
+            }
         } else {
+            // 没有任务时升级控制器
             if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) creep.moveTo(creep.room.controller, {reusePath: 5});
         }
     } else {
