@@ -19,11 +19,17 @@ config({ path: join(ROOT_DIR, '.env') });
 
 const TOKEN = process.env.SCREEPS_TOKEN;
 const SHARD = process.env.SHARD || 'shard3';
-const ROOM = process.env.ROOM || 'W13N45';
 
 if (!TOKEN) {
     console.error('[ERROR] SCREEPS_TOKEN not found in .env');
     process.exit(1);
+}
+
+// 动态获取当前房间
+async function getCurrentRoom(api) {
+    const overview = await api.raw.user.overview('energyHarvested', 8);
+    const rooms = overview?.shards?.[SHARD]?.rooms || [];
+    return rooms[0] || null;
 }
 
 // Ensure events directory exists
@@ -171,7 +177,7 @@ function parseConsoleMessage(msg) {
 }
 
 async function main() {
-    log(`Starting event monitor for ${ROOM} on ${SHARD}`);
+    log(`Starting event monitor on ${SHARD}`);
     
     const api = new ScreepsAPI({
         token: TOKEN,
@@ -182,25 +188,25 @@ async function main() {
     });
     
     try {
-        // Test connection
         const me = await api.me();
         log(`Connected as: ${me.username}`);
         
-        // Connect WebSocket
+        // 动态获取当前房间
+        let currentRoom = await getCurrentRoom(api);
+        log(`Current room: ${currentRoom || 'none'}`);
+        
         await api.socket.connect();
         log('WebSocket connected');
         
-        // Subscribe to console
+        // 订阅控制台
         api.socket.subscribe('console', (event) => {
             if (!event.data || !event.data.messages) return;
             
             const logs = event.data.messages.log || [];
             for (const msg of logs) {
-                // Parse for events
                 const parsed = parseConsoleMessage(msg);
                 if (parsed) {
                     log(`Game event: ${parsed.type} = ${parsed.value}`);
-                    
                     if (shouldTrigger(parsed.type)) {
                         writeEvent(parsed.type, parsed.value, msg);
                     } else {
@@ -209,39 +215,57 @@ async function main() {
                 }
             }
         });
-        
         log('Subscribed to console');
         
-        // Also subscribe to room for additional monitoring
-        api.socket.subscribe(`room:${SHARD}/${ROOM}`, (event) => {
-            if (!event.data || !event.data.objects) return;
-            
-            // Check for hostile creeps directly from room data
-            const objects = event.data.objects;
-            let hostileCount = 0;
-            
-            for (const id in objects) {
-                const obj = objects[id];
-                if (obj && obj.type === 'creep' && obj.user && obj.user !== me._id) {
-                    hostileCount++;
-                }
-            }
-            
-            if (hostileCount > 0) {
-                log(`Room monitor: ${hostileCount} hostile creeps detected`);
-                if (shouldTrigger('HOSTILE_ROOM')) {
-                    writeEvent('HOSTILE', hostileCount, 'room monitor');
-                }
-            }
-        });
+        // 订阅房间（如果有）
+        let roomSubscription = null;
         
-        log(`Subscribed to room:${SHARD}/${ROOM}`);
+        const subscribeToRoom = (room) => {
+            if (!room) return;
+            if (roomSubscription) {
+                api.socket.unsubscribe(roomSubscription);
+            }
+            roomSubscription = `room:${SHARD}/${room}`;
+            api.socket.subscribe(roomSubscription, (event) => {
+                if (!event.data || !event.data.objects) return;
+                const objects = event.data.objects;
+                let hostileCount = 0;
+                for (const id in objects) {
+                    const obj = objects[id];
+                    if (obj && obj.type === 'creep' && obj.user && obj.user !== me._id) {
+                        hostileCount++;
+                    }
+                }
+                if (hostileCount > 0) {
+                    log(`Room monitor: ${hostileCount} hostile creeps detected`);
+                    if (shouldTrigger('HOSTILE_ROOM')) {
+                        writeEvent('HOSTILE', hostileCount, 'room monitor');
+                    }
+                }
+            });
+            log(`Subscribed to room: ${room}`);
+        };
+        
+        if (currentRoom) subscribeToRoom(currentRoom);
+        
+        // 定期检查房间变化
+        setInterval(async () => {
+            try {
+                const newRoom = await getCurrentRoom(api);
+                if (newRoom && newRoom !== currentRoom) {
+                    log(`Room changed: ${currentRoom} -> ${newRoom}`);
+                    currentRoom = newRoom;
+                    subscribeToRoom(currentRoom);
+                    writeEvent('ROOM_CHANGED', newRoom, 'room monitor');
+                }
+            } catch (e) {
+                log(`Error checking room: ${e.message}`);
+            }
+        }, 60000);
+        
         log('Monitoring for events...');
         
-        // Keep alive
-        setInterval(() => {
-            log('Heartbeat - still monitoring');
-        }, 300000); // Every 5 minutes
+        setInterval(() => log('Heartbeat - still monitoring'), 300000);
         
     } catch (err) {
         log(`Error: ${err.message}`);

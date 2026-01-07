@@ -95,36 +95,39 @@ trigger_restart() {
     sleep 300
 }
 
-# Backup: REST API polling
+# Backup: REST API polling (动态获取房间)
 poll_game_status() {
     local token=$(grep SCREEPS_TOKEN "$PROJECT_DIR/.env" 2>/dev/null | cut -d'=' -f2)
+    local shard=$(grep SHARD "$PROJECT_DIR/.env" 2>/dev/null | cut -d'=' -f2)
+    shard=${shard:-shard3}
+    
     if [ -z "$token" ]; then
         return 1
     fi
     
-    # Get room from overview
+    # 动态获取当前房间
     local room=$(curl -s -H "X-Token: $token" \
         "https://screeps.com/api/user/overview?statName=energyHarvested&interval=8" 2>/dev/null | \
-        python3 -c "import sys,json; d=json.load(sys.stdin); rooms=d.get('shards',{}).get('shard3',{}).get('rooms',[]); print(rooms[0] if rooms else '')" 2>/dev/null)
+        python3 -c "import sys,json; d=json.load(sys.stdin); rooms=d.get('shards',{}).get('$shard',{}).get('rooms',[]); print(rooms[0] if rooms else '')" 2>/dev/null)
     
     if [ -z "$room" ]; then
+        log "⚠️ REST poll: No room found (respawning?)"
         return 1
     fi
     
-    # Get room objects
+    # 获取房间对象
     local room_data=$(curl -s -H "X-Token: $token" \
-        "https://screeps.com/api/game/room-objects?room=$room&shard=shard3" 2>/dev/null)
+        "https://screeps.com/api/game/room-objects?room=$room&shard=$shard" 2>/dev/null)
     
-    # Check for critical issues
     local spawn_count=$(echo "$room_data" | grep -o '"type":"spawn"' | wc -l | tr -d ' ')
     local creep_count=$(echo "$room_data" | grep -o '"type":"creep"' | wc -l | tr -d ' ')
     
     if [ "$spawn_count" -eq 0 ]; then
-        log "⚠️ REST poll: No spawn detected!"
-        echo '[{"type":"NO_SPAWN","priority":10,"timestamp":"'$(date -Iseconds)'","raw":"REST poll"}]' > "$EVENTS_FILE"
+        log "⚠️ REST poll [$room]: No spawn!"
+        echo '[{"type":"NO_SPAWN","priority":10,"timestamp":"'$(date -Iseconds)'","raw":"REST poll: '$room'"}]' > "$EVENTS_FILE"
     elif [ "$creep_count" -eq 0 ]; then
-        log "⚠️ REST poll: No creeps detected!"
-        echo '[{"type":"NO_CREEPS","priority":9,"timestamp":"'$(date -Iseconds)'","raw":"REST poll"}]' > "$EVENTS_FILE"
+        log "⚠️ REST poll [$room]: No creeps!"
+        echo '[{"type":"NO_CREEPS","priority":9,"timestamp":"'$(date -Iseconds)'","raw":"REST poll: '$room'"}]' > "$EVENTS_FILE"
     fi
 }
 
