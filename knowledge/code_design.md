@@ -1,6 +1,6 @@
 # 代码设计文档
 
-## 当前架构 v2.0 - 激进发展模式
+## 当前架构 v3.0 - 防御发展模式
 
 ### 设计理念
 
@@ -74,16 +74,22 @@ Rampart 保护:
 - 采集能量 → 升级控制器
 - 专注升级，加速到达 Level 3
 
-### 保护期目标
+### 当前目标
 
 ```
-Safe Mode 剩余: ~16,000 ticks (~4-5小时)
+Safe Mode: 已结束 (2次可用)
 
-必须完成:
+已完成:
 ✅ Controller Level 3 (解锁 Tower)
-✅ 建造至少 1 个 Tower
-✅ Rampart 保护 Spawn 和 Tower
-✅ 储备 Safe Mode 激活次数
+✅ 建造 1 个 Tower
+✅ 10 Extensions 满配
+🚧 Rampart 保护 Spawn 和 Tower (建造中)
+✅ 储备 Safe Mode 激活次数 (2次)
+
+下一步:
+⭕ 升级到 RCL4 (预计 ~27 小时)
+⭕ 建造 Storage
+⭕ 更多 Extensions (RCL4: 20个)
 ```
 
 ### CPU 监控

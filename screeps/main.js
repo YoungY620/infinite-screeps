@@ -362,6 +362,30 @@ function planBuildings(room, level, spawn) {
             }
         }
     }
+    
+    // Rampart 保护关键建筑 (RCL2+)
+    if (level >= 2) {
+        // 保护 Spawn
+        const spawnRampart = room.lookForAt(LOOK_STRUCTURES, spawn.pos.x, spawn.pos.y)
+            .some(s => s.structureType === STRUCTURE_RAMPART);
+        const spawnRampartSite = room.lookForAt(LOOK_CONSTRUCTION_SITES, spawn.pos.x, spawn.pos.y)
+            .some(s => s.structureType === STRUCTURE_RAMPART);
+        if (!spawnRampart && !spawnRampartSite) {
+            room.createConstructionSite(spawn.pos.x, spawn.pos.y, STRUCTURE_RAMPART);
+        }
+        
+        // 保护 Tower
+        const towers = room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === STRUCTURE_TOWER });
+        for (const tower of towers) {
+            const hasRampart = room.lookForAt(LOOK_STRUCTURES, tower.pos.x, tower.pos.y)
+                .some(s => s.structureType === STRUCTURE_RAMPART);
+            const hasSite = room.lookForAt(LOOK_CONSTRUCTION_SITES, tower.pos.x, tower.pos.y)
+                .some(s => s.structureType === STRUCTURE_RAMPART);
+            if (!hasRampart && !hasSite) {
+                room.createConstructionSite(tower.pos.x, tower.pos.y, STRUCTURE_RAMPART);
+            }
+        }
+    }
 }
 
 function canBuildAt(room, x, y) {
