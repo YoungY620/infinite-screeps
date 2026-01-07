@@ -15,28 +15,27 @@
 function getCreepTargets(room) {
     const level = room.controller.level;
     const constructionSites = room.find(FIND_MY_CONSTRUCTION_SITES).length;
-    const sources = room.find(FIND_SOURCES).length;
     
     if (level <= 2) {
-        // 保护期激进发展 - 最大化升级速度
+        // 保护期激进发展
         return {
-            harvester: sources * 3,  // 每个 Source 3 个采集者
-            builder: constructionSites > 0 ? 2 : 0,
-            upgrader: 5    // 更多升级者，快速到 Level 3
+            harvester: 4,  // 最大化能量采集
+            builder: constructionSites > 0 ? 3 : 1,
+            upgrader: 3    // 快速升级
         };
     } else if (level === 3) {
         // Level 3: 优先建造 Tower
         return {
-            harvester: sources * 2,
-            builder: constructionSites > 0 ? 3 : 1,
-            upgrader: 3
+            harvester: 4,
+            builder: constructionSites > 0 ? 2 : 1,
+            upgrader: 2
         };
     } else {
         // Level 4+: 稳定发展
         return {
-            harvester: sources * 2,
+            harvester: 3,
             builder: constructionSites > 0 ? 2 : 1,
-            upgrader: 3
+            upgrader: 2
         };
     }
 }
