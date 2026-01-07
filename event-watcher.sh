@@ -11,10 +11,13 @@ EVENTS_FILE="$PROJECT_DIR/events/pending.json"
 CHECK_INTERVAL=60
 WEBSOCKET_PID=""
 
-mkdir -p "$PROJECT_DIR/events"
+SYSTEM_LOG="$PROJECT_DIR/logs/system.log"
+
+mkdir -p "$PROJECT_DIR/events" "$PROJECT_DIR/logs"
 
 log() {
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+    local msg="[$(date '+%Y-%m-%d %H:%M:%S')] [WATCHER] $1"
+    echo "$msg" | tee -a "$SYSTEM_LOG"
 }
 
 # Start WebSocket monitor in background

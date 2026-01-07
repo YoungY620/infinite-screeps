@@ -6,12 +6,19 @@ set -e
 PROJECT_DIR="/Users/moonshot/dev/infinite-screeps"
 STATS_DIR="$PROJECT_DIR/knowledge/stats"
 LOGS_DIR="$PROJECT_DIR/logs"
+SYSTEM_LOG="$LOGS_DIR/system.log"
 SESSION_TIMEOUT=1800   # 30分钟一次常规 session
 POLL_INTERVAL=300      # 5分钟记录一次统计
 
 cd "$PROJECT_DIR"
 
 mkdir -p "$STATS_DIR" "$LOGS_DIR"
+
+# 系统日志函数
+syslog() {
+    local msg="[$(date '+%Y-%m-%d %H:%M:%S')] [AGENT] $1"
+    echo "$msg" | tee -a "$SYSTEM_LOG"
+}
 
 # macOS 兼容的 timeout 函数
 run_with_timeout() {
@@ -51,12 +58,8 @@ while true; do
     SESSION_ID="session_${session_count}_$(date +%Y%m%d_%H%M%S)"
     RAW_LOG="$LOGS_DIR/${SESSION_ID}.log"
     
-    echo ""
-    echo "=========================================="
-    echo "  Session #$session_count: $SESSION_ID"
-    echo "  $(date)"
-    echo "=========================================="
-    echo ""
+    syslog "========== Session #$session_count started =========="
+    syslog "ID: $SESSION_ID"
     
     # 读取提示词并运行 kimi，保存原始输出
     PROMPT=$(cat "$PROJECT_DIR/prompt.md")
@@ -68,7 +71,7 @@ while true; do
     git commit -m "[session] $SESSION_ID" 2>/dev/null || true
     git push 2>/dev/null || true
     
-    echo ""
-    echo "[$(date)] Session ended, next in 30 minutes..."
+    syslog "Session #$session_count ended"
+    syslog "Next session in 30 minutes..."
     sleep 1800  # 30分钟间隔
 done
