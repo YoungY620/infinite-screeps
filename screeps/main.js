@@ -220,12 +220,24 @@ function getBody(role, energy) {
 function getBuildPositions(spawn) {
     const sx = spawn.pos.x, sy = spawn.pos.y;
     return {
+        // RCL2: 5, RCL3: 10, RCL4: 20, RCL5: 30
         extensions: [
-            {x: sx-1, y: sy-1}, {x: sx+1, y: sy-1}, {x: sx-1, y: sy+1}, 
-            {x: sx+1, y: sy+1}, {x: sx+2, y: sy}, {x: sx-2, y: sy-1}, 
-            {x: sx+2, y: sy-1}, {x: sx-2, y: sy+1}, {x: sx+2, y: sy+1}, {x: sx+3, y: sy}
+            // Ring 1 (positions 1-4)
+            {x: sx-1, y: sy-1}, {x: sx+1, y: sy-1}, {x: sx-1, y: sy+1}, {x: sx+1, y: sy+1},
+            // Ring 2 (positions 5-10)
+            {x: sx+2, y: sy}, {x: sx-2, y: sy}, {x: sx, y: sy-2}, {x: sx, y: sy+2},
+            {x: sx+2, y: sy-1}, {x: sx-2, y: sy-1},
+            // Ring 3 (positions 11-20) - for RCL4
+            {x: sx+2, y: sy+1}, {x: sx-2, y: sy+1}, {x: sx+3, y: sy}, {x: sx-3, y: sy},
+            {x: sx+3, y: sy-1}, {x: sx-3, y: sy-1}, {x: sx+3, y: sy+1}, {x: sx-3, y: sy+1},
+            {x: sx+2, y: sy-2}, {x: sx-2, y: sy-2},
+            // Ring 4 (positions 21-30) - for RCL5
+            {x: sx+2, y: sy+2}, {x: sx-2, y: sy+2}, {x: sx+1, y: sy-3}, {x: sx-1, y: sy-3},
+            {x: sx+1, y: sy+3}, {x: sx-1, y: sy+3}, {x: sx+3, y: sy-2}, {x: sx-3, y: sy-2},
+            {x: sx+3, y: sy+2}, {x: sx-3, y: sy+2}
         ],
-        towers: [{x: sx, y: sy-2}]
+        towers: [{x: sx, y: sy-2}, {x: sx-2, y: sy-2}],  // 2nd tower for RCL5
+        storage: [{x: sx-1, y: sy}]  // Storage for RCL4
     };
 }
 
@@ -317,6 +329,7 @@ function planBuildings(room, level, spawn) {
         }
     }
     
+    // Tower (RCL3+)
     if (level >= 3) {
         const maxTowers = CONTROLLER_STRUCTURES[STRUCTURE_TOWER][level];
         const curTowers = room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === STRUCTURE_TOWER }).length;
@@ -326,6 +339,21 @@ function planBuildings(room, level, spawn) {
             for (const pos of plans.towers) {
                 if (canBuildAt(room, pos.x, pos.y)) {
                     room.createConstructionSite(pos.x, pos.y, STRUCTURE_TOWER);
+                    break;
+                }
+            }
+        }
+    }
+    
+    // Storage (RCL4+)
+    if (level >= 4 && plans.storage) {
+        const curStorage = room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === STRUCTURE_STORAGE }).length;
+        const siteStorage = room.find(FIND_MY_CONSTRUCTION_SITES, { filter: s => s.structureType === STRUCTURE_STORAGE }).length;
+        
+        if (curStorage + siteStorage === 0) {
+            for (const pos of plans.storage) {
+                if (canBuildAt(room, pos.x, pos.y)) {
+                    room.createConstructionSite(pos.x, pos.y, STRUCTURE_STORAGE);
                     break;
                 }
             }
