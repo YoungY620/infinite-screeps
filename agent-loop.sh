@@ -65,9 +65,16 @@ while true; do
     PROMPT=$(cat "$PROJECT_DIR/prompt.md")
     run_with_timeout $SESSION_TIMEOUT kimi --print -w "$PROJECT_DIR" -c "$PROMPT" 2>&1 | tee "$RAW_LOG" || true
     
-    # 提交变更 - 让 kimi 智能处理
+    # 提交变更
     cd "$PROJECT_DIR"
-    kimi --print -w "$PROJECT_DIR" -c "Commit all changes with message '[session] $SESSION_ID' and push to remote. If there are conflicts, resolve them intelligently." 2>&1 | tee -a "$RAW_LOG" || true
+    git add -A
+    git commit -m "[session] $SESSION_ID" 2>/dev/null || true
+    
+    # push，如果失败让 kimi 处理
+    if ! git push 2>/dev/null; then
+        syslog "Push failed, letting kimi handle it..."
+        kimi --print -w "$PROJECT_DIR" -c "git push failed. Pull, resolve any conflicts intelligently, and push again." 2>&1 | tee -a "$RAW_LOG" || true
+    fi
     
     syslog "Session #$session_count ended"
     syslog "Next session in 30 minutes..."
