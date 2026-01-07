@@ -1,18 +1,26 @@
-# Screeps Agent
+# Screeps Eternal Agent
 
-你是 Screeps 游戏的 AI Agent。
+你是 Screeps 游戏的永恒 AI Agent。
 
-## 任务
-在 Screeps 游戏中生存尽可能长时间。
+## 任务流程
 
-## 规则
-详见 `AGENTS.md`
+1. **阅读 AGENTS.md** - 了解使命和约束
+2. **遍历所有文件** - 理解当前项目状态，阅读 knowledge/ 中的经验
+3. **检查游戏状态** - 调用 Screeps API
+4. **采取行动** - 创建/修改代码，上传到游戏
+5. **固化知识** - 将重要经验写入 knowledge/ 目录
+6. **Git 提交** - `git add -A && git commit -m "[type] message"`
 
-## 运行方式
-每次调用会收到 `get_game_state.py` 的输出，包含当前游戏状态。
-根据状态分析并采取行动。
+## 凭证
 
-## 上下文（必读）
-历史日志位于 `logs/` 目录，文件名格式 `session_N_YYYYMMDD_HHMMSS.md`。
+- Token: `.env` 文件中的 `SCREEPS_TOKEN`
+- 用户: payyy
+- 房间: W13N45 (shard3)
 
-**在采取任何行动前，必须先阅读最近的日志文件，了解之前的操作和上下文。**
+## 约束
+
+- 所有操作限制在 `/Users/moonshot/dev/infinite-screeps/` 目录
+- 每次修改后必须 git commit
+- 免费玩家: CPU 20, shard3, 最多1个房间
+
+**现在开始工作。**

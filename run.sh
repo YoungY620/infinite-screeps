@@ -1,61 +1,74 @@
 #!/bin/bash
-# Screeps Eternal Agent - 主运行脚本
-# 循环获取游戏状态，调用 kimi 处理
+# Screeps Eternal Agent - 启动脚本
 
 set -e
 
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="/Users/moonshot/dev/infinite-screeps"
+STATS_DIR="$PROJECT_DIR/knowledge/stats"
 LOGS_DIR="$PROJECT_DIR/logs"
-INTERVAL=${INTERVAL:-300}  # 默认 300 秒 (5分钟)
+SESSION_TIMEOUT=86400  # 24小时切换一次 session
+POLL_INTERVAL=300      # 5分钟记录一次统计
 
 cd "$PROJECT_DIR"
-mkdir -p "$LOGS_DIR"
 
-# 清理函数
-cleanup() {
-    echo "[$(date '+%H:%M:%S')] 停止..."
-    exit 0
+mkdir -p "$STATS_DIR" "$LOGS_DIR"
+
+# macOS 兼容的 timeout 函数
+run_with_timeout() {
+    local timeout=$1
+    shift
+    "$@" &
+    local pid=$!
+    (sleep $timeout && kill $pid 2>/dev/null) &
+    local timer_pid=$!
+    wait $pid 2>/dev/null
+    local exit_code=$?
+    kill $timer_pid 2>/dev/null || true
+    return $exit_code
 }
-trap cleanup SIGINT SIGTERM
 
-echo "=========================================="
-echo "  Screeps Eternal Agent"
-echo "  间隔: ${INTERVAL}s"
-echo "  $(date)"
-echo "=========================================="
-
-iteration=0
-while true; do
-    iteration=$((iteration + 1))
-    timestamp=$(date +%Y%m%d_%H%M%S)
-    log_file="$LOGS_DIR/session_${iteration}_${timestamp}.md"
-    
-    echo ""
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo "[$(date '+%H:%M:%S')] 迭代 #$iteration"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    
-    # 获取游戏状态作为提示词
-    prompt=$(python3 "$PROJECT_DIR/tools/get_game_state.py" 2>/dev/null)
-    
-    if [ -z "$prompt" ]; then
-        echo "[$(date '+%H:%M:%S')] ❌ 获取状态失败，跳过"
-        sleep $INTERVAL
-        continue
+# 统计记录
+record_stats() {
+    local stats_file="$STATS_DIR/$(date +%Y%m%d_%H%M%S).json"
+    local token=$(grep SCREEPS_TOKEN .env 2>/dev/null | cut -d'=' -f2)
+    if [ -n "$token" ]; then
+        local overview=$(curl -s -H "X-Token: $token" "https://screeps.com/api/user/overview?statName=energyHarvested&interval=8" 2>/dev/null)
+        local me=$(curl -s -H "X-Token: $token" "https://screeps.com/api/auth/me" 2>/dev/null)
+        echo "{\"timestamp\":\"$(date -Iseconds)\",\"overview\":$overview,\"user\":$me}" > "$stats_file"
     fi
-    
-    # 调用 kimi
-    echo "$prompt" >> "$log_file"
-    # echo ""
-    # echo "---"
-    # echo ""
-    
-    kimi --print -y -w "$PROJECT_DIR" -c "$prompt" 2>&1 | tee -a "$log_file"
-    
-    # 让 kimi 执行 git 提交（可处理 merge conflict）
-    kimi --print -y -w "$PROJECT_DIR" -c "执行 git add -A && git commit，commit message 根据本次改动自行决定。如果有 merge conflict，尝试解决。" 2>&1 | tee -a "$log_file"
+}
+
+# 后台统计
+(while true; do record_stats; sleep $POLL_INTERVAL; done) &
+STATS_PID=$!
+trap "kill $STATS_PID 2>/dev/null; exit 0" SIGINT SIGTERM
+
+# 主循环
+session_count=0
+
+while true; do
+    session_count=$((session_count + 1))
+    SESSION_ID="session_${session_count}_$(date +%Y%m%d_%H%M%S)"
+    RAW_LOG="$LOGS_DIR/${SESSION_ID}.log"
     
     echo ""
-    echo "[$(date '+%H:%M:%S')] 下次: ${INTERVAL}s 后"
-    sleep $INTERVAL
+    echo "=========================================="
+    echo "  Session #$session_count: $SESSION_ID"
+    echo "  $(date)"
+    echo "=========================================="
+    echo ""
+    
+    # 读取提示词并运行 kimi，保存原始输出
+    PROMPT=$(cat "$PROJECT_DIR/prompt.md")
+    run_with_timeout $SESSION_TIMEOUT kimi --print -w "$PROJECT_DIR" -c "$PROMPT" 2>&1 | tee "$RAW_LOG" || true
+    
+    # 提交变更（包括 logs）
+    cd "$PROJECT_DIR"
+    git add -A
+    git commit -m "[session] $SESSION_ID" 2>/dev/null || true
+    git push 2>/dev/null || true
+    
+    echo ""
+    echo "[$(date)] Session ended, next in 10s..."
+    sleep 10
 done
