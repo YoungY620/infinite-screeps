@@ -24,7 +24,7 @@ cat prompt.md
 ### 循环迭代（持续监控）
 
 ```bash
-./tools/get_game_state.sh
+python3 tools/get_game_state.py
 ```
 
 脚本直接输出最新游戏状态，AI 根据数据采取行动。
