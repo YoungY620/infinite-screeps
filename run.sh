@@ -1,137 +1,23 @@
 #!/bin/bash
-# Screeps Eternal Agent - 启动脚本
+# Screeps Eternal Agent - 主启动脚本
+#
+# 使用方式:
+#   ./run.sh              # 获取状态并输出，可管道到 AI
+#   ./run.sh | kimi       # 直接传给 kimi
+#   ./run.sh --loop       # 循环模式
+#   ./run.sh --watch      # 监控模式
 
 set -e
 
-PROJECT_DIR="/Users/moonshot/dev/infinite-screeps"
-STATS_DIR="$PROJECT_DIR/knowledge/stats"
-LOGS_DIR="$PROJECT_DIR/logs"
-SESSION_TIMEOUT=86400  # 24小时切换一次 session
-POLL_INTERVAL=300      # 5分钟记录一次统计
-
+PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$PROJECT_DIR"
 
-# macOS 兼容的 timeout 函数
-run_with_timeout() {
-    local timeout=$1
-    shift
-    
-    # 启动命令
-    "$@" &
-    local pid=$!
-    
-    # 后台计时
-    (sleep $timeout && kill $pid 2>/dev/null) &
-    local timer_pid=$!
-    
-    # 等待命令完成
-    wait $pid 2>/dev/null
-    local exit_code=$?
-    
-    # 取消计时器
-    kill $timer_pid 2>/dev/null || true
-    
-    return $exit_code
-}
+# 如果有参数，转发到 run_loop.sh
+if [ "$1" == "--loop" ] || [ "$1" == "-l" ]; then
+    exec bash "$PROJECT_DIR/run_loop.sh" --loop
+elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
+    exec bash "$PROJECT_DIR/run_loop.sh" --watch
+fi
 
-# 确保目录存在
-mkdir -p "$STATS_DIR" "$LOGS_DIR"
-
-# 记录统计数据的函数
-record_stats() {
-    local timestamp=$(date +%Y%m%d_%H%M%S)
-    local stats_file="$STATS_DIR/$timestamp.json"
-    
-    local token=$(grep SCREEPS_TOKEN .env 2>/dev/null | cut -d'=' -f2)
-    
-    if [ -n "$token" ]; then
-        local overview=$(curl -s -H "X-Token: $token" \
-            "https://screeps.com/api/user/overview?statName=energyHarvested&interval=8" 2>/dev/null)
-        local me=$(curl -s -H "X-Token: $token" \
-            "https://screeps.com/api/auth/me" 2>/dev/null)
-        
-        cat > "$stats_file" << EOF
-{
-    "timestamp": "$(date -Iseconds)",
-    "overview": $overview,
-    "user": $me
-}
-EOF
-        echo "[$(date)] Stats recorded"
-    fi
-}
-
-# 后台统计记录进程
-start_stats_recorder() {
-    while true; do
-        record_stats
-        sleep $POLL_INTERVAL
-    done
-}
-
-# 后台定期 git push
-start_git_sync() {
-    while true; do
-        sleep 600  # 每 10 分钟同步一次
-        cd "$PROJECT_DIR"
-        git add -A
-        git commit -m "[auto] sync $(date +%H:%M)" 2>/dev/null || true
-        git push 2>/dev/null || true
-    done
-}
-
-start_stats_recorder &
-STATS_PID=$!
-
-start_git_sync &
-GIT_PID=$!
-
-cleanup() {
-    echo "[$(date)] Stopping..."
-    kill $STATS_PID 2>/dev/null || true
-    kill $GIT_PID 2>/dev/null || true
-    cd "$PROJECT_DIR"
-    git add -A
-    git commit -m "[auto] final sync" 2>/dev/null || true
-    git push 2>/dev/null || true
-    exit 0
-}
-
-trap cleanup SIGINT SIGTERM
-
-# 主循环
-session_count=0
-
-while true; do
-    session_count=$((session_count + 1))
-    SESSION_ID="session_${session_count}_$(date +%Y%m%d_%H%M%S)"
-    OUTPUT_LOG="$LOGS_DIR/${SESSION_ID}_output.log"
-    
-    echo ""
-    echo "=========================================="
-    echo "  Screeps Eternal Agent - Session #$session_count"
-    echo "  ID: $SESSION_ID"
-    echo "  $(date)"
-    echo "=========================================="
-    echo ""
-    
-    echo "[$(date)] Session $SESSION_ID started" >> "$PROJECT_DIR/knowledge/sessions.log"
-    
-    # 读取提示词
-    PROMPT=$(cat "$PROJECT_DIR/prompt.md")
-    
-    # 运行 kimi (带超时)
-    run_with_timeout $SESSION_TIMEOUT kimi --print -w "$PROJECT_DIR" -c "$PROMPT" 2>&1 | tee "$OUTPUT_LOG" || true
-    
-    echo "[$(date)] Session $SESSION_ID ended" >> "$PROJECT_DIR/knowledge/sessions.log"
-    
-    # 提交变更
-    cd "$PROJECT_DIR"
-    git add -A
-    git commit -m "[session] $SESSION_ID completed" 2>/dev/null || true
-    git push 2>/dev/null || true
-    
-    echo ""
-    echo "[$(date)] Session ended, next in 10s..."
-    sleep 10
-done
+# 默认：输出游戏状态（可用于管道）
+python3 "$PROJECT_DIR/tools/get_game_state.py"
