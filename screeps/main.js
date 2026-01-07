@@ -383,7 +383,9 @@ function runBuilder(creep) {
         
         if (!target) {
             const sites = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+            // 优先级: Tower > Rampart > Extension > 其他
             target = sites.find(s => s.structureType === STRUCTURE_TOWER) ||
+                     sites.find(s => s.structureType === STRUCTURE_RAMPART) ||
                      sites.find(s => s.structureType === STRUCTURE_EXTENSION) ||
                      sites[0];
             creep.memory.targetId = target ? target.id : null;

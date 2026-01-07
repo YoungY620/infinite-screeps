@@ -97,6 +97,7 @@
 - 13:14 - Extension 进度 1950/12000 (16.3%), 系统运行稳定
 - 13:17 - Extension 进度 2100/12000 (17.5%), Rampart x2 待建, 系统稳定
 - 13:19 - Extension 进度 2300/12000 (19.2%), 能量低 (29/550) 但 Source 满 - 可能是 harvester 在采集中
+- 13:21 - Extension 进度 2405/12000 (20%), **发现并修复 Builder 优先级问题** - Rampart 应该优先于 Extension
 
 ---
 
