@@ -17,7 +17,7 @@ function checkEvents(room, spawn) {
     const mem = Memory.events || {};
     const controller = room.controller;
     
-    // 检测敌人
+    // ===== 敌人检测 =====
     const hostiles = room.find(FIND_HOSTILE_CREEPS);
     if (hostiles.length > 0 && !mem.hostileDetected) {
         emitEvent('HOSTILE', hostiles.length);
@@ -26,33 +26,86 @@ function checkEvents(room, spawn) {
         mem.hostileDetected = null;
     }
     
-    // 检测 Spawn 被攻击
+    // ===== Spawn 被攻击 =====
     if (spawn.hits < spawn.hitsMax) {
         emitEvent('SPAWN_ATTACKED', spawn.hits);
     }
     
-    // 检测 RCL 升级
+    // ===== RCL 升级 =====
     if (mem.lastLevel !== undefined && controller.level > mem.lastLevel) {
         emitEvent('RCL_UP', controller.level);
     }
     mem.lastLevel = controller.level;
     
-    // 检测控制器降级警告
-    if (controller.ticksToDowngrade < 5000 && !mem.downgradeWarned) {
-        emitEvent('CONTROLLER_DOWNGRADE', controller.ticksToDowngrade);
-        mem.downgradeWarned = true;
-    } else if (controller.ticksToDowngrade >= 10000) {
-        mem.downgradeWarned = false;
+    // ===== 控制器降级警告 (分级) =====
+    const ttd = controller.ticksToDowngrade;
+    if (ttd < 1000 && mem.downgradeLevel !== 'CRITICAL') {
+        emitEvent('DOWNGRADE_CRITICAL', ttd);  // < 1000 ticks (~17分钟)
+        mem.downgradeLevel = 'CRITICAL';
+    } else if (ttd < 5000 && ttd >= 1000 && mem.downgradeLevel !== 'URGENT') {
+        emitEvent('DOWNGRADE_URGENT', ttd);    // < 5000 ticks (~1.4小时)
+        mem.downgradeLevel = 'URGENT';
+    } else if (ttd < 20000 && ttd >= 5000 && mem.downgradeLevel !== 'WARNING') {
+        emitEvent('DOWNGRADE_WARNING', ttd);   // < 20000 ticks (~5.5小时)
+        mem.downgradeLevel = 'WARNING';
+    } else if (ttd >= 20000) {
+        mem.downgradeLevel = null;
     }
     
-    // 检测 Creep 数量
-    const creepCount = Object.keys(Game.creeps).length;
-    if (creepCount === 0) {
+    // ===== Creep 死亡检测 =====
+    const currentCreeps = Object.keys(Game.creeps);
+    const lastCreeps = mem.lastCreeps || [];
+    
+    // 找出死亡的 creep
+    for (const name of lastCreeps) {
+        if (!Game.creeps[name]) {
+            // Creep 死亡，检查之前记录的角色
+            const role = mem.creepRoles ? mem.creepRoles[name] : 'unknown';
+            emitEvent('CREEP_DIED', `${role}:${name}`);
+        }
+    }
+    
+    // 更新 creep 列表和角色记录
+    mem.lastCreeps = currentCreeps;
+    mem.creepRoles = mem.creepRoles || {};
+    for (const name in Game.creeps) {
+        mem.creepRoles[name] = Game.creeps[name].memory.role;
+    }
+    // 清理死亡 creep 的角色记录
+    for (const name in mem.creepRoles) {
+        if (!Game.creeps[name]) delete mem.creepRoles[name];
+    }
+    
+    // 所有 creep 死亡
+    if (currentCreeps.length === 0 && lastCreeps.length > 0) {
         emitEvent('NO_CREEPS');
     }
     
-    // 检测低能量
-    if (room.energyAvailable < 200 && creepCount === 0) {
+    // ===== Creep 受伤检测 =====
+    for (const name in Game.creeps) {
+        const creep = Game.creeps[name];
+        const lastHits = mem.creepHits ? mem.creepHits[name] : creep.hitsMax;
+        
+        if (creep.hits < lastHits) {
+            // Creep 受伤了
+            const role = creep.memory.role;
+            const damage = lastHits - creep.hits;
+            const hpPercent = Math.round(creep.hits / creep.hitsMax * 100);
+            emitEvent('CREEP_HURT', `${role}:${name}:${hpPercent}%`);
+        }
+        
+        mem.creepHits = mem.creepHits || {};
+        mem.creepHits[name] = creep.hits;
+    }
+    // 清理死亡 creep 的血量记录
+    if (mem.creepHits) {
+        for (const name in mem.creepHits) {
+            if (!Game.creeps[name]) delete mem.creepHits[name];
+        }
+    }
+    
+    // ===== 低能量 =====
+    if (room.energyAvailable < 200 && currentCreeps.length === 0) {
         emitEvent('LOW_ENERGY', room.energyAvailable);
     }
     

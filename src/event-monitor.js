@@ -33,15 +33,40 @@ if (!existsSync(EVENTS_DIR)) {
 
 // Event priorities (higher = more urgent)
 const EVENT_PRIORITY = {
+    // === CRITICAL (10) - 立即响应 ===
     HOSTILE: 10,
     SPAWN_ATTACKED: 10,
     NO_SPAWN: 10,
+    
+    // === SEVERE (9) - 严重 ===
     NO_CREEPS: 9,
+    DOWNGRADE_CRITICAL: 9,    // < 1000 ticks
+    
+    // === HIGH (8) - 高优先 ===
     LOW_ENERGY: 8,
-    CONTROLLER_DOWNGRADE: 7,
+    CREEP_HURT_harvester: 8,  // harvester 受伤
+    
+    // === ELEVATED (7) - 警告 ===
+    DOWNGRADE_URGENT: 7,      // < 5000 ticks
+    CREEP_DIED_harvester: 7,  // harvester 死亡
+    
+    // === MEDIUM (6) - 中等 ===
+    CREEP_HURT_upgrader: 6,
+    CREEP_HURT_builder: 6,
+    CREEP_DIED_upgrader: 6,
+    CREEP_DIED_builder: 6,
+    
+    // === LOW-MEDIUM (5) - 较低 ===
     RCL_UP: 5,
+    DOWNGRADE_WARNING: 5,     // < 20000 ticks
+    CREEP_HURT: 5,            // 其他角色受伤
+    CREEP_DIED: 5,            // 其他角色死亡
+    
+    // === LOW (4) - 低优先 ===
     TOWER_BUILT: 4,
     STORAGE_BUILT: 4,
+    
+    // === INFO (1-3) - 仅记录 ===
     EXTENSION_BUILT: 3,
     SPAWN_COMPLETE: 2,
     ENERGY_MILESTONE: 1
@@ -54,10 +79,14 @@ const EVENT_COOLDOWN = {
     NO_SPAWN: 300,
     NO_CREEPS: 120,
     LOW_ENERGY: 180,
-    CONTROLLER_DOWNGRADE: 600,
-    RCL_UP: 0,  // Always trigger
+    DOWNGRADE_CRITICAL: 300,
+    DOWNGRADE_URGENT: 600,
+    DOWNGRADE_WARNING: 1800,
+    RCL_UP: 0,
     TOWER_BUILT: 0,
     STORAGE_BUILT: 0,
+    CREEP_DIED: 60,
+    CREEP_HURT: 30,
     EXTENSION_BUILT: 300,
     SPAWN_COMPLETE: 300
 };
@@ -82,7 +111,17 @@ function shouldTrigger(eventType) {
 }
 
 function writeEvent(eventType, value, raw) {
-    const priority = EVENT_PRIORITY[eventType] || 5;
+    // 动态获取优先级（支持角色特定优先级）
+    let priority = EVENT_PRIORITY[eventType];
+    
+    // 处理 CREEP_HURT 和 CREEP_DIED 的角色特定优先级
+    if ((eventType === 'CREEP_HURT' || eventType === 'CREEP_DIED') && value) {
+        const role = value.split(':')[0];
+        const roleSpecificKey = `${eventType}_${role}`;
+        priority = EVENT_PRIORITY[roleSpecificKey] || EVENT_PRIORITY[eventType] || 5;
+    }
+    
+    if (priority === undefined) priority = 5;
     const event = {
         type: eventType,
         value: value || null,
