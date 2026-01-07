@@ -151,6 +151,23 @@ function checkEvents(room, spawn) {
         if (!Game.creeps[name]) delete mem.creepHits[name];
     }
     
+    // ===== Creep 寿命警告 =====
+    mem.agingWarned = mem.agingWarned || {};
+    for (const name in Game.creeps) {
+        const creep = Game.creeps[name];
+        if (creep.ticksToLive === undefined) continue; // spawning
+        const spawnTime = creep.body.length * 3; // CREEP_SPAWN_TIME = 3
+        const threshold = spawnTime * 2; // 给余量让替代 creep 孵化
+        if (creep.ticksToLive <= threshold && !mem.agingWarned[name]) {
+            const role = creep.memory.role;
+            emitEvent('CREEP_AGING', `${role}:${name}:${creep.ticksToLive}t`);
+            mem.agingWarned[name] = true;
+        }
+    }
+    for (const name in mem.agingWarned) {
+        if (!Game.creeps[name]) delete mem.agingWarned[name];
+    }
+    
     // ===== 低能量 =====
     if (room.energyAvailable < 200 && currentCreeps.length === 0) {
         emitEvent('LOW_ENERGY', room.energyAvailable);

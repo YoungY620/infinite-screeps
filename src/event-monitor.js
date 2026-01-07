@@ -62,6 +62,12 @@ const EVENT_PRIORITY = {
     CREEP_DIED_upgrader: 6,
     CREEP_DIED_builder: 6,
     
+    // === MEDIUM (6) - Creep 寿命警告 ===
+    CREEP_AGING_harvester: 6, // harvester 即将死亡
+    CREEP_AGING_upgrader: 5,
+    CREEP_AGING_builder: 5,
+    CREEP_AGING: 4,           // 其他角色
+    
     // === LOW-MEDIUM (5) - 较低 ===
     RCL_UP: 5,
     DOWNGRADE_WARNING: 5,     // < 20000 ticks
@@ -123,8 +129,8 @@ function writeEvent(eventType, value, raw) {
     // 动态获取优先级（支持角色特定优先级）
     let priority = EVENT_PRIORITY[eventType];
     
-    // 处理 CREEP_HURT 和 CREEP_DIED 的角色特定优先级
-    if ((eventType === 'CREEP_HURT' || eventType === 'CREEP_DIED') && value) {
+    // 处理 CREEP_HURT/CREEP_DIED/CREEP_AGING 的角色特定优先级
+    if ((eventType === 'CREEP_HURT' || eventType === 'CREEP_DIED' || eventType === 'CREEP_AGING') && value) {
         const role = value.split(':')[0];
         const roleSpecificKey = `${eventType}_${role}`;
         priority = EVENT_PRIORITY[roleSpecificKey] || EVENT_PRIORITY[eventType] || 5;
