@@ -65,45 +65,9 @@ while true; do
     PROMPT=$(cat "$PROJECT_DIR/prompt.md")
     run_with_timeout $SESSION_TIMEOUT kimi --print -w "$PROJECT_DIR" -c "$PROMPT" 2>&1 | tee "$RAW_LOG" || true
     
-    # 提交变更（包括 logs）
+    # 提交变更 - 让 kimi 智能处理
     cd "$PROJECT_DIR"
-    git add -A
-    git commit -m "[session] $SESSION_ID" 2>/dev/null || true
-    
-    # 尝试 push，如果失败则处理冲突
-    if ! git push 2>/dev/null; then
-        syslog "Push failed, attempting pull --rebase..."
-        
-        if ! git pull --rebase 2>/dev/null; then
-            syslog "🚨 Merge conflict detected, invoking kimi to resolve..."
-            
-            # 获取冲突文件列表
-            CONFLICT_FILES=$(git diff --name-only --diff-filter=U)
-            
-            if [ -n "$CONFLICT_FILES" ]; then
-                # 调用 kimi 解决冲突
-                RESOLVE_PROMPT="Git merge conflict detected. Please resolve the conflicts in these files:\n$CONFLICT_FILES\n\nFor each conflicted file:\n1. Read the file content\n2. Look for <<<<<<< ======= >>>>>>> markers\n3. Intelligently merge the changes (keep both changes if possible, prefer newer/better code)\n4. Remove all conflict markers\n5. Save the resolved file\n\nAfter resolving all conflicts, run: git add -A"
-                
-                kimi --print -w "$PROJECT_DIR" -c "$RESOLVE_PROMPT" 2>&1 | tee -a "$RAW_LOG" || true
-                
-                # 继续 rebase
-                git add -A
-                if git rebase --continue 2>/dev/null; then
-                    syslog "✅ Conflict resolved, pushing..."
-                    git push 2>/dev/null || syslog "⚠️ Push failed after resolve"
-                else
-                    syslog "⚠️ Rebase continue failed, aborting..."
-                    git rebase --abort 2>/dev/null || true
-                fi
-            else
-                syslog "⚠️ No conflict files found, aborting rebase..."
-                git rebase --abort 2>/dev/null || true
-            fi
-        else
-            # pull --rebase 成功，再次 push
-            git push 2>/dev/null || syslog "⚠️ Push failed after rebase"
-        fi
-    fi
+    kimi --print -w "$PROJECT_DIR" -c "Commit all changes with message '[session] $SESSION_ID' and push to remote. If there are conflicts, resolve them intelligently." 2>&1 | tee -a "$RAW_LOG" || true
     
     syslog "Session #$session_count ended"
     syslog "Next session in 30 minutes..."
