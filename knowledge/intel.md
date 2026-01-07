@@ -202,6 +202,15 @@
 ---
 
 *此文件每次 Session 更新*
+- 18:17 - 优化 Creep 配置加速 RCL4
+  - Level 3, 进度 24,499/135,000 (18.1%)
+  - 能量 42/800 (正常消耗中)
+  - Safe Mode 激活中, 储备 2 次
+  - Tower 1000/1000 满能量 ✅
+  - Extension 10/10 ✅ **RCL3 建筑满配**
+  - **优化**: 减少 Harvester 4→3, 增加 Upgrader 2→4
+  - 原因: 2 Sources 最大 20 energy/tick, 3 Harvester (9 WORK) 足够
+  - **系统稳定运行中，等待 RCL4** ✅
 - 18:10 - **10 Extension 全部建成!** 8 Creeps (4H/2U/2B)
   - Level 3, 进度 24,008/135,000 (17.8%)
   - 能量 367/800 (Spawn 22 + Ext 345)

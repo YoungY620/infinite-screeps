@@ -17,7 +17,7 @@ screeps/
 | 阶段 | 控制器等级 | 策略 | Creep 配置 |
 |------|-----------|------|-----------|
 | 1 | Level 2 | 激进发展 | 4 harvester + 3 builder + 3 upgrader |
-| 2 | Level 3 | 建造 Tower | 4 harvester + 2 builder + 2 upgrader |
+| 2 | Level 3 | 建造 Tower | 3 harvester + 2 builder + 4 upgrader |
 | 3 | Level 4+ | 稳定防御 | 3 harvester + 2 builder + 2 upgrader |
 
 ### 动态 Body 配置
