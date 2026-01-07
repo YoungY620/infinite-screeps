@@ -81,9 +81,9 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- RCL: 3 (progress: 25,887/135,000 = 19.2%)
+- RCL: 3 (progress: 26,518/135,000 = 19.6%)
 - Extensions: 10/10 ✅ (RCL3 满配)
 - Tower: 1 (full energy 1000/1000)
-- Creeps: 10 (4 harvesters, 4 upgraders, 2 builders)
+- Creeps: 8 (4 harvesters, 4 upgraders)
 - Construction Sites: 0 (waiting for RCL4)
-- Last updated: 2026-01-07 18:37
+- Last updated: 2026-01-07 18:45
