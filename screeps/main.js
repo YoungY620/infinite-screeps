@@ -145,12 +145,26 @@ function getBuildPositions(spawn) {
     const sx = spawn.pos.x;
     const sy = spawn.pos.y;
     
+    // Extension positions in priority order (RCL 3 = 10, RCL 4 = 20, etc.)
+    // Layer 1: Adjacent to spawn (4 corners + right)
+    // Layer 2: One more step out
+    // Layer 3: Two more steps out
     return {
         extensions: [
+            // Layer 1 (RCL 2: 5 extensions)
             {x: sx - 1, y: sy - 1}, {x: sx + 1, y: sy - 1},
             {x: sx - 1, y: sy + 1}, {x: sx + 1, y: sy + 1}, {x: sx + 2, y: sy},
+            // Layer 2 (RCL 3: 10 extensions)
             {x: sx - 2, y: sy - 1}, {x: sx + 2, y: sy - 1},
-            {x: sx - 2, y: sy + 1}, {x: sx + 2, y: sy + 1}, {x: sx + 3, y: sy}
+            {x: sx - 2, y: sy + 1}, {x: sx + 2, y: sy + 1}, {x: sx + 3, y: sy},
+            // Layer 2 extras (fallback for blocked positions)
+            {x: sx - 3, y: sy}, {x: sx - 2, y: sy}, {x: sx + 3, y: sy - 1}, {x: sx + 3, y: sy + 1},
+            // Layer 3 (RCL 4+: 20 extensions)
+            {x: sx - 3, y: sy - 1}, {x: sx - 3, y: sy + 1},
+            {x: sx + 4, y: sy}, {x: sx + 4, y: sy - 1}, {x: sx + 4, y: sy + 1},
+            {x: sx - 2, y: sy - 2}, {x: sx + 2, y: sy - 2},
+            {x: sx - 2, y: sy + 2}, {x: sx + 2, y: sy + 2},
+            {x: sx, y: sy - 3}, {x: sx, y: sy + 3}
         ],
         towers: [{x: sx, y: sy - 2}],
         ramparts: [{x: sx, y: sy}, {x: sx, y: sy - 2}]
