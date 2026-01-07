@@ -75,7 +75,10 @@ const EVENT_PRIORITY = {
     // === INFO (1-3) - 仅记录 ===
     EXTENSION_BUILT: 3,
     SPAWN_COMPLETE: 2,
-    ENERGY_MILESTONE: 1
+    ENERGY_MILESTONE: 1,
+    
+    // === SPECIAL ===
+    ROOM_CHANGED: 10  // 房间变化，需要立即响应
 };
 
 // Minimum seconds between triggering agent for same event type
