@@ -211,15 +211,19 @@ function getCreepTargets(room) {
     const level = room.controller.level;
     const sites = room.find(FIND_MY_CONSTRUCTION_SITES).length;
     
-    // RCL3 优化: 2 Sources 最多产 20 energy/tick
+    // 2 Sources 最多产 20 energy/tick
     // 3 Harvester (9 WORK) = 18 energy/tick, 足够
-    // 更多 Upgrader 加速升级到 RCL4
     if (level <= 2) {
         return { harvester: 4, builder: sites > 0 ? 3 : 1, upgrader: 3 };
     } else if (level === 3) {
+        // RCL3: 优先升级到 RCL4
         return { harvester: 3, builder: sites > 0 ? 2 : 0, upgrader: 4 };
+    } else if (level === 4) {
+        // RCL4: 需要建造 10 Extensions + Storage, builder 优先
+        return { harvester: 3, builder: sites > 0 ? 3 : 1, upgrader: 3 };
     } else {
-        return { harvester: 3, builder: sites > 0 ? 2 : 1, upgrader: 2 };
+        // RCL5+: 平衡配置
+        return { harvester: 3, builder: sites > 0 ? 2 : 1, upgrader: 3 };
     }
 }
 
