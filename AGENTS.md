@@ -83,20 +83,26 @@ ROOM=W13N45
 - Room: E13S35 (shard3)
 - **RCL: 4** 🎉
 - Extensions: 10/20 (10 built, 10 under construction)
-- Storage: under construction (0/30,000)
-- Tower: 1 at (33,15) ✅
-- Ramparts: 2 (Spawn ~497K HP, Tower ~777K HP) ✅
-- Creeps: 7 (3h/2u/2b), target 9 (3/3/3)
+  - 1 extension at 80% (31,17)
+  - 9 extensions at 0%
+- Storage: under construction (0/30,000) at (32,17)
+- Tower: 1 at (33,15) with 500 energy ✅
+- Ramparts: 2 (Spawn ~497K HP, Tower ~789K HP) ✅
+- Creeps: 8 (3h/2u/3b), target 9 (3/3/3)
 - Construction Sites: 11 (10 extensions + 1 storage)
-- Energy: 265/800 (waiting to accumulate)
+- Energy: ~255/800 (extensions filling)
+- TTD: ~40K ticks (~11 hours) - safe ✅
+- SafeMode: **ENDED** - need to watch for attacks
 - **Current tasks:**
-  - Building 10 new Extensions (~27.8K energy remaining)
+  - Building 10 new Extensions (~27.6K energy remaining)
   - Building Storage (30,000 progress needed)
-  - Spawning creeps to reach target 9
+  - Total: ~57,600 energy needed
+  - Est. completion: ~2.7 hours
+  - Spawning 1 more upgrader to reach target 9
 - **Next goal:**
   - Complete all RCL4 buildings
   - Upgrade to RCL5 (requires ~370,000 energy)
 - RCL4 unlocks:
   - 20 Extensions (max)
   - Storage (1 max)
-- Last updated: 2026-01-08 15:31
+- Last updated: 2026-01-08 15:37
