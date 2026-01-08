@@ -84,14 +84,15 @@ ROOM=W13N45
 - **RCL: 4** (Progress: ~4,200/370,000 towards RCL5 - 1.1%)
 - Extensions: 12/20 (12 built, 8 under construction)
 - Storage: under construction (0/30,000)
-- Tower: 1 with ~590/1000 energy ✅
-- Ramparts: 2 ✅ Very strong! (1.15M + 491K hits)
-- Creeps: 6 (3h/2b/1u) - recovering (target: 3/3/3)
+- Tower: 1 with ~500/1000 energy ✅
+- Ramparts: 2 ✅ Very strong! (1.17M + 491K hits)
+- Creeps: 6 (3h/3b/0u) - spawning upgraders next (target: 3/3/3)
 - Construction Sites: 9 (8 extensions + 1 storage)
 - SafeMode: **ACTIVE**
+- Energy Capacity: 900 (Spawn + 12 Extensions)
 - **Current tasks:**
-  - Spawning more creeps (need 3 more to reach target 9)
-  - Building 8 Extensions (~24K energy remaining)
+  - Spawning upgraders (need 3 to reach target 9)
+  - Building 8 Extensions (~23K energy remaining)
   - Building Storage (30,000 progress needed)
 - **Spawning logic optimized:**
   - Emergency (harvester<2): 200 energy - spawn anything
@@ -104,4 +105,4 @@ ROOM=W13N45
 - RCL4 unlocks:
   - 20 Extensions (max)
   - Storage (1 max)
-- Last updated: 2026-01-08 16:58
+- Last updated: 2026-01-08 17:05
