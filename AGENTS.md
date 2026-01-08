@@ -81,18 +81,18 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: ~10824/405000 = 2.7%)
-- Extensions: 17/20 built (3 under construction: 71%/0%/0%)
-- Storage: under construction (0/30000)
+- **RCL: 4** (Progress: ~21724/405000 = 5.4%)
+- Extensions: 20/20 ✅ (all built!)
+- Storage: under construction (12930/30000 = 43%)
 - Tower: 1 ✅
 - Ramparts: 2 ✅ - protected Spawn and Tower
-- Creeps: 10 (4h/3b/3u) - healthy! ✅
-- Construction Sites: 4 (3 ext + 1 storage)
-- SafeMode: Active (76M+ ticks, ~21285h remaining)
-- Energy Capacity: 1150 (Spawn + 17 Extensions)
+- Creeps: 9 (3h/3b/3u) - healthy! ✅
+- Construction Sites: 1 (storage only)
+- SafeMode: Active (76M+ ticks remaining)
+- Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Building remaining Extensions (3 more to 20, ~37K energy needed)
-  - Building Storage (30,000 progress needed)
+  - Building Storage (17070 more progress needed)
+  - Upgrading to RCL5 (383K more progress needed)
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy - spawn anything
   - Low harvester (harvester<3): 300 energy - quick recovery
@@ -104,9 +104,10 @@ ROOM=W13N45
   - Tower auto-attacks hostiles
   - No hostiles currently
 - **Next goal:**
-  - Complete all RCL4 buildings (20 extensions + storage)
-  - Upgrade to RCL5 (requires ~395K more energy)
-- RCL4 unlocks:
-  - 20 Extensions (max)
-  - Storage (1 max)
-- Last updated: 2026-01-08 20:04
+  - Complete Storage construction
+  - Upgrade to RCL5 (requires ~383K more progress)
+- RCL5 unlocks:
+  - 30 Extensions (10 more)
+  - 2 Towers (1 more)
+  - 2 Links
+- Last updated: 2026-01-09 00:03
