@@ -318,58 +318,57 @@ module.exports.loop = function () {
             }
         }
         
-        // 找出需要紧急替换的角色
-        let urgentRole = null;
-        for (const role of ['harvester', 'builder', 'upgrader']) {
-            const roleCreeps = creepsByRole[role];
-            // 检查是否有 creep 即将死亡且会导致数量不足
-            const dyingCount = roleCreeps.filter(c => c.ticksToLive && c.ticksToLive < 150).length;
-            const effectiveCount = roleCreeps.length - dyingCount;
-            if (effectiveCount < targets[role]) {
-                urgentRole = role;
-                break;
+        // 确定孵化优先级和能量门槛
+        const isEmergency = counts.harvester < 2;  // 紧急：几乎没有 harvester
+        const isLowHarvester = counts.harvester < 3;
+        const isRecovery = totalCreeps < totalNeeded;
+        
+        // 找出需要孵化的角色（按优先级）
+        // 1. 首先确保基础 harvester 数量
+        // 2. 然后按比例孵化其他角色
+        let roleToSpawn = null;
+        
+        if (counts.harvester < targets.harvester) {
+            roleToSpawn = 'harvester';
+        } else if (counts.builder < targets.builder) {
+            roleToSpawn = 'builder';
+        } else if (counts.upgrader < targets.upgrader) {
+            roleToSpawn = 'upgrader';
+        }
+        
+        // 如果所有角色都达到目标，检查是否需要预防性替换
+        // 只有当角色数量正好等于目标且有 creep 快死时才替换
+        if (!roleToSpawn) {
+            for (const role of ['harvester', 'builder', 'upgrader']) {
+                const roleCreeps = creepsByRole[role];
+                const dyingCount = roleCreeps.filter(c => c.ticksToLive && c.ticksToLive < 150).length;
+                // 只有当数量刚好等于目标且有 creep 快死时才预防性孵化
+                if (dyingCount > 0 && roleCreeps.length === targets[role]) {
+                    roleToSpawn = role;
+                    break;
+                }
             }
         }
         
-        // 紧急模式: harvester < 2 - 最低门槛 200
-        // 恢复模式: harvester < 3 或 creep 总数严重不足 - 门槛 300 (足够 [W,W,C,M])
-        // 正常模式: 等待 550 能量 (或满容量) 孵化更强的 creep
-        // 紧急替换模式: 某角色即将死亡 - 门槛 400
-        const isEmergency = counts.harvester < 2;
-        const isLowHarvester = counts.harvester < 3;
-        const isUrgentReplace = urgentRole !== null;
-        const isRecovery = totalCreeps < totalNeeded;
-        // 优化: 分级恢复门槛，让系统更快恢复
+        // 设置能量门槛
         let minSpawnEnergy;
         if (isEmergency) {
             minSpawnEnergy = 200;  // 最紧急：任何 creep 都行
         } else if (isLowHarvester) {
-            minSpawnEnergy = 300;  // 能量采集不足：快速补充 harvester
-        } else if (isUrgentReplace || isRecovery) {
+            minSpawnEnergy = 300;  // 能量采集不足：快速补充
+        } else if (isRecovery) {
             minSpawnEnergy = 400;  // 恢复中：孵化较强 creep
         } else {
             minSpawnEnergy = Math.min(550, capacity);  // 正常：等待最强 creep
         }
         
-        // 优先孵化紧急替换的角色
-        const roleOrder = urgentRole ? [urgentRole, ...['harvester', 'builder', 'upgrader'].filter(r => r !== urgentRole)] : ['harvester', 'builder', 'upgrader'];
-        
-        for (const role of roleOrder) {
-            if (counts[role] < targets[role] || (urgentRole === role && isUrgentReplace)) {
-                if (energy >= minSpawnEnergy) {
-                    // 使用当前可用能量 (最多到 capacity)
-                    const useEnergy = Math.min(capacity, energy);
-                    const body = getBody(role, useEnergy);
-                    const name = role + Game.time;
-                    if (spawn.spawnCreep(body, name, { memory: { role } }) === OK) {
-                        if (isUrgentReplace && role === urgentRole) {
-                            emitEvent('SPAWN_REPLACE', `${name}:urgent`);
-                        } else {
-                            emitEvent('SPAWN_COMPLETE', name);
-                        }
-                    }
-                }
-                break;
+        // 执行孵化
+        if (roleToSpawn && energy >= minSpawnEnergy) {
+            const useEnergy = Math.min(capacity, energy);
+            const body = getBody(roleToSpawn, useEnergy);
+            const name = roleToSpawn + Game.time;
+            if (spawn.spawnCreep(body, name, { memory: { role: roleToSpawn } }) === OK) {
+                emitEvent('SPAWN_COMPLETE', `${name}:${roleToSpawn}`);
             }
         }
     }
