@@ -331,15 +331,25 @@ module.exports.loop = function () {
             }
         }
         
-        // 紧急模式: harvester < 2 或 creep 总数严重不足
-        // 正常模式: 等待至少 550 能量 (或满容量) 孵化更强的 creep
-        // 恢复模式: creep 数量不足目标时，降低门槛到 400
-        // 紧急替换模式: 某角色即将死亡，降低门槛到 400 (保持较强body)
+        // 紧急模式: harvester < 2 - 最低门槛 200
+        // 恢复模式: harvester < 3 或 creep 总数严重不足 - 门槛 300 (足够 [W,W,C,M])
+        // 正常模式: 等待 550 能量 (或满容量) 孵化更强的 creep
+        // 紧急替换模式: 某角色即将死亡 - 门槛 400
         const isEmergency = counts.harvester < 2;
+        const isLowHarvester = counts.harvester < 3;
         const isUrgentReplace = urgentRole !== null;
         const isRecovery = totalCreeps < totalNeeded;
-        // 优化: 即使紧急替换也等400能量孵化更强creep，除非harvester严重不足
-        const minSpawnEnergy = isEmergency ? 200 : (isUrgentReplace || isRecovery ? 400 : Math.min(550, capacity));
+        // 优化: 分级恢复门槛，让系统更快恢复
+        let minSpawnEnergy;
+        if (isEmergency) {
+            minSpawnEnergy = 200;  // 最紧急：任何 creep 都行
+        } else if (isLowHarvester) {
+            minSpawnEnergy = 300;  // 能量采集不足：快速补充 harvester
+        } else if (isUrgentReplace || isRecovery) {
+            minSpawnEnergy = 400;  // 恢复中：孵化较强 creep
+        } else {
+            minSpawnEnergy = Math.min(550, capacity);  // 正常：等待最强 creep
+        }
         
         // 优先孵化紧急替换的角色
         const roleOrder = urgentRole ? [urgentRole, ...['harvester', 'builder', 'upgrader'].filter(r => r !== urgentRole)] : ['harvester', 'builder', 'upgrader'];
@@ -503,12 +513,19 @@ function runHarvester(creep) {
     if (creep.memory.working) {
         let target = Game.getObjectById(creep.memory.targetId);
         if (!target || (target.store && target.store.getFreeCapacity(RESOURCE_ENERGY) === 0)) {
+            // 优先填充 Spawn 和 Extensions (用于孵化)
             target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: s => (s.structureType === STRUCTURE_SPAWN ||
-                             s.structureType === STRUCTURE_EXTENSION ||
-                             s.structureType === STRUCTURE_TOWER) &&
+                             s.structureType === STRUCTURE_EXTENSION) &&
                              s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
             });
+            // 只有 Spawn/Extensions 都满了才填充 Tower
+            if (!target) {
+                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    filter: s => s.structureType === STRUCTURE_TOWER &&
+                                 s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                });
+            }
             creep.memory.targetId = target ? target.id : null;
         }
         if (target) {
