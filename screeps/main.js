@@ -334,11 +334,12 @@ module.exports.loop = function () {
         // 紧急模式: harvester < 2 或 creep 总数严重不足
         // 正常模式: 等待至少 550 能量 (或满容量) 孵化更强的 creep
         // 恢复模式: creep 数量不足目标时，降低门槛到 400
-        // 紧急替换模式: 某角色即将死亡，降低门槛到 300
+        // 紧急替换模式: 某角色即将死亡，降低门槛到 400 (保持较强body)
         const isEmergency = counts.harvester < 2;
         const isUrgentReplace = urgentRole !== null;
         const isRecovery = totalCreeps < totalNeeded;
-        const minSpawnEnergy = isEmergency ? 200 : (isUrgentReplace ? 300 : (isRecovery ? 400 : Math.min(550, capacity)));
+        // 优化: 即使紧急替换也等400能量孵化更强creep，除非harvester严重不足
+        const minSpawnEnergy = isEmergency ? 200 : (isUrgentReplace || isRecovery ? 400 : Math.min(550, capacity));
         
         // 优先孵化紧急替换的角色
         const roleOrder = urgentRole ? [urgentRole, ...['harvester', 'builder', 'upgrader'].filter(r => r !== urgentRole)] : ['harvester', 'builder', 'upgrader'];
