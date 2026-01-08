@@ -304,11 +304,15 @@ module.exports.loop = function () {
     if (!spawn.spawning) {
         const energy = room.energyAvailable;
         const capacity = room.energyCapacityAvailable;
+        const totalCreeps = Object.keys(Game.creeps).length;
+        const totalNeeded = targets.harvester + targets.builder + targets.upgrader;
         
-        // 紧急模式: harvester 不足 2 个时，用任何可用能量孵化
+        // 紧急模式: harvester < 2 或 creep 总数严重不足
         // 正常模式: 等待至少 550 能量 (或满容量) 孵化更强的 creep
+        // 恢复模式: creep 数量不足目标时，降低门槛到 400
         const isEmergency = counts.harvester < 2;
-        const minSpawnEnergy = isEmergency ? 200 : Math.min(550, capacity);
+        const isRecovery = totalCreeps < totalNeeded;
+        const minSpawnEnergy = isEmergency ? 200 : (isRecovery ? 400 : Math.min(550, capacity));
         
         for (const role of ['harvester', 'builder', 'upgrader']) {
             if (counts[role] < targets[role]) {
