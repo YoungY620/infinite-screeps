@@ -81,32 +81,30 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 3,748/370,000 towards RCL5 - 1.0%)
-- Extensions: 11/20 (11 built, 9 under construction)
-  - 1 extension at 99.3% progress (almost done!)
-  - 8 extensions at 0%
+- **RCL: 4** (Progress: 3,946/370,000 towards RCL5 - 1.1%)
+- Extensions: 12/20 (12 built, 8 under construction)
 - Storage: under construction (0/30,000)
-- Tower: 1 with 500/1000 energy ✅
-- Ramparts: 2 (1,089K HP, 493K HP) ✅ Very strong!
-- Creeps: 9 (3h/3b/3u) - At target ✅
-- Construction Sites: 10 (9 extensions + 1 storage)
-  - 1 extension at 99.3% (nearly complete!)
-  - 8 extensions at 0%
+- Tower: 1 with 510/1000 energy ✅
+- Ramparts: 2 ✅ Very strong!
+- Creeps: 7 (2h/2b/3u) - recovering (target: 3/3/3)
+- Construction Sites: 9 (8 extensions + 1 storage)
+  - 1 extension at 8.3% progress
+  - 7 extensions at 0%
   - 1 storage at 0%
-- Energy Capacity: 850 (Spawn + 11 Extensions)
+- Energy: 300/900 (waiting for 400 to spawn)
 - SafeMode: **ACTIVE** - large buffer remaining
 - **Current tasks:**
-  - Building 9 Extensions (~27K energy remaining)
+  - Spawning more creeps (need 2 more to reach target 9)
+  - Building 8 Extensions (~24K energy remaining)
   - Building Storage (30,000 progress needed)
-  - Total: ~57K energy needed
-  - Est. completion: ~5-6 hours
-- **Recent optimization:**
-  - Improved spawn energy threshold: urgent replace now waits for 400 energy instead of 300
-  - This ensures stronger creeps (6 parts vs 4 parts) even during recovery
+  - Total: ~54K energy needed
+- **Spawning logic:**
+  - Recovery mode: waits for 400 energy to spawn stronger creeps
+  - This is working as designed - quality over quantity
 - **Next goal:**
   - Complete all RCL4 buildings (20 extensions + storage)
   - Upgrade to RCL5 (requires ~366K more energy)
 - RCL4 unlocks:
   - 20 Extensions (max)
   - Storage (1 max)
-- Last updated: 2026-01-08 16:39
+- Last updated: 2026-01-08 16:45
