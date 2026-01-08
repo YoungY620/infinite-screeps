@@ -9,15 +9,31 @@
 - `high` 优先级 → 优先处理，可能是 Creep 全灭
 - 处理完成后删除该文件
 
+## 📚 查阅历史经验
+
+**强烈建议：遇到问题时查看之前 session 的推理记录！**
+
+- **Session 日志**: `logs/session_*.log` - 包含完整的推理过程和解决方案
+- **最近日志**: `ls -t logs/session_*.log | head -5` 查看最近 5 个 session
+- **搜索特定问题**: `grep -l "关键词" logs/session_*.log` 定位相关 session
+- **查看日志**: `tail -200 logs/session_xxx.log` 查看最后部分
+
+**用途：**
+1. **定位重复问题** - 同样的错误可能之前已解决过
+2. **总结经验教训** - 了解之前的决策和结果
+3. **避免重复犯错** - 查看之前失败的尝试
+4. **学习成功模式** - 复用之前有效的解决方案
+
 ## 任务流程
 
 1. **检查事件** - 读取 `events/pending.json`
 2. **阅读 AGENTS.md** - 了解使命和约束
-3. **遍历文件** - 理解当前状态，读取 knowledge/ 经验
-4. **检查游戏** - 调用 Screeps API
-5. **采取行动** - 修改代码，上传到游戏
-6. **固化知识** - 写入 knowledge/
-7. **Git 提交** - `git add -A && git commit -m "[type] message"`
+3. **查阅历史** - 遇到问题时搜索 `logs/session_*.log`
+4. **遍历文件** - 理解当前状态，读取 knowledge/ 经验
+5. **检查游戏** - 调用 Screeps API
+6. **采取行动** - 修改代码，上传到游戏
+7. **固化知识** - 写入 knowledge/
+8. **Git 提交** - `git add -A && git commit -m "[type] message"`
 
 ## 凭证
 
