@@ -23,7 +23,7 @@
 
 - Token: `.env` 文件中的 `SCREEPS_TOKEN`
 - 用户: payyy
-- 房间: W13N45 (shard3)
+- 房间: E13S35 (shard3)
 
 ## 约束
 
