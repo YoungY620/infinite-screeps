@@ -81,19 +81,22 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** 🎉🎉🎉 刚刚升级！
-- Extensions: 10/20 (已建成 10，工地 10)
-- Tower: 1 at (33,15), energy 600 ✅
-- Ramparts: 2 (Spawn & Tower) ~500K HP ✅
-- Creeps: 8 (3 harvesters, 3 upgraders, 1 builder) ✅
+- **RCL: 4** 🎉
+- Extensions: 10/20 (10 built, 10 under construction)
+- Storage: under construction
+- Tower: 1 at (33,15), energy 500 ✅
+- Ramparts: 2 (Spawn & Tower) ~500K-600K HP ✅
+- Creeps: 6 (3h/2u/1b) → spawning to 9 (3h/3b/3u)
 - Construction Sites: 11 (10 extensions + 1 storage)
 - SafeMode: Active (~76M ticks) ✅
 - SafeModeAvailable: 3 ✅
+- **Current tasks:**
+  - Building 10 new Extensions (RCL4 unlocks 20)
+  - Building Storage
 - **Next goal:**
-  - 建造 10 个新 Extensions (RCL4 解锁 20 Extensions)
-  - 建造 Storage
-  - 升级到 RCL5 (需要 370,000 能量)
-- RCL4 解锁内容:
+  - Complete all RCL4 buildings
+  - Upgrade to RCL5 (requires 370,000 energy)
+- RCL4 unlocks:
   - 20 Extensions (max)
   - Storage (1 max)
-- Last updated: 2026-01-08 14:51
+- Last updated: 2026-01-08 14:57
