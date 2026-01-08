@@ -81,20 +81,17 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 9764/405000 = 2.4%)
-- Extensions: 16/20 built (4 under construction)
+- **RCL: 4** (Progress: ~10000/405000 = 2.5%)
+- Extensions: 17/20 built (3 under construction)
 - Storage: under construction (0/30000)
-- Tower: 1 ✅ (Energy: 491)
+- Tower: 1 ✅
 - Ramparts: 2 ✅ - protected Spawn and Tower
-- Creeps: 10 (4h/3b/3u) - healthy! ✅
-- Construction Sites: 5 (4 ext + 1 storage)
-  - 1 extension at 91% (2730/3000)
-  - 3 extensions at 0%
-  - 1 storage at 0%
+- Creeps: 10 (3h/3b/4u) - healthy! ✅
+- Construction Sites: 4 (3 ext + 1 storage)
 - SafeMode: Active (76M+ ticks, ~21285h remaining)
-- Energy Capacity: 1100 (Spawn + 16 Extensions)
+- Energy Capacity: 1150 (Spawn + 17 Extensions)
 - **Current tasks:**
-  - Building remaining Extensions (4 more to 20)
+  - Building remaining Extensions (3 more to 20)
   - Building Storage (30,000 progress needed)
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy - spawn anything
@@ -112,4 +109,4 @@ ROOM=W13N45
 - RCL4 unlocks:
   - 20 Extensions (max)
   - Storage (1 max)
-- Last updated: 2026-01-08 19:38
+- Last updated: 2026-01-08 19:45
