@@ -81,16 +81,17 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- RCL: 3 (progress: ~132,758/135,000 ≈ **98.3%**) 🔥🔥🔥🔥🔥 **RCL4 临门一脚!**
+- RCL: 3 (progress: ~133,279/135,000 ≈ **98.7%**) 🔥🔥🔥🔥🔥 **RCL4 临门一脚!**
 - Extensions: 10/10 ✅ (RCL3 满配)
 - Tower: 1 at (33,15), energy 1000/1000 ✅
 - Ramparts: 2 (Spawn & Tower), ~500K hits ✅
 - Creeps: 7 (3 harvesters, 4 upgraders) - all W3C2M3
 - Construction Sites: 0
-- SafeMode: Active (ends ~tick 76,628,783)
-- **Next goal: RCL4 (仅差 ~2,242 点，预计 ~2-3 分钟!)** 🚀🚀🚀
+- SafeMode: Expired (ended at tick 76,628,783)
+- **Next goal: RCL4 (仅差 ~1,721 点，预计 ~2 分钟!)** 🚀🚀🚀
 - RCL4 准备:
   - Extension positions: 充足备用位置 ✅
-  - Storage position: (32,17) 可用 ✅
+  - Storage position: (sx-1, sy) = (32,17) 可用 ✅
   - 代码会自动创建 construction sites
-- Last updated: 2026-01-08 14:24
+  - RCL4 解锁: 20 Extensions, Storage
+- Last updated: 2026-01-08 14:30
