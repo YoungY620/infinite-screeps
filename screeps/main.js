@@ -518,10 +518,17 @@ function runHarvester(creep) {
                              s.structureType === STRUCTURE_EXTENSION) &&
                              s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
             });
-            // 只有 Spawn/Extensions 都满了才填充 Tower
+            // 其次填充 Tower (保持防御)
             if (!target) {
                 target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                     filter: s => s.structureType === STRUCTURE_TOWER &&
+                                 s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                });
+            }
+            // 最后存入 Storage
+            if (!target) {
+                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    filter: s => s.structureType === STRUCTURE_STORAGE &&
                                  s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
                 });
             }
@@ -533,6 +540,15 @@ function runHarvester(creep) {
             if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) creep.moveTo(creep.room.controller, {reusePath: 5});
         }
     } else {
+        // 优先从 Storage 取能量
+        const storage = creep.room.storage;
+        if (storage && storage.store[RESOURCE_ENERGY] > 0) {
+            if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(storage, {reusePath: 5});
+            }
+            return;
+        }
+        // 否则采集
         let source = Game.getObjectById(creep.memory.sourceId);
         if (!source || source.energy === 0) {
             source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
@@ -549,6 +565,15 @@ function runUpgrader(creep) {
     if (creep.memory.working) {
         if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) creep.moveTo(creep.room.controller, {reusePath: 5});
     } else {
+        // 优先从 Storage 取能量
+        const storage = creep.room.storage;
+        if (storage && storage.store[RESOURCE_ENERGY] > 0) {
+            if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(storage, {reusePath: 5});
+            }
+            return;
+        }
+        // 否则采集
         let source = Game.getObjectById(creep.memory.sourceId);
         if (!source || source.energy === 0) {
             source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
