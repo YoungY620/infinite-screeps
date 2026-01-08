@@ -241,20 +241,23 @@ function getBuildPositions(spawn) {
     const sx = spawn.pos.x, sy = spawn.pos.y;
     return {
         // RCL2: 5, RCL3: 10, RCL4: 20, RCL5: 30
+        // 包含备用位置以防某些位置被占用
         extensions: [
             // Ring 1 (positions 1-4)
             {x: sx-1, y: sy-1}, {x: sx+1, y: sy-1}, {x: sx-1, y: sy+1}, {x: sx+1, y: sy+1},
-            // Ring 2 (positions 5-10)
+            // Ring 2 (positions 5-10) - 注意 sy-2 可能被 Tower 占用
             {x: sx+2, y: sy}, {x: sx-2, y: sy}, {x: sx, y: sy-2}, {x: sx, y: sy+2},
             {x: sx+2, y: sy-1}, {x: sx-2, y: sy-1},
-            // Ring 3 (positions 11-20) - for RCL4
+            // Ring 3 (positions 11-22) - for RCL4, 含备用位置
             {x: sx+2, y: sy+1}, {x: sx-2, y: sy+1}, {x: sx+3, y: sy}, {x: sx-3, y: sy},
             {x: sx+3, y: sy-1}, {x: sx-3, y: sy-1}, {x: sx+3, y: sy+1}, {x: sx-3, y: sy+1},
             {x: sx+2, y: sy-2}, {x: sx-2, y: sy-2},
-            // Ring 4 (positions 21-30) - for RCL5
+            {x: sx+4, y: sy}, {x: sx-4, y: sy},  // 备用位置
+            // Ring 4 (positions 23-34) - for RCL5, 含备用位置
             {x: sx+2, y: sy+2}, {x: sx-2, y: sy+2}, {x: sx+1, y: sy-3}, {x: sx-1, y: sy-3},
             {x: sx+1, y: sy+3}, {x: sx-1, y: sy+3}, {x: sx+3, y: sy-2}, {x: sx-3, y: sy-2},
-            {x: sx+3, y: sy+2}, {x: sx-3, y: sy+2}
+            {x: sx+3, y: sy+2}, {x: sx-3, y: sy+2},
+            {x: sx+4, y: sy-1}, {x: sx-4, y: sy-1}  // 备用位置
         ],
         towers: [{x: sx, y: sy-2}, {x: sx-2, y: sy-2}],  // 2nd tower for RCL5
         storage: [{x: sx-1, y: sy}]  // Storage for RCL4
