@@ -81,14 +81,14 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: ~53K/405000 = 13.1%)
+- **RCL: 4** (Progress: ~53.5K/405000 = 13.2%)
 - Extensions: 20/20 ✅ (all built!)
 - **Storage: 1 ✅** - 0 energy (filling up)
 - Tower: 1 ✅ (1000/1000 energy - FULL)
 - Ramparts: 2 ✅ - Spawn + Tower
-- Creeps: 9 (4h/1b/4u) - healthy! ✅
+- Creeps: 9 (3h/1b/5u) - healthy! ✅
 - Construction Sites: 0 ✅
-- SafeMode: Active (~2220 days remaining - Novice Area!)
+- SafeMode: Active (~76M ticks - Novice Area!)
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
   - Upgrading to RCL5 (~352K more progress needed)
@@ -99,9 +99,9 @@ ROOM=W13N45
   - Recovery mode: 400 energy - stronger creeps
   - Normal: 550 energy - optimal creeps
   - Preemptive replacement when TTL < 150
-  - RCL4 no sites: 3h/1b/4u target (currently 4h/1b/4u)
+  - RCL4 no sites: 3h/1b/4u target
 - **Defense status:**
-  - SafeMode active (~2220 days remaining) - Novice Area, extremely safe!
+  - SafeMode active (~76M ticks) - Novice Area, extremely safe!
   - Tower auto-attacks hostiles (full energy)
   - Ramparts protecting Spawn and Tower
   - No hostiles currently
@@ -111,4 +111,4 @@ ROOM=W13N45
   - 30 Extensions (10 more)
   - 2 Towers (1 more)
   - 2 Links
-- Last updated: 2026-01-09 07:47
+- Last updated: 2026-01-09 07:51
