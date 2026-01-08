@@ -86,7 +86,7 @@ ROOM=W13N45
 - Storage: under construction (0/30000)
 - Tower: 1 ✅
 - Ramparts: 2 ✅ - protected Spawn and Tower
-- Creeps: 10 (3h/3b/4u) - healthy! ✅
+- Creeps: 10 (3h/4b/3u) - healthy! ✅
 - Construction Sites: 4 (3 ext + 1 storage)
 - SafeMode: Active (76M+ ticks, ~21285h remaining)
 - Energy Capacity: 1150 (Spawn + 17 Extensions)
