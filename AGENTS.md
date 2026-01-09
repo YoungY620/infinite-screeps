@@ -81,10 +81,10 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 94K/405K = 23.3%)
+- **RCL: 4** (Progress: 94.6K/405K = 23.4%)
 - Extensions: 20/20 ✅ (all built!)
 - **Storage: 1 ✅** - 0 energy (harvesters prioritize Spawn/Extensions/Tower)
-- Tower: 1 ✅ (1000/1000 energy - full!)
+- Tower: 1 ✅ (980/1000 energy - healthy!)
 - Ramparts: 2 ✅ - Spawn + Tower (1.5M HP each!)
 - Creeps: 9 (3h/1b/5u) - healthy! ✅
 - WORK parts: 26 total (9 harvest, 2 build, 15 upgrade)
@@ -92,7 +92,7 @@ ROOM=W13N45
 - SafeMode: Active (Novice Area - extremely safe!)
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Upgrading to RCL5 (~311K more progress needed)
+  - Upgrading to RCL5 (~310K more progress needed)
   - Upgrade rate: ~15 energy/tick (15 WORK upgraders)
   - Builder helps upgrade when no sites/rampart repairs
 - **Spawning logic:**
@@ -108,10 +108,10 @@ ROOM=W13N45
   - Ramparts protecting Spawn and Tower (1.5M HP - very strong!)
   - No hostiles currently
 - **Next goal:**
-  - Upgrade to RCL5 (requires ~311K more progress)
-  - Estimated time: ~115 hours
+  - Upgrade to RCL5 (requires ~310K more progress)
+  - Estimated time: ~100-115 hours
 - RCL5 unlocks:
   - 30 Extensions (10 more)
   - 2 Towers (1 more)
   - 2 Links
-- Last updated: 2026-01-09 15:48
+- Last updated: 2026-01-09 15:54
