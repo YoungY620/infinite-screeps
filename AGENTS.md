@@ -81,17 +81,17 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 247.9K/405K = 61.2%)
+- **RCL: 4** (Progress: 248.6K/405K = 61.4%)
 - Extensions: 20/20 ✅ (all built!)
-- **Storage: 1 ✅** - operational
+- **Storage: 1 ✅** - operational (currently empty)
 - Tower: 1 ✅ (1000 energy - full)
-- Ramparts: 2 ✅ - Spawn + Tower (high HP)
-- Creeps: 9 (4h/1b/4u target)
+- Ramparts: 2 ✅ - Spawn + Tower (~1.5M HP each)
+- Creeps: 9 (4h/1b/4u)
 - Construction Sites: 0 ✅
 - SafeMode: 3 available
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Upgrading to RCL5 (~162K more progress needed)
+  - Upgrading to RCL5 (~156K more progress needed)
   - Builder helps upgrade when no sites/rampart repairs
   - 12 WORK parts dedicated to upgrading (4 upgraders × 3)
 - **Spawning logic:**
@@ -103,13 +103,13 @@ ROOM=W13N45
   - RCL4 no sites: 3h/1b/4u target (builder helps upgrade when idle)
 - **Defense status:**
   - Tower auto-attacks hostiles
-  - Ramparts protecting Spawn and Tower
+  - Ramparts protecting Spawn and Tower (~1.5M HP)
   - No hostiles currently
 - **Next goal:**
-  - Upgrade to RCL5 (requires ~157K more progress)
-  - Estimated: ~87 hours (3.6 days) at current rate
+  - Upgrade to RCL5 (requires ~156K more progress)
+  - Estimated: ~3.6 hours at current rate
 - RCL5 unlocks:
   - 30 Extensions (10 more)
   - 2 Towers (1 more)
   - 2 Links
-- Last updated: 2026-01-10 21:28
+- Last updated: 2026-01-10 21:35
