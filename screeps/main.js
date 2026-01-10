@@ -641,6 +641,15 @@ function runBuilder(creep) {
             if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) creep.moveTo(creep.room.controller, {reusePath: 5});
         }
     } else {
+        // 优先从 Storage 取能量
+        const storage = creep.room.storage;
+        if (storage && storage.store[RESOURCE_ENERGY] > 0) {
+            if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(storage, {reusePath: 5});
+            }
+            return;
+        }
+        // 否则采集
         let source = Game.getObjectById(creep.memory.sourceId);
         if (!source || source.energy === 0) {
             source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
