@@ -91,7 +91,7 @@ ROOM=W13N45
 - SafeMode: 3 available
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Upgrading to RCL5 (~149K more progress needed)
+  - Upgrading to RCL5 (~148K more progress needed)
   - Builder helps upgrade when no sites/rampart repairs
   - All creeps now use Storage as energy buffer
 - **Spawning logic:**
