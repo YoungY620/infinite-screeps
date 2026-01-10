@@ -91,7 +91,7 @@ ROOM=W13N45
 - SafeMode: Active (~76.6M ticks = 887 days)
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Upgrading to RCL5 (~128K more progress needed)
+  - Upgrading to RCL5 (~127K more progress needed)
   - Builder helps upgrade when no sites/rampart repairs
   - All creeps now use Storage as energy buffer
 - **Spawning logic:**
@@ -106,8 +106,8 @@ ROOM=W13N45
   - Ramparts protecting Spawn and Tower (1.5M HP each)
   - No hostiles currently
 - **Next goal:**
-  - Upgrade to RCL5 (requires ~128K more progress)
-  - Estimated: ~19-21 hours at ~6.7K/hour rate
+  - Upgrade to RCL5 (requires ~127K more progress)
+  - Estimated: ~25-30 hours at ~4-5K/hour rate
 - RCL5 unlocks:
   - 30 Extensions (10 more)
   - 2 Towers (1 more)
