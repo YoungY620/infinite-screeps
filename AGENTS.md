@@ -86,7 +86,7 @@ ROOM=W13N45
 - **Storage: 1 ✅** - operational (100 energy)
 - Tower: 1 ✅ (energy 1000/1000)
 - Ramparts: 2 ✅ - Spawn + Tower (~1.5M HP each)
-- Creeps: 8 (3h/1b/4u)
+- Creeps: 9 (4h/1b/4u)
 - Construction Sites: 0 ✅
 - SafeMode: Active (~76.6M ticks = 887 days)
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
