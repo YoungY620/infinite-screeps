@@ -81,17 +81,17 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 366K/405K = 90%)
+- **RCL: 4** (Progress: 367K/405K = 90.7%)
 - Extensions: 20/20 ✅
 - **Storage: 1 ✅** - operational (empty)
-- Tower: 1 ✅ (E=910)
+- Tower: 1 ✅ (E=920)
 - Ramparts: 2 ✅ - Spawn + Tower protected
-- **Creeps: 9 total** (4h/1b/4u - 1 extra harvester from preemptive spawn)
+- **Creeps: 9 total** (3h/1b/5u - 1 extra upgrader)
 - Construction Sites: 0 ✅
 - SafeMode: Active
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Full speed upgrading to RCL5 (~39K more progress needed)
+  - Full speed upgrading to RCL5 (~38K more progress needed)
   - Builder helps upgrade when no sites/rampart repairs
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy - spawn anything
@@ -106,7 +106,7 @@ ROOM=W13N45
   - SafeMode currently active
   - No hostiles currently
 - **Next goal:**
-  - Upgrade to RCL5 (requires ~39K more progress)
+  - Upgrade to RCL5 (requires ~38K more progress)
   - Estimated: ~108 game minutes with 4 upgraders (12 WORK)
 - RCL5 unlocks:
   - 30 Extensions (10 more)
@@ -114,4 +114,4 @@ ROOM=W13N45
   - 2 Links
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
   - Fixed: spawn recovery logic now checks per-role targets, not just total count
-- Last updated: 2026-01-12 02:51
+- Last updated: 2026-01-12 03:22
