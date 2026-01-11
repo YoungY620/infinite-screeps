@@ -81,16 +81,16 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: ~374K/405K = ~92.2%)
+- **RCL: 4** (Progress: ~374K/405K = ~92.4%)
 - Extensions: 20/20 ✅
 - **Storage: 1 ✅** - operational (empty)
-- Tower: 1 ✅
-- Ramparts: 2 ✅ - HP ~2M each (very strong)
-- **Creeps: 9 total** (3h/1b/5u) - 5 upgraders due to temporary overspawn
+- Tower: 1 ✅ (full energy)
+- Ramparts: 2 ✅ - HP ~1.95M each (very strong)
+- **Creeps: 10 total** (4h/1b/5u) - slight overspawn, will normalize
 - Construction Sites: 0 ✅
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Full speed upgrading to RCL5 (~31K more progress needed)
+  - Full speed upgrading to RCL5 (~30.6K more progress needed)
   - Builder helps upgrade when no sites/rampart repairs
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy - spawn anything
@@ -100,18 +100,18 @@ ROOM=W13N45
   - Preemptive replacement when TTL < 150
   - RCL4 no sites: 3h/1b/4u = 8 total (builder helps upgrade when idle)
 - **Defense status:**
-  - Tower auto-attacks hostiles
-  - Ramparts protecting Spawn and Tower (~2M HP each)
+  - Tower auto-attacks hostiles (full energy 1000/1000)
+  - Ramparts protecting Spawn and Tower (~1.95M HP each)
   - No hostiles currently
 - **Next goal:**
-  - Upgrade to RCL5 (requires ~31K more progress)
+  - Upgrade to RCL5 (requires ~30.6K more progress)
   - With 5 upgraders (15 WORK) + 1 builder (2 WORK), progressing well
   - Total upgrade capacity: 17 WORK
-  - ETA: ~100 min (assuming ~30% efficiency)
+  - ETA: ~60-90 min (assuming ~35% efficiency)
 - RCL5 unlocks:
   - 30 Extensions (10 more)
   - 2 Towers (1 more)
   - 2 Links
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
   - Fixed: spawn recovery logic now checks per-role targets, not just total count
-- Last updated: 2026-01-12 04:41
+- Last updated: 2026-01-12 04:47
