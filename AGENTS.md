@@ -81,36 +81,37 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 315K/405K = 77.9%)
+- **RCL: 4** (Progress: 321K/405K = 79.4%)
 - Extensions: 20/20 ✅
-- **Storage: 1 ✅** - operational (0 energy, used for upgrades)
-- Tower: 1 ✅ (970/1000 energy)
-- Ramparts: 2 ✅ - Spawn + Tower protected (1.5M HP each)
-- Creeps: 10 (3h/2b/4u + emergency1)
+- **Storage: 1 ✅** - operational
+- Tower: 1 ✅
+- Ramparts: 2 ✅ - Spawn + Tower protected
+- Creeps: rebuilding (5h/2b/2u -> target 3h/1b/4u)
 - Construction Sites: 0 ✅
 - SafeMode: 3 available
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Upgrading to RCL5 (~90K more progress needed)
+  - Rebuilding creep population (especially upgraders)
+  - Upgrading to RCL5 (~83K more progress needed)
   - Builder helps upgrade when no sites/rampart repairs
-  - All creeps use Storage as energy buffer when available
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy - spawn anything
   - Low harvester (harvester<3): 300 energy - quick recovery
-  - Recovery mode: 400 energy - stronger creeps
+  - Recovery mode (any role under target): 400 energy - stronger creeps
   - Normal: 550 energy - optimal creeps
   - Preemptive replacement when TTL < 150
   - RCL4 no sites: 3h/1b/4u target (builder helps upgrade when idle)
 - **Defense status:**
   - Tower auto-attacks hostiles
-  - Ramparts protecting Spawn and Tower (1.5M HP each)
+  - Ramparts protecting Spawn and Tower
   - No hostiles currently
 - **Next goal:**
-  - Upgrade to RCL5 (requires ~90K more progress)
-  - Estimated: ~20 hours real time with current setup (~4.5K/hour)
+  - Upgrade to RCL5 (requires ~83K more progress)
+  - Estimated: ~18 hours real time with current setup (~4.5K/hour)
 - RCL5 unlocks:
   - 30 Extensions (10 more)
   - 2 Towers (1 more)
   - 2 Links
-- **Code version:** Event-Driven v4 (deployed 2026-01-11 11:12)
-- Last updated: 2026-01-11 11:18
+- **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
+  - Fixed: spawn recovery logic now checks per-role targets, not just total count
+- Last updated: 2026-01-11 16:11

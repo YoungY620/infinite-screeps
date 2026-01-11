@@ -322,7 +322,11 @@ module.exports.loop = function () {
         // 确定孵化优先级和能量门槛
         const isEmergency = counts.harvester < 2;  // 紧急：几乎没有 harvester
         const isLowHarvester = counts.harvester < 3;
-        const isRecovery = totalCreeps < totalNeeded;
+        // 检查是否有任何角色低于目标（不仅仅是总数）
+        const isUnderTarget = counts.harvester < targets.harvester || 
+                              counts.builder < targets.builder || 
+                              counts.upgrader < targets.upgrader;
+        const isRecovery = isUnderTarget;
         
         // 找出需要孵化的角色（按优先级）
         // 1. 首先确保基础 harvester 数量
