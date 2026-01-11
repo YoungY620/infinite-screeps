@@ -81,16 +81,16 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 384,485/405,000 = ~95%)
+- **RCL: 4** (Progress: ~388,456/405,000 = ~96%)
 - Extensions: 20/20 ✅
-- **Storage: 1 ✅** - operational (empty)
-- Tower: 1 ✅ (full energy 1000/1000)
-- Ramparts: 2 ✅ - HP ~1.95M each (very strong)
-- **Creeps: 9 total** (3h/1b/5u) - stable
+- **Storage: 1 ✅** - operational (200 energy)
+- Tower: 1 ✅ (energy 1000/1000 - FULL)
+- Ramparts: 2 ✅ - protecting Spawn and Tower
+- **Creeps: 8 total** (3h/1b/4u) - stable
 - Construction Sites: 0 ✅
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Full speed upgrading to RCL5 (~20.5K more progress needed)
+  - Full speed upgrading to RCL5 (~17K more progress needed)
   - Builder helps upgrade when no sites/rampart repairs
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy - spawn anything
@@ -98,20 +98,20 @@ ROOM=W13N45
   - Recovery mode (any role under target): 400 energy - stronger creeps
   - Normal: 550 energy - optimal creeps
   - Preemptive replacement when TTL < 150
-  - RCL4 no sites: 3h/1b/5u = 9 total (builder helps upgrade when idle)
+  - RCL4 no sites: 3h/1b/4u = 8 total (builder helps upgrade when idle)
 - **Defense status:**
-  - Tower auto-attacks hostiles (full energy 1000/1000)
-  - Ramparts protecting Spawn and Tower (~1.95M HP each)
+  - Tower auto-attacks hostiles (energy FULL)
+  - Ramparts protecting Spawn and Tower
   - No hostiles currently
 - **Next goal:**
-  - Upgrade to RCL5 (requires ~20.5K more progress)
-  - With 5 upgraders (15 WORK) + 1 builder (2 WORK), progressing well
-  - Total upgrade capacity: 17 WORK
-  - ETA: ~40 min
+  - Upgrade to RCL5 (requires ~17K more progress)
+  - With 4 upgraders (12 WORK) + 1 builder (2 WORK), progressing well
+  - Total upgrade capacity: 14 WORK
+  - ETA: ~20 min
 - RCL5 unlocks:
   - 30 Extensions (10 more)
   - 2 Towers (1 more)
   - 2 Links
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
   - Fixed: spawn recovery logic now checks per-role targets, not just total count
-- Last updated: 2026-01-12 06:55
+- Last updated: 2026-01-12 07:38
