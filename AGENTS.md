@@ -86,7 +86,7 @@ ROOM=W13N45
 - **Storage: 1 ✅** - operational (empty, will accumulate)
 - Tower: 1 ✅
 - Ramparts: 2 ✅ - Spawn + Tower protected (~2M HP each)
-- Creeps: 9 total (4h/1b/4u) ✅ **TARGET REACHED**
+- Creeps: 8 total (3h/1b/4u) ✅ **TARGET REACHED**
 - Construction Sites: 0 ✅
 - SafeMode: 3 available
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
@@ -99,7 +99,7 @@ ROOM=W13N45
   - Recovery mode (any role under target): 400 energy - stronger creeps
   - Normal: 550 energy - optimal creeps
   - Preemptive replacement when TTL < 150
-  - RCL4 no sites: 3h/1b/4u target (builder helps upgrade when idle)
+  - RCL4 no sites: 3h/1b/4u = 8 total (builder helps upgrade when idle)
 - **Defense status:**
   - Tower auto-attacks hostiles
   - Ramparts protecting Spawn and Tower (~2M HP - very strong)
@@ -113,4 +113,4 @@ ROOM=W13N45
   - 2 Links
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
   - Fixed: spawn recovery logic now checks per-role targets, not just total count
-- Last updated: 2026-01-11 16:47
+- Last updated: 2026-01-11 16:54
