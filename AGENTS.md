@@ -86,7 +86,7 @@ ROOM=W13N45
 - **Storage: 1 ✅** - operational (energy flowing to upgrades)
 - Tower: 1 ✅ (full energy: 1000/1000)
 - Ramparts: 2 ✅ - Spawn + Tower protected (~2M HP each)
-- Creeps: 9 total (4h/1b/4u) - 1 extra harvester (preemptive spawn)
+- Creeps: 8 total (3h/1b/4u) ✅ - matches target configuration
 - Construction Sites: 0 ✅
 - SafeMode: 3 available
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
@@ -113,4 +113,4 @@ ROOM=W13N45
   - 2 Links
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
   - Fixed: spawn recovery logic now checks per-role targets, not just total count
-- Last updated: 2026-01-11 19:00
+- Last updated: 2026-01-11 19:04
