@@ -209,7 +209,12 @@ function checkEvents(room, spawn) {
 
 function getCreepTargets(room) {
     const level = room.controller.level;
-    const sites = room.find(FIND_MY_CONSTRUCTION_SITES).length;
+    // 只计算重要的 construction sites (extension/tower/storage/rampart)
+    // 忽略 road/container 等低优先级建筑
+    const importantTypes = [STRUCTURE_EXTENSION, STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_RAMPART, STRUCTURE_SPAWN];
+    const sites = room.find(FIND_MY_CONSTRUCTION_SITES, {
+        filter: s => importantTypes.includes(s.structureType)
+    }).length;
     
     // 2 Sources 最多产 20 energy/tick
     // 3 Harvester (9 WORK) = 18 energy/tick, 足够

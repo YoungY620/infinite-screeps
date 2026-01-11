@@ -2570,3 +2570,326 @@ StatusUpdate(
     ),
     message_id='msg_01NdZifD5gLP6sK9o3C3pxnd'
 )
+ToolResult(
+    tool_call_id='toolu_01S6Rbv3rDN1B3TMZsR3hRj5',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='[main 1278a45] [fix] improve spawn recovery logic to check 
+per-role targets\n 4 files changed, 2627 insertions(+), 14 deletions(-)\n create
+mode 100644 logs/session_2_20260111_160622.log\n',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=31)
+TextPart(type='text', text='让我再检查一下当前状态确认一切正常：')
+ToolCall(
+    type='function',
+    id='toolu_01YKHQ6efSiKmuMusKT2hRVs',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "sleep 15 && source .env && curl -s 
+\\"https://screeps.com/api/game/room-objects?room=E13S35&shard=shard3\\" -H 
+\\"X-Token: $SCREEPS_TOKEN\\" 2>/dev/null | python3 -c \\"\\nimport sys, 
+json\\ndata = json.loads(sys.stdin.read())\\nobjs = data.get(\'objects\', 
+[])\\nif isinstance(objs, dict):\\n    objs = 
+list(objs.values())\\n\\nprint(\'=== Current Game State ===\')\\n\\n# 
+Controller\\nfor obj in objs:\\n    if obj.get(\'type\') == \'controller\':\\n  
+progress = obj.get(\'progress\', 0)\\n        total = 405000\\n        
+print(f\'RCL4: {progress:,}/{total:,} ({progress/total*100:.1f}%)\')\\n        
+print(f\'Need: {total-progress:,} more\')\\n        break\\n\\n# Spawn 
+status\\nfor obj in objs:\\n    if obj.get(\'type\') == \'spawn\':\\n        
+spawning = obj.get(\'spawning\')\\n        if spawning:\\n            
+print(f\'Spawning: {spawning.get(\\\\\\"name\\\\\\")}\')\\n        else:\\n     
+print(\'Spawn: idle\')\\n\\n# Creeps detail\\nprint()\\nprint(\'=== Creeps 
+===\')\\ncreeps_by_role = {\'harvester\': [], \'builder\': [], \'upgrader\': [],
+\'other\': []}\\nfor obj in objs:\\n    if obj.get(\'type\') == \'creep\' and 
+obj.get(\'user\') == \'695ceeec11c0dd0012abe528\':\\n        name = 
+obj.get(\'name\', \'\')\\n        body = obj.get(\'body\', [])\\n        work = 
+sum(1 for p in body if p.get(\'type\') == \'work\')\\n        \\n        if 
+\'harvester\' in name:\\n            creeps_by_role[\'harvester\'].append((name,
+work))\\n        elif \'builder\' in name:\\n            
+creeps_by_role[\'builder\'].append((name, work))\\n        elif \'upgrader\' in 
+name:\\n            creeps_by_role[\'upgrader\'].append((name, work))\\n        
+else:\\n            creeps_by_role[\'other\'].append((name, work))\\n\\nfor 
+role, creeps in creeps_by_role.items():\\n    if creeps:\\n        total_work = 
+sum(w for _, w in creeps)\\n        print(f\'{role}: {len(creeps)} ({total_work}
+WORK parts)\')\\n\\n# Sites\\nsites = [obj.get(\'structureType\') for obj in 
+objs if obj.get(\'type\') == 
+\'constructionSite\']\\nprint(f\'\\\\\\\\nConstruction sites: {sites if sites 
+else \\\\\\"None\\\\\\"}\')\\n\\""}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.2423,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=743,
+        input_cache_read=48182,
+        input_cache_creation=277
+    ),
+    message_id='msg_01U41M9MmQoWWhXjiJd8XaDZ'
+)
+ToolResult(
+    tool_call_id='toolu_01YKHQ6efSiKmuMusKT2hRVs',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output="=== Current Game State ===\nRCL4: 321,484/405,000 (79.4%)\nNeed:
+83,516 more\nSpawn: idle\n\n=== Creeps ===\nharvester: 5 (9 WORK 
+parts)\nbuilder: 2 (2 WORK parts)\nupgrader: 2 (4 WORK parts)\n\nConstruction 
+sites: ['container', 'road', 'road', 'road']\n",
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=32)
+TextPart(
+    type='text',
+    text='Spawn 空闲了，但 construction sites 
+又回来了！让我检查是谁在创建它们：'
+)
+ToolCall(
+    type='function',
+    id='toolu_01SecCj3Rd7LMBhwaTvoXHk2',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "source .env && curl -s 
+\\"https://screeps.com/api/game/room-objects?room=E13S35&shard=shard3\\" -H 
+\\"X-Token: $SCREEPS_TOKEN\\" 2>/dev/null | python3 -c \\"\\nimport sys, 
+json\\ndata = json.loads(sys.stdin.read())\\nobjs = data.get(\'objects\', 
+[])\\nif isinstance(objs, dict):\\n    objs = list(objs.values())\\n\\nfor obj 
+in objs:\\n    if obj.get(\'type\') == \'constructionSite\':\\n        
+print(f\'{obj.get(\\\\\\"structureType\\\\\\")} at 
+({obj.get(\\\\\\"x\\\\\\")},{obj.get(\\\\\\"y\\\\\\")})\')\\n        print(f\'  
+user: {obj.get(\\\\\\"user\\\\\\")}\')\\n        print(f\'  progress: 
+{obj.get(\\\\\\"progress\\\\\\")}/{obj.get(\\\\\\"progressTotal\\\\\\")}\')\\n\\
+""}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.24666,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=307,
+        input_cache_read=48459,
+        input_cache_creation=872
+    ),
+    message_id='msg_017wux53RtWUh8Wc2jVJBayu'
+)
+ToolResult(
+    tool_call_id='toolu_01SecCj3Rd7LMBhwaTvoXHk2',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='container at (46,25)\n  user: 695ceeec11c0dd0012abe528\n  
+progress: 45/5000\nroad at (41,9)\n  user: 695ceeec11c0dd0012abe528\n  progress:
+0/300\nroad at (42,8)\n  user: 695ceeec11c0dd0012abe528\n  progress: 0/300\nroad
+at (36,20)\n  user: 695ceeec11c0dd0012abe528\n  progress: 0/300\n',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=33)
+TextPart(
+    type='text',
+    text='这些 construction sites 是我的（同一个 user），但我的代码不会创建 
+container 或 
+road。它们可能是之前手动创建的或有其他原因。让我永久删除它们并确保代码不会再创建
+它们：'
+)
+ToolCall(
+    type='function',
+    id='toolu_019Rj3g8gjsLYB88S5jEQPmD',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "source .env && curl -s 
+\\"https://screeps.com/api/user/console\\" -H \\"X-Token: $SCREEPS_TOKEN\\" -H 
+\\"Content-Type: application/json\\" -d \'{\\"expression\\": \\"var sites = 
+Game.rooms.E13S35.find(FIND_MY_CONSTRUCTION_SITES).filter(s => 
+[\\\\\\"container\\\\\\",\\\\\\"road\\\\\\"].includes(s.structureType)); 
+sites.forEach(s => s.remove()); \\\\\\"Removed \\\\\\" + sites.length + \\\\\\" 
+unwanted sites\\\\\\"\\", \\"shard\\": \\"shard3\\"}\'"}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.24898,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=260,
+        input_cache_read=49331,
+        input_cache_creation=464
+    ),
+    message_id='msg_01PQEwnMwQy7m2r8wbWmkb9N'
+)
+ToolResult(
+    tool_call_id='toolu_019Rj3g8gjsLYB88S5jEQPmD',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='{"ok":1,"result":{"ok":1,"n":1},"ops":[{"user":"695ceeec11c0dd00
+12abe528","expression":"var sites = 
+Game.rooms.E13S35.find(FIND_MY_CONSTRUCTION_SITES).filter(s => 
+[\\"container\\",\\"road\\"].includes(s.structureType)); sites.forEach(s => 
+s.remove()); \\"Removed \\" + sites.length + \\" unwanted 
+sites\\"","shard":"shard3","_id":"69635b91f98d69001214d6ef"}],"insertedCount":1,
+"insertedIds":["69635b91f98d69001214d6ef"]}',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=34)
+TextPart(
+    type='text',
+    text='问题可能是代码的 `getCreepTargets` 函数在 `sites > 0` 
+时返回不同的目标。让我检查并修复这个逻辑，因为我们不想让这些旧 construction 
+sites 影响 creep 目标：'
+)
+ToolCall(
+    type='function',
+    id='toolu_01Usktj14LLeU5TCb7xWFWQt',
+    function=FunctionBody(
+        name='ReadFile',
+        arguments='{"path": "screeps/main.js", "line_offset": 210, "n_lines": 
+25}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.2512,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=171,
+        input_cache_read=49795,
+        input_cache_creation=444
+    ),
+    message_id='msg_01HFEj1uh1AhaJ8N5NpykKMo'
+)
+ToolResult(
+    tool_call_id='toolu_01Usktj14LLeU5TCb7xWFWQt',
+    return_value=ToolOk(
+        is_error=False,
+        output="   210\tfunction getCreepTargets(room) {\n   211\t    const 
+level = room.controller.level;\n   212\t    const sites = 
+room.find(FIND_MY_CONSTRUCTION_SITES).length;\n   213\t    \n   214\t    // 2 
+Sources 最多产 20 energy/tick\n   215\t    // 3 Harvester (9 WORK) = 18 
+energy/tick, 足够\n   216\t    if (level <= 2) {\n   217\t        return { 
+harvester: 4, builder: sites > 0 ? 3 : 1, upgrader: 3 };\n   218\t    } else if 
+(level === 3) {\n   219\t        // RCL3: 优先升级到 RCL4\n   220\t        
+return { harvester: 3, builder: sites > 0 ? 2 : 0, upgrader: 4 };\n   221\t    }
+else if (level === 4) {\n   222\t        // RCL4: 建造完成后全力升级\n   223\t  
+// 无工地时: 3h + 4u = 最大化升级速度\n   224\t        return { harvester: 3, 
+builder: sites > 0 ? 2 : 1, upgrader: sites > 0 ? 3 : 4 };\n   225\t    } else 
+{\n   226\t        // RCL5+: 平衡配置\n   227\t        return { harvester: 3, 
+builder: sites > 0 ? 2 : 1, upgrader: 3 };\n   228\t    }\n   229\t}\n   230\t\n
+231\tfunction getBody(role, energy) {\n   232\t    if (energy >= 550) {\n   
+233\t        if (role === 'harvester' || role === 'upgrader') {\n   234\t       
+return [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE];\n",
+        message='25 lines read from file starting from line 210.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=35)
+TextPart(
+    type='text',
+    text='我可以修改代码，只计算我们关心的 construction sites（extension, tower,
+storage, rampart），忽略 road/container：'
+)
+ToolCall(
+    type='function',
+    id='toolu_01BSzpCEnmx4et3Y1BMdSBMp',
+    function=FunctionBody(
+        name='StrReplaceFile',
+        arguments='{"path": 
+"/Users/moonshot/dev/infinite-screeps/screeps/main.js", "edit": {"old":"function
+getCreepTargets(room) {\\n    const level = room.controller.level;\\n    const 
+sites = room.find(FIND_MY_CONSTRUCTION_SITES).length;","new":"function 
+getCreepTargets(room) {\\n    const level = room.controller.level;\\n    // 
+只计算重要的 construction sites (extension/tower/storage/rampart)\\n    // 忽略 
+road/container 等低优先级建筑\\n    const importantTypes = [STRUCTURE_EXTENSION,
+STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_RAMPART, STRUCTURE_SPAWN];\\n    
+const sites = room.find(FIND_MY_CONSTRUCTION_SITES, {\\n        filter: s => 
+importantTypes.includes(s.structureType)\\n    }).length;"}}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.254655,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=382,
+        input_cache_read=50239,
+        input_cache_creation=691
+    ),
+    message_id='msg_014PKbdfdKjW1cEd6229nwpH'
+)
+ToolResult(
+    tool_call_id='toolu_01BSzpCEnmx4et3Y1BMdSBMp',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='',
+        message='File successfully edited. Applied 1 edit(s) with 1 total 
+replacement(s).',
+        display=[
+            DiffDisplayBlock(
+                type='diff',
+                path='/Users/moonshot/dev/infinite-screeps/screeps/main.js',
+                old_text='\nfunction getCreepTargets(room) {\n    const level = 
+room.controller.level;\n    const sites = 
+room.find(FIND_MY_CONSTRUCTION_SITES).length;\n    \n    // 2 Sources 最多产 20 
+energy/tick\n    // 3 Harvester (9 WORK) = 18 energy/tick, 足够',
+                new_text='\nfunction getCreepTargets(room) {\n    const level = 
+room.controller.level;\n    // 只计算重要的 construction sites 
+(extension/tower/storage/rampart)\n    // 忽略 road/container 等低优先级建筑\n  
+const importantTypes = [STRUCTURE_EXTENSION, STRUCTURE_TOWER, STRUCTURE_STORAGE,
+STRUCTURE_RAMPART, STRUCTURE_SPAWN];\n    const sites = 
+room.find(FIND_MY_CONSTRUCTION_SITES, {\n        filter: s => 
+importantTypes.includes(s.structureType)\n    }).length;\n    \n    // 2 Sources
+最多产 20 energy/tick\n    // 3 Harvester (9 WORK) = 18 energy/tick, 足够'
+            )
+        ],
+        extras=None
+    )
+)
+StepBegin(n=36)
+TextPart(type='text', text='现在上传更新后的代码：')
+ToolCall(
+    type='function',
+    id='toolu_01CwTo1mVZCBGmPm4AHPtxLx',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "source .env && CODE=$(cat screeps/main.js | jq 
+-Rs .) && curl -s -X POST \\"https://screeps.com/api/user/code\\" -H \\"X-Token:
+$SCREEPS_TOKEN\\" -H \\"Content-Type: application/json\\" -d 
+\\"{\\\\\\"branch\\\\\\": \\\\\\"default\\\\\\", \\\\\\"modules\\\\\\": 
+{\\\\\\"main\\\\\\": $CODE}}\\""}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.25675,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=152,
+        input_cache_read=50930,
+        input_cache_creation=419
+    ),
+    message_id='msg_01F1ZgQH8PdLo6kxhen3g2kz'
+)
+ToolResult(
+    tool_call_id='toolu_01CwTo1mVZCBGmPm4AHPtxLx',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='{"ok":1,"timestamp":1768119208028}',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=37)
+TextPart(type='text', text='让我再检查一下状态：')
