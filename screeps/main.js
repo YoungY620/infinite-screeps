@@ -259,27 +259,33 @@ function getBody(role, energy) {
 function getBuildPositions(spawn) {
     const sx = spawn.pos.x, sy = spawn.pos.y;
     return {
-        // RCL2: 5, RCL3: 10, RCL4: 20, RCL5: 30
-        // 包含备用位置以防某些位置被占用
+        // RCL2: 5, RCL3: 10, RCL4: 20, RCL5: 30, RCL6: 40
+        // 包含大量备用位置以适应不同地形
         extensions: [
-            // Ring 1 (positions 1-4)
-            {x: sx-1, y: sy-1}, {x: sx+1, y: sy-1}, {x: sx-1, y: sy+1}, {x: sx+1, y: sy+1},
-            // Ring 2 (positions 5-10) - 注意 sy-2 可能被 Tower 占用
+            // Ring 1 - dist 1-2 (直接相邻)
+            {x: sx, y: sy-1}, {x: sx, y: sy+1}, {x: sx+1, y: sy}, {x: sx-1, y: sy-1},
+            {x: sx+1, y: sy-1}, {x: sx-1, y: sy+1}, {x: sx+1, y: sy+1},
+            // Ring 2 - dist 2 (斜对角和直线)
             {x: sx+2, y: sy}, {x: sx-2, y: sy}, {x: sx, y: sy-2}, {x: sx, y: sy+2},
-            {x: sx+2, y: sy-1}, {x: sx-2, y: sy-1},
-            // Ring 3 (positions 11-22) - for RCL4, 含备用位置
-            {x: sx+2, y: sy+1}, {x: sx-2, y: sy+1}, {x: sx+3, y: sy}, {x: sx-3, y: sy},
+            {x: sx+2, y: sy-1}, {x: sx-2, y: sy-1}, {x: sx+2, y: sy+1}, {x: sx-2, y: sy+1},
+            // Ring 3 - dist 3 (更远位置)
+            {x: sx+3, y: sy}, {x: sx-3, y: sy}, {x: sx, y: sy-3}, {x: sx, y: sy+3},
+            {x: sx+1, y: sy-2}, {x: sx-1, y: sy-2}, {x: sx+1, y: sy+2}, {x: sx-1, y: sy+2},
+            {x: sx+2, y: sy-2}, {x: sx-2, y: sy-2}, {x: sx+2, y: sy+2}, {x: sx-2, y: sy+2},
             {x: sx+3, y: sy-1}, {x: sx-3, y: sy-1}, {x: sx+3, y: sy+1}, {x: sx-3, y: sy+1},
-            {x: sx+2, y: sy-2}, {x: sx-2, y: sy-2},
-            {x: sx+4, y: sy}, {x: sx-4, y: sy},  // 备用位置
-            // Ring 4 (positions 23-34) - for RCL5, 含备用位置
-            {x: sx+2, y: sy+2}, {x: sx-2, y: sy+2}, {x: sx+1, y: sy-3}, {x: sx-1, y: sy-3},
-            {x: sx+1, y: sy+3}, {x: sx-1, y: sy+3}, {x: sx+3, y: sy-2}, {x: sx-3, y: sy-2},
-            {x: sx+3, y: sy+2}, {x: sx-3, y: sy+2},
-            {x: sx+4, y: sy-1}, {x: sx-4, y: sy-1}  // 备用位置
+            // Ring 4 - dist 4 (RCL5+ 使用)
+            {x: sx+4, y: sy}, {x: sx-4, y: sy}, {x: sx, y: sy-4}, {x: sx, y: sy+4},
+            {x: sx+1, y: sy-3}, {x: sx-1, y: sy-3}, {x: sx+1, y: sy+3}, {x: sx-1, y: sy+3},
+            {x: sx+3, y: sy-2}, {x: sx-3, y: sy-2}, {x: sx+3, y: sy+2}, {x: sx-3, y: sy+2},
+            {x: sx+4, y: sy-1}, {x: sx-4, y: sy-1}, {x: sx+4, y: sy+1}, {x: sx-4, y: sy+1},
+            // Ring 5 - dist 5 (RCL6+ 备用)
+            {x: sx+5, y: sy}, {x: sx-5, y: sy}, {x: sx, y: sy-5}, {x: sx, y: sy+5},
+            {x: sx+2, y: sy-3}, {x: sx-2, y: sy-3}, {x: sx+2, y: sy+3}, {x: sx-2, y: sy+3},
+            {x: sx+3, y: sy-3}, {x: sx-3, y: sy-3}, {x: sx+3, y: sy+3}, {x: sx-3, y: sy+3},
+            {x: sx+4, y: sy-2}, {x: sx-4, y: sy-2}, {x: sx+4, y: sy+2}, {x: sx-4, y: sy+2}
         ],
-        towers: [{x: sx, y: sy-2}, {x: sx-2, y: sy-2}],  // 2nd tower for RCL5
-        storage: [{x: sx-1, y: sy}]  // Storage for RCL4
+        towers: [{x: sx, y: sy-2}, {x: sx-2, y: sy-2}, {x: sx+2, y: sy-2}],  // up to 3 towers
+        storage: [{x: sx-1, y: sy}, {x: sx+1, y: sy}]  // Storage alternatives
     };
 }
 
