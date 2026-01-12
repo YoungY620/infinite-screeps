@@ -81,37 +81,32 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: ~388,456/405,000 = ~96%)
+- **RCL: 4** (Progress: 402,092/405,000 = **99.3%** - ALMOST RCL5!)
 - Extensions: 20/20 ✅
-- **Storage: 1 ✅** - operational (200 energy)
-- Tower: 1 ✅ (energy 1000/1000 - FULL)
+- Storage: 1 ✅ (0 energy - upgraders using it fast)
+- Tower: 1 ✅ (energy 920/1000)
+- Walls: 43 ✅
 - Ramparts: 2 ✅ - protecting Spawn and Tower
-- **Creeps: 8 total** (3h/1b/4u) - stable
+- **Creeps: 9 total** (4h/1b/4u) - running strong
 - Construction Sites: 0 ✅
+- Container: 1 (2000 energy at source)
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Full speed upgrading to RCL5 (~17K more progress needed)
-  - Builder helps upgrade when no sites/rampart repairs
+  - Final push to RCL5 (~2,908 progress remaining!)
+  - ETA: ~4 minutes with 4 upgraders (12 WORK)
 - **Spawning logic:**
-  - Emergency (harvester<2): 200 energy - spawn anything
-  - Low harvester (harvester<3): 300 energy - quick recovery
-  - Recovery mode (any role under target): 400 energy - stronger creeps
+  - Emergency (harvester<2): 200 energy
+  - Low harvester (harvester<3): 300 energy
+  - Recovery mode (any role under target): 400 energy
   - Normal: 550 energy - optimal creeps
   - Preemptive replacement when TTL < 150
-  - RCL4 no sites: 3h/1b/4u = 8 total (builder helps upgrade when idle)
+  - RCL4 no sites: 3h/1b/4u = 8 total
 - **Defense status:**
-  - Tower auto-attacks hostiles (energy FULL)
+  - Tower auto-attacks hostiles
   - Ramparts protecting Spawn and Tower
   - No hostiles currently
-- **Next goal:**
-  - Upgrade to RCL5 (requires ~17K more progress)
-  - With 4 upgraders (12 WORK) + 1 builder (2 WORK), progressing well
-  - Total upgrade capacity: 14 WORK
-  - ETA: ~20 min
-- RCL5 unlocks:
-  - 30 Extensions (10 more)
-  - 2 Towers (1 more)
-  - 2 Links
+- **Next goal: RCL5!**
+  - RCL5 unlocks: 30 Extensions (+10), 2 Towers (+1), 2 Links (new!)
+  - Code already prepared for RCL5 building plans
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
-  - Fixed: spawn recovery logic now checks per-role targets, not just total count
-- Last updated: 2026-01-12 07:38
+- Last updated: 2026-01-12 10:36
