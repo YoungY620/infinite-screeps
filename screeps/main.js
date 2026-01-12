@@ -227,8 +227,17 @@ function getCreepTargets(room) {
         // RCL4: 建造完成后全力升级
         // 无工地时: 3h + 4u = 最大化升级速度
         return { harvester: 3, builder: sites > 0 ? 2 : 1, upgrader: sites > 0 ? 3 : 4 };
+    } else if (level === 5) {
+        // RCL5: 建造 10 个新 extension，需要更多 builder
+        if (sites > 5) {
+            return { harvester: 3, builder: 3, upgrader: 3 };
+        } else if (sites > 0) {
+            return { harvester: 3, builder: 2, upgrader: 3 };
+        } else {
+            return { harvester: 3, builder: 1, upgrader: 4 };
+        }
     } else {
-        // RCL5+: 平衡配置
+        // RCL6+: 平衡配置
         return { harvester: 3, builder: sites > 0 ? 2 : 1, upgrader: 3 };
     }
 }
