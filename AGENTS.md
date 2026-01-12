@@ -81,20 +81,26 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 5** ✅ (Progress: 3,001/1,800,000 = 0.17%)
+- **RCL: 5** ✅ (Progress: 3,492/1,800,000)
 - Extensions: 21 built + 9 under construction (target: 30)
-- Storage: 1 ✅ (empty - will fill after extensions done)
+- Storage: 1 ✅ (empty)
 - Tower: 1 ✅
-- Walls: 43 ✅
 - Ramparts: 2 ✅ - protecting Spawn and Tower
-- **Creeps: 9 total** (3h/3b/3u) - building extensions
-- Construction Sites: 9 extensions (1 at 13% progress)
-- Container: 1
-- Roads: 3
-- Energy Capacity: ~1350 (will increase to 1800 after extensions done)
-- **Current tasks:**
-  - Build 9 remaining extensions (21→30) 
-  - Consider placing 2nd Tower after extensions done
+- Container: 1 (2000 energy - critical for recovery)
+- **Creeps: RECOVERING** - was attacked by "gone" player
+  - Currently rebuilding from 1 builder
+  - Target: 3h/3b/3u
+- Construction Sites: 9 extensions
+- Energy Capacity: ~1350
+
+### Recent Incident (2026-01-12 14:00)
+- Multiple creeps killed by player "gone"
+- Economy collapsed (0 harvesters)
+- **Fix applied:** Emergency recovery mode
+  - Builder now fetches from container when no harvester
+  - Builder fills spawn/extension in emergency
+  - All creeps can use container as energy source
+
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy
   - Low harvester (harvester<3): 300 energy
@@ -107,7 +113,6 @@ ROOM=W13N45
 - **Defense status:**
   - Tower auto-attacks hostiles
   - Ramparts protecting Spawn and Tower
-  - No hostiles currently
 - **RCL5 unlocks:**
   - 30 Extensions (was 20) - building now
   - 2 Towers (was 1) - can add 2nd
@@ -115,5 +120,5 @@ ROOM=W13N45
 - **Next goal: RCL6!**
   - Need 1,800,000 progress
   - RCL6 unlocks: 40 Extensions, 2 Towers, 3 Links, Extractor, Terminal
-- **Code version:** Event-Driven v4.2 (deployed 2026-01-12 11:49)
-- Last updated: 2026-01-12 12:21
+- **Code version:** Event-Driven v4.3 (deployed 2026-01-12 14:03)
+- Last updated: 2026-01-12 14:03

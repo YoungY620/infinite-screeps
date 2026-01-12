@@ -565,7 +565,25 @@ function runHarvester(creep) {
             if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) creep.moveTo(creep.room.controller, {reusePath: 5});
         }
     } else {
-        // 优先从 Storage 取能量
+        // 紧急恢复：如果 spawn 能量不足且有 container，从 container 取
+        const spawn = creep.room.find(FIND_MY_SPAWNS)[0];
+        const needSpawnEnergy = spawn && spawn.store.getFreeCapacity(RESOURCE_ENERGY) > 0;
+        
+        if (needSpawnEnergy) {
+            // 优先从 Container 取能量（用于快速恢复）
+            const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: s => s.structureType === STRUCTURE_CONTAINER && 
+                             s.store[RESOURCE_ENERGY] > 50
+            });
+            if (container) {
+                if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(container, {reusePath: 5});
+                }
+                return;
+            }
+        }
+        
+        // 从 Storage 取能量
         const storage = creep.room.storage;
         if (storage && storage.store[RESOURCE_ENERGY] > 0) {
             if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
@@ -598,6 +616,17 @@ function runUpgrader(creep) {
             }
             return;
         }
+        // 次选：从 Container 取能量
+        const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: s => s.structureType === STRUCTURE_CONTAINER && 
+                         s.store[RESOURCE_ENERGY] > 100
+        });
+        if (container) {
+            if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(container, {reusePath: 5});
+            }
+            return;
+        }
         // 否则采集
         let source = Game.getObjectById(creep.memory.sourceId);
         if (!source || source.energy === 0) {
@@ -616,6 +645,25 @@ function runBuilder(creep) {
     if (!creep.memory.working && creep.store.getFreeCapacity() === 0) {
         creep.memory.working = true;
         delete creep.memory.targetId;
+    }
+    
+    // === 紧急模式：当 harvester 不足时，builder 临时变成 harvester ===
+    const harvesters = _.filter(Game.creeps, c => c.memory.role === 'harvester');
+    const isEmergency = harvesters.length === 0;
+    
+    if (isEmergency && creep.memory.working) {
+        // 紧急模式：优先填充 spawn/extension
+        let target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+            filter: s => (s.structureType === STRUCTURE_SPAWN ||
+                         s.structureType === STRUCTURE_EXTENSION) &&
+                         s.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+        });
+        if (target) {
+            if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(target, {reusePath: 5});
+            }
+            return;
+        }
     }
     
     if (creep.memory.working) {
@@ -665,7 +713,18 @@ function runBuilder(creep) {
             if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) creep.moveTo(creep.room.controller, {reusePath: 5});
         }
     } else {
-        // 优先从 Storage 取能量
+        // 优先从 Container 取能量（特别是紧急恢复时）
+        const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: s => s.structureType === STRUCTURE_CONTAINER && 
+                         s.store[RESOURCE_ENERGY] > 50
+        });
+        if (container) {
+            if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(container, {reusePath: 5});
+            }
+            return;
+        }
+        // 次选：从 Storage 取能量
         const storage = creep.room.storage;
         if (storage && storage.store[RESOURCE_ENERGY] > 0) {
             if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
