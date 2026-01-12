@@ -81,19 +81,19 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 402,592/405,000 = **99.4%** - ALMOST RCL5!)
+- **RCL: 4** (Progress: 402,849/405,000 = **99.5%** - ALMOST RCL5!)
 - Extensions: 20/20 ✅
-- Storage: 1 ✅ (0 energy - upgraders using it fast)
-- Tower: 1 ✅ (energy 920/1000)
+- Storage: 1 ✅ (100 energy)
+- Tower: 1 ✅
 - Walls: 43 ✅
 - Ramparts: 2 ✅ - protecting Spawn and Tower
-- **Creeps: 9 total** (4h/1b/4u) - running strong
+- **Creeps: 8 total** (3h/1b/4u) - running strong
 - Construction Sites: 0 ✅
-- Container: 1 (2000 energy at source)
+- Container: 1
 - Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
 - **Current tasks:**
-  - Final push to RCL5 (~2,408 progress remaining!)
-  - ETA: ~3 minutes with 4 upgraders (12 WORK)
+  - Final push to RCL5 (~2,151 progress remaining!)
+  - ETA: ~2-3 minutes with 4 upgraders
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy
   - Low harvester (harvester<3): 300 energy
@@ -109,4 +109,4 @@ ROOM=W13N45
   - RCL5 unlocks: 30 Extensions (+10), 2 Towers (+1), 2 Links (new!)
   - Code already prepared for RCL5 building plans
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
-- Last updated: 2026-01-12 10:43
+- Last updated: 2026-01-12 10:49
