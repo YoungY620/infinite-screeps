@@ -81,27 +81,29 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 5** ✅ (Just upgraded! Progress: 488/1,800,000)
+- **RCL: 5** ✅ (Progress: 888/1,800,000 = 0.05%)
 - Extensions: 20 built + **5 under construction** (target: 30)
 - Storage: 1 ✅ (0 energy)
 - Tower: 1 ✅
 - Walls: 43 ✅
 - Ramparts: 2 ✅ - protecting Spawn and Tower
-- **Creeps: 10 total** (3h/3b/4u) - building new extensions
-- Construction Sites: 5 extensions
+- **Creeps: 10 total** (4h/2b/4u) - building new extensions
+- Construction Sites: 5 extensions (1 at 600/3000)
 - Container: 1
 - Roads: 3
 - Energy Capacity: 1300 (will increase to 1800 after 10 new extensions)
 - **Current tasks:**
-  - Build 10 new extensions (5 placed, need 5 more next planning cycle)
-  - Consider placing 2nd Tower
+  - Build 10 new extensions (5 placed, 5 more will be placed by planner)
+  - Consider placing 2nd Tower after extensions done
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy
   - Low harvester (harvester<3): 300 energy
   - Recovery mode (any role under target): 400 energy
   - Normal: 550 energy - optimal creeps
   - Preemptive replacement when TTL < 150
-  - RCL5 with sites: 3h/2b/3u = 8 total
+  - RCL5 with sites>5: 3h/3b/3u
+  - RCL5 with sites: 3h/2b/3u
+  - RCL5 no sites: 3h/1b/4u
 - **Defense status:**
   - Tower auto-attacks hostiles
   - Ramparts protecting Spawn and Tower
@@ -114,4 +116,4 @@ ROOM=W13N45
   - Need 1,800,000 progress
   - RCL6 unlocks: 40 Extensions, 2 Towers, 3 Links, Extractor, Terminal
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
-- Last updated: 2026-01-12 11:35
+- Last updated: 2026-01-12 11:41
