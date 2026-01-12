@@ -81,33 +81,37 @@ ROOM=W13N45
 ## Current Status
 
 - Room: E13S35 (shard3)
-- **RCL: 4** (Progress: 404,892/405,000 = **99.97%** - ABOUT TO HIT RCL5!)
-- Extensions: 20/20 ✅
+- **RCL: 5** ✅ (Just upgraded! Progress: 488/1,800,000)
+- Extensions: 20 built + **5 under construction** (target: 30)
 - Storage: 1 ✅ (0 energy)
-- Tower: 1 ✅ (1000 energy - full)
+- Tower: 1 ✅
 - Walls: 43 ✅
 - Ramparts: 2 ✅ - protecting Spawn and Tower
-- **Creeps: 10 total** (4h/1b/5u) - running strong
-- Construction Sites: 0 ✅
+- **Creeps: 10 total** (3h/3b/4u) - building new extensions
+- Construction Sites: 5 extensions
 - Container: 1
 - Roads: 3
-- Energy Capacity: 1300 (Spawn 300 + 20 Extensions 1000)
+- Energy Capacity: 1300 (will increase to 1800 after 10 new extensions)
 - **Current tasks:**
-  - Final push to RCL5 (~108 progress remaining!)
-  - ETA: ~7-8 ticks with 5 upgraders (15 WORK parts)
+  - Build 10 new extensions (5 placed, need 5 more next planning cycle)
+  - Consider placing 2nd Tower
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy
   - Low harvester (harvester<3): 300 energy
   - Recovery mode (any role under target): 400 energy
   - Normal: 550 energy - optimal creeps
   - Preemptive replacement when TTL < 150
-  - RCL4 no sites: 3h/1b/4u = 8 total
+  - RCL5 with sites: 3h/2b/3u = 8 total
 - **Defense status:**
-  - Tower auto-attacks hostiles (full energy)
+  - Tower auto-attacks hostiles
   - Ramparts protecting Spawn and Tower
   - No hostiles currently
-- **Next goal: RCL5!**
-  - RCL5 unlocks: 30 Extensions (+10), 2 Towers (+1), 2 Links (new!)
-  - Code already prepared for RCL5 building plans in getBuildPositions()
+- **RCL5 unlocks:**
+  - 30 Extensions (was 20) - building now
+  - 2 Towers (was 1) - can add 2nd
+  - 2 Links (new!) - for remote energy transfer
+- **Next goal: RCL6!**
+  - Need 1,800,000 progress
+  - RCL6 unlocks: 40 Extensions, 2 Towers, 3 Links, Extractor, Terminal
 - **Code version:** Event-Driven v4.1 (deployed 2026-01-11 16:11)
-- Last updated: 2026-01-12 11:28
+- Last updated: 2026-01-12 11:35
