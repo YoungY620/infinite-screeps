@@ -1,0 +1,1211 @@
+# Screeps Eternal Agent
+
+你是 Screeps 游戏的永恒 AI Agent。
+
+## ⚠️ 首先检查待处理事件
+
+**立即检查 `events/pending.json`**，如果存在且有内容：
+- `critical` 优先级 → 立即处理，可能是攻击/Spawn被毁
+- `high` 优先级 → 优先处理，可能是 Creep 全灭
+- 处理完成后删除该文件
+
+## 📚 查阅历史经验
+
+**强烈建议：遇到问题时查看之前 session 的推理记录！**
+
+- **Session 日志**: `logs/session_*.log` - 包含完整的推理过程和解决方案
+- **最近日志**: `ls -t logs/session_*.log | head -5` 查看最近 5 个 session
+- **搜索特定问题**: `grep -l "关键词" logs/session_*.log` 定位相关 session
+- **查看日志**: `tail -200 logs/session_xxx.log` 查看最后部分
+
+**用途：**
+1. **定位重复问题** - 同样的错误可能之前已解决过
+2. **总结经验教训** - 了解之前的决策和结果
+3. **避免重复犯错** - 查看之前失败的尝试
+4. **学习成功模式** - 复用之前有效的解决方案
+
+## 任务流程
+
+1. **检查事件** - 读取 `events/pending.json`
+2. **阅读 AGENTS.md** - 了解使命和约束
+3. **查阅历史** - 遇到问题时搜索 `logs/session_*.log`
+4. **遍历文件** - 理解当前状态，读取 knowledge/ 经验
+5. **检查游戏** - 调用 Screeps API
+6. **采取行动** - 修改代码，上传到游戏
+7. **固化知识** - 写入 knowledge/
+8. **Git 提交** - `git add -A && git commit -m " message"`
+
+## 凭证
+
+- Token: `.env` 文件中的 `SCREEPS_TOKEN`
+- 用户: payyy
+- 房间: E13S35 (shard3)
+
+## 约束
+
+- 所有操作限制在 `/Users/moonshot/dev/infinite-screeps/` 目录
+- 每次修改后必须 git commit
+- 免费玩家: CPU 20, shard3, 最多1个房间
+
+**现在开始工作。**
+TurnBegin(
+    user_input='# Screeps Eternal Agent\n\n你是 Screeps 游戏的永恒 AI 
+Agent。\n\n## ⚠️ 首先检查待处理事件\n\n**立即检查 
+`events/pending.json`**，如果存在且有内容：\n- `critical` 优先级 → 
+立即处理，可能是攻击/Spawn被毁\n- `high` 优先级 → 优先处理，可能是 Creep 全灭\n-
+处理完成后删除该文件\n\n## 📚 查阅历史经验\n\n**强烈建议：遇到问题时查看之前 
+session 的推理记录！**\n\n- **Session 日志**: `logs/session_*.log` - 
+包含完整的推理过程和解决方案\n- **最近日志**: `ls -t logs/session_*.log | head 
+-5` 查看最近 5 个 session\n- **搜索特定问题**: `grep -l "关键词" 
+logs/session_*.log` 定位相关 session\n- **查看日志**: `tail -200 
+logs/session_xxx.log` 查看最后部分\n\n**用途：**\n1. **定位重复问题** - 
+同样的错误可能之前已解决过\n2. **总结经验教训** - 了解之前的决策和结果\n3. 
+**避免重复犯错** - 查看之前失败的尝试\n4. **学习成功模式** - 
+复用之前有效的解决方案\n\n## 任务流程\n\n1. **检查事件** - 读取 
+`events/pending.json`\n2. **阅读 AGENTS.md** - 了解使命和约束\n3. **查阅历史** -
+遇到问题时搜索 `logs/session_*.log`\n4. **遍历文件** - 理解当前状态，读取 
+knowledge/ 经验\n5. **检查游戏** - 调用 Screeps API\n6. **采取行动** - 
+修改代码，上传到游戏\n7. **固化知识** - 写入 knowledge/\n8. **Git 提交** - `git 
+add -A && git commit -m "[type] message"`\n\n## 凭证\n\n- Token: `.env` 文件中的
+`SCREEPS_TOKEN`\n- 用户: payyy\n- 房间: E13S35 (shard3)\n\n## 约束\n\n- 
+所有操作限制在 `/Users/moonshot/dev/infinite-screeps/` 目录\n- 每次修改后必须 
+git commit\n- 免费玩家: CPU 20, shard3, 最多1个房间\n\n**现在开始工作。**'
+)
+StepBegin(n=1)
+ToolCall(
+    type='function',
+    id='toolu_01FUhB8vQLMV2BrM84wUUc5d',
+    function=FunctionBody(
+        name='ReadFile',
+        arguments='{"path": "events/pending.json"}'
+    ),
+    extras=None
+)
+ToolCall(
+    type='function',
+    id='toolu_0121nYMD7tfgVpvxU2zJXMx3',
+    function=FunctionBody(name='Shell', arguments=''),
+    extras=None
+)
+ToolResult(
+    tool_call_id='toolu_01FUhB8vQLMV2BrM84wUUc5d',
+    return_value=ToolError(
+        is_error=True,
+        output='',
+        message='`events/pending.json` does not exist.',
+        display=[BriefDisplayBlock(type='brief', text='File not found')],
+        extras=None
+    )
+)
+ToolCallPart(
+    arguments_part='{"command": "ls -t logs/session_*.log 2>/dev/null | head 
+-3"}'
+)
+StatusUpdate(
+    context_usage=0.04941,
+    token_usage=TokenUsage(
+        input_other=3,
+        output=108,
+        input_cache_read=0,
+        input_cache_creation=9879
+    ),
+    message_id='msg_01R3nb4cwsW9JRP8p6FYpSYS'
+)
+ToolResult(
+    tool_call_id='toolu_0121nYMD7tfgVpvxU2zJXMx3',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='logs/session_5_20260114_164451.log\nlogs/session_4_20260114_1544
+48.log\nlogs/session_3_20260114_144446.log\n',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=2)
+TextPart(
+    type='text',
+    text='没有待处理事件。让我检查最新的 session 日志和游戏状态：'
+)
+ToolCall(
+    type='function',
+    id='toolu_01Dhd44cFrCS962gsbeE1EEF',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "tail -150 logs/session_5_20260114_164451.log"}'
+    ),
+    extras=None
+)
+ToolCall(
+    type='function',
+    id='toolu_019mAMPf9oBUQfephBeDiyae',
+    function=FunctionBody(name='Shell', arguments=''),
+    extras=None
+)
+ToolResult(
+    tool_call_id='toolu_01Dhd44cFrCS962gsbeE1EEF',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='# Screeps Eternal Agent\n\n你是 Screeps 游戏的永恒 AI 
+Agent。\n\n## ⚠️ 首先检查待处理事件\n\n**立即检查 
+`events/pending.json`**，如果存在且有内容：\n- `critical` 优先级 → 
+立即处理，可能是攻击/Spawn被毁\n- `high` 优先级 → 优先处理，可能是 Creep 全灭\n-
+处理完成后删除该文件\n\n## 📚 查阅历史经验\n\n**强烈建议：遇到问题时查看之前 
+session 的推理记录！**\n\n- **Session 日志**: `logs/session_*.log` - 
+包含完整的推理过程和解决方案\n- **最近日志**: `ls -t logs/session_*.log | head 
+-5` 查看最近 5 个 session\n- **搜索特定问题**: `grep -l "关键词" 
+logs/session_*.log` 定位相关 session\n- **查看日志**: `tail -200 
+logs/session_xxx.log` 查看最后部分\n\n**用途：**\n1. **定位重复问题** - 
+同样的错误可能之前已解决过\n2. **总结经验教训** - 了解之前的决策和结果\n3. 
+**避免重复犯错** - 查看之前失败的尝试\n4. **学习成功模式** - 
+复用之前有效的解决方案\n\n## 任务流程\n\n1. **检查事件** - 读取 
+`events/pending.json`\n2. **阅读 AGENTS.md** - 了解使命和约束\n3. **查阅历史** -
+遇到问题时搜索 `logs/session_*.log`\n4. **遍历文件** - 理解当前状态，读取 
+knowledge/ 经验\n5. **检查游戏** - 调用 Screeps API\n6. **采取行动** - 
+修改代码，上传到游戏\n7. **固化知识** - 写入 knowledge/\n8. **Git 提交** - `git 
+add -A && git commit -m " message"`\n\n## 凭证\n\n- Token: `.env` 文件中的 
+`SCREEPS_TOKEN`\n- 用户: payyy\n- 房间: E13S35 (shard3)\n\n## 约束\n\n- 
+所有操作限制在 `/Users/moonshot/dev/infinite-screeps/` 目录\n- 每次修改后必须 
+git commit\n- 免费玩家: CPU 20, shard3, 
+最多1个房间\n\n**现在开始工作。**\nTurnBegin(\n    user_input=\'# Screeps 
+Eternal Agent\\n\\n你是 Screeps 游戏的永恒 AI \nAgent。\\n\\n## ⚠️ 
+首先检查待处理事件\\n\\n**立即检查 
+\n`events/pending.json`**，如果存在且有内容：\\n- `critical` 优先级 → 
+\n立即处理，可能是攻击/Spawn被毁\\n- `high` 优先级 → 优先处理，可能是 Creep 
+全灭\\n-\n处理完成后删除该文件\\n\\n## 📚 
+查阅历史经验\\n\\n**强烈建议：遇到问题时查看之前 \nsession 的推理记录！**\\n\\n-
+**Session 日志**: `logs/session_*.log` - \n包含完整的推理过程和解决方案\\n- 
+**最近日志**: `ls -t logs/session_*.log | head \n-5` 查看最近 5 个 session\\n- 
+**搜索特定问题**: `grep -l "关键词" \nlogs/session_*.log` 定位相关 session\\n- 
+**查看日志**: `tail -200 \nlogs/session_xxx.log` 
+查看最后部分\\n\\n**用途：**\\n1. **定位重复问题** - 
+\n同样的错误可能之前已解决过\\n2. **总结经验教训** - 了解之前的决策和结果\\n3. 
+\n**避免重复犯错** - 查看之前失败的尝试\\n4. **学习成功模式** - 
+\n复用之前有效的解决方案\\n\\n## 任务流程\\n\\n1. **检查事件** - 读取 
+\n`events/pending.json`\\n2. **阅读 AGENTS.md** - 了解使命和约束\\n3. 
+**查阅历史** -\n遇到问题时搜索 `logs/session_*.log`\\n4. **遍历文件** - 
+理解当前状态，读取 \nknowledge/ 经验\\n5. **检查游戏** - 调用 Screeps API\\n6. 
+**采取行动** - \n修改代码，上传到游戏\\n7. **固化知识** - 写入 knowledge/\\n8. 
+**Git 提交** - `git \nadd -A && git commit -m "[type] message"`\\n\\n## 
+凭证\\n\\n- Token: `.env` 文件中的\n`SCREEPS_TOKEN`\\n- 用户: payyy\\n- 房间: 
+E13S35 (shard3)\\n\\n## 约束\\n\\n- \n所有操作限制在 
+`/Users/moonshot/dev/infinite-screeps/` 目录\\n- 每次修改后必须 \ngit commit\\n-
+免费玩家: CPU 20, shard3, 
+最多1个房间\\n\\n**现在开始工作。**\'\n)\nStepBegin(n=1)\nToolCall(\n    
+type=\'function\',\n    id=\'toolu_01FUhB8vQLMV2BrM84wUUc5d\',\n    
+function=FunctionBody(\n        name=\'ReadFile\',\n        arguments=\'{"path":
+"events/pending.json"}\'\n    ),\n    extras=None\n)\nToolCall(\n    
+type=\'function\',\n    id=\'toolu_0121nYMD7tfgVpvxU2zJXMx3\',\n    
+function=FunctionBody(name=\'Shell\', arguments=\'\'),\n    
+extras=None\n)\nToolResult(\n    
+tool_call_id=\'toolu_01FUhB8vQLMV2BrM84wUUc5d\',\n    return_value=ToolError(\n 
+is_error=True,\n        output=\'\',\n        message=\'`events/pending.json` 
+does not exist.\',\n        display=[BriefDisplayBlock(type=\'brief\', 
+text=\'File not found\')],\n        extras=None\n    )\n)\nToolCallPart(\n    
+arguments_part=\'{"command": "ls -t logs/session_*.log 2>/dev/null | head 
+\n-3"}\'\n)\nStatusUpdate(\n    context_usage=0.04941,\n    
+token_usage=TokenUsage(\n        input_other=3,\n        output=108,\n        
+input_cache_read=0,\n        input_cache_creation=9879\n    ),\n    
+message_id=\'msg_01R3nb4cwsW9JRP8p6FYpSYS\'\n)\nToolResult(\n    
+tool_call_id=\'toolu_0121nYMD7tfgVpvxU2zJXMx3\',\n    
+return_value=ToolReturnValue(\n        is_error=False,\n        
+output=\'logs/session_5_20260114_164451.log\\nlogs/session_4_20260114_1544\n48.l
+og\\nlogs/session_3_20260114_144446.log\\n\',\n        message=\'Command 
+executed successfully.\',\n        display=[],\n        extras=None\n    
+)\n)\nStepBegin(n=2)\nTextPart(\n    type=\'text\',\n    
+text=\'没有待处理事件。让我检查最新的 session 日志和游戏状态：\'\n)\nToolCall(\n
+type=\'function\',\n    id=\'toolu_01Dhd44cFrCS962gsbeE1EEF\',\n    
+function=FunctionBody(\n        name=\'Shell\',\n        arguments=\'{"command":
+"tail -150 logs/session_5_20260114_164451.log"}\'\n    ),\n    
+extras=None\n)\n',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+ToolCallPart(
+    arguments_part='{"command": "source .env && curl -s 
+\\"https://screeps.com/api/game/room-terrain?room=E13S35&shard=shard3&encoded=1\
+\" -H \\"X-Token: $SCREEPS_TOKEN\\" | head -c 500"}'
+)
+ToolCall(
+    type='function',
+    id='toolu_011M9UJ8WJQjzf2GnaWJSKja',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "source .env && curl -s 
+\\"https://screeps.com/api/user/memory?shard=shard3\\" -H \\"X-Token: 
+$SCREEPS_TOKEN\\" | head -c 2000"}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.05063,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=272,
+        input_cache_read=9879,
+        input_cache_creation=246
+    ),
+    message_id='msg_01BcUMT2of1en41rEhEbWXik'
+)
+ToolResult(
+    tool_call_id='toolu_019mAMPf9oBUQfephBeDiyae',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='{"ok":1,"terrain":[{"_id":"5bbcadb59099fc012e637abf","room":"E13
+S35","terrain":"1111110001111111111111111111111111111111111111111111001100000000
+11100111100001111000000000011100001110000000000000000000111000000000000000000000
+00000110000000000000000000212000000000002200000000000001100000000000000000022211
+00000011022220000000000001100000000000000000002221100001110022000000111110111000
+00000000000000000001110001110000000001111111111000000000000000000000011100011100
+000000001111111110000000011000011000',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+ToolResult(
+    tool_call_id='toolu_011M9UJ8WJQjzf2GnaWJSKja',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='{"ok":1,"data":"gz:H4sIAAAAAAAEA81ZXW/cuhH9L3p2C4ofErlvqWO0AW4TI
+DZwUcTGBUVRGzVryZC09g0M//eeIaXVru+quYkaoHmIV5REnjkzc8gZPSeu8/6hTzbPyWfbPfp+8F2ea
+aFyrmmwa3c+2cz3koukb/ed8+/KZNPsd7uXF4wMdghTDPU9ns6zjOeGsYvEPeyTDf9rqrXImGD4x4XOM
+T4uqi+SnX/0u2QjLpKHrt12vsdEqWRSY17cauLEn9t+qHf+rR+8G/y4NF62/fBLnEBdJGX71Gw7W/pfb
+dfQQ5Xd9R7T/D74pq/b5rLdNwMApRfJ0D75brzGZT+0nd36eeAw1zh98uubj+/fvf877KdFL0cDPs3MH
+Fi7G+37COqWiJ1fS2BnoOMf9WjqH90gGSOWH+xT82YYrPtyZJzd1s12MviZvOHa+8IOv7TbZPPpOZlck
+ucqTw0M7+rt1nfwaVj1t7L25ebgepg3kU7vfn0g57+9ur75+OFfV29x18b1O3J/kplMZl5wnkvp0pTLv
+BRK8OrouQ9PTVhs2zYew4Pttn64ifMGAMnL3cvFCUyl+U+A6az3hRWuEHnKtMuUM+tgyhwhd5bNYl/vS
+lj9/VwWubNlwcuCqQqcal7olSAlxfo5l68AmQomLUNOG5+WeW7zYh1IaMMCyP1DyOcfodLyymZOpbk2q
+c8dq7Rbh5IbCNdZKtdkj4GbFStzJxjnXkmRynUw0wyiehbmCjI1U85lzgumylzIXDqxDiVblKIVKDNld
+SWF1YWzsjJpZddxKXX+EwJTFowrXWZpJdLSSmj7uvSRQi4J0YrAVL4UWamU9koLrasCgFe5XKYmWwjMN
+TBLbsvUuzx1VhXIc+3tOpgsW0rzH1ZMVRRGc18wrQpTSV16s87lwuglLn88fZQtWQbVhNd9YbgVkqtVV
+ArDcao7K0VrPG5TVVpXlDgi4q92Il133hC5kQswV5CpjctSoYypuK5y7lleriMzW8zyFSizimc4aaTG8
+0pllXTVuvOGkItJvgKlkqYqbYHQ9D41jnO+bvfhZpHLFYEpq7QqtDR5xsAkA95iXZZzzX/CQViWRWlVl
+SmfV0h0nxmzLjJ5ZpbS/IcVUzqJ/acsjGRpiYMcN+q7uUQZFivV610bKyvoMB2vlWFIS8dS7jORW8eSD
+QRg4WaKahQ1Vde296GWu0rFtVBUGf82zj7VvgsTYPbnEUisp9t7+ttYqpSTcTpUCiiTtl/fPNp6Zwsqu
+YXCyT2OXtoH6+rh+C6O4DiaPNb93qJ4pjK9vX9/MiVVgg9twPw7DEQkfU02OCicefIiqamaWzRgwoHKW
+dGJ6BQVoKKuh4LW7kt/0370W7pvB9TbuEVlfB8dAJJt39fbUJoDj2+6dj/AVBg65h1K2XAZKkNgPymvc
+2lQuUFFD0maZxgTiiUoIZfgw4H/D/yDefDPwcF3O4DOXZHyiepzDph5Bp0zz8FdI8/4fcwzLg8831G4H
+Ef0zdjJyRX1bOhu6Ys9vINSnTo81CEKHZ6xEYJFQ38ieHDo9mi7hOurgJnAIU/2IRynjoTGUStHsXIAM
+aELHSiWZSZP7o6nPXN/ZkYDgbMPCB8EBNZzn737MsNlmZZkcAgvwDg/F+5KErMBSfVpNggoqA92GpAh6
+EIv6LDSyBkMS0m6AwFYapRBRGsuBSN3dv7e1k3g6sgLsGAYkImIcyMmE3iw4WhmAcpmqg9K8sdFGu/L6
+MYQdtOScYgomoJKqwnE3P8KTjl0sCYhhxbivZ0d0Cc85jZVODQvm4scj2sE9kcqnydeMEiz9rD8mRyET
+mSyAaIi/I8GIv0eWypBjOEHQ/RQ6F1O5JOgBge9JuJudh7IOu+OeTS0o5Jdu60DEkcdQ0x7hAleIkyEm
+BpyRwFPChhyA/43HA8cDXCGgAgxKWg2TBmTBNTEH+4wFPOLZVzQznNKNKeE6RHl8SWYQ67Dq0BlIypbo
+YVLaxzm0SfvhKcJ3',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=3)
+TextPart(type='text', text='让我获取更多游戏状态信息：')
+ToolCall(
+    type='function',
+    id='toolu_01QKBmVRFqDeT9G867m1RQWG',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "source .env && curl -s 
+\\"https://screeps.com/api/game/room-objects?room=E13S35&shard=shard3\\" -H 
+\\"X-Token: $SCREEPS_TOKEN\\" 2>/dev/null | python3 -c \\"\\nimport json, 
+sys\\ndata = json.load(sys.stdin)\\nif \'objects\' in data:\\n    objs = 
+data[\'objects\']\\n    # Count by type\\n    types = {}\\n    for o in objs:\\n
+t = o.get(\'type\', \'unknown\')\\n        types[t] = types.get(t, 0) + 1\\n    
+print(\'=== Object Types ===\')\\n    for t, c in sorted(types.items()):\\n     
+print(f\'{t}: {c}\')\\n    \\n    # Show creeps\\n    print(\'\\\\\\\\n=== 
+Creeps ===\')\\n    for o in objs:\\n        if o.get(\'type\') == \'creep\':\\n
+print(f\\\\\\"Name: {o.get(\'name\')}, Hits: 
+{o.get(\'hits\')}/{o.get(\'hitsMax\')}, TTL: {o.get(\'ageTime\', 
+\'N/A\')}\\\\\\")\\n            print(f\\\\\\"  Body: 
+{o.get(\'body\')}\\\\\\")\\n            print(f\\\\\\"  Store: 
+{o.get(\'store\')}\\\\\\")\\n    \\n    # Show spawn\\n    print(\'\\\\\\\\n=== 
+Spawns ===\')\\n    for o in objs:\\n        if o.get(\'type\') == \'spawn\':\\n
+print(f\\\\\\"Name: {o.get(\'name\')}, Hits: 
+{o.get(\'hits\')}/{o.get(\'hitsMax\')}\\\\\\")\\n            print(f\\\\\\"  
+Store: {o.get(\'store\')}\\\\\\")\\n            spawning = 
+o.get(\'spawning\')\\n            if spawning:\\n                print(f\\\\\\" 
+Spawning: {spawning}\\\\\\")\\n    \\n    # Show controller\\n    
+print(\'\\\\\\\\n=== Controller ===\')\\n    for o in objs:\\n        if 
+o.get(\'type\') == \'controller\':\\n            print(f\\\\\\"Level: 
+{o.get(\'level\')}, Progress: 
+{o.get(\'progress\')}/{o.get(\'progressTotal\')}\\\\\\")\\n            
+print(f\\\\\\"  Downgrade: {o.get(\'downgradeTime\')}, SafeMode: 
+{o.get(\'safeMode\')}\\\\\\")\\n    \\n    # Show extensions\\n    
+print(\'\\\\\\\\n=== Extensions ===\')\\n    ext_count = 0\\n    for o in 
+objs:\\n        if o.get(\'type\') == \'extension\':\\n            ext_count += 
+1\\n    print(f\'Extension count: {ext_count}\')\\n    \\n    # Show 
+construction sites\\n    print(\'\\\\\\\\n=== Construction Sites ===\')\\n    
+for o in objs:\\n        if o.get(\'type\') == \'constructionSite\':\\n         
+print(f\\\\\\"Type: {o.get(\'structureType\')}, Progress: 
+{o.get(\'progress\')}/{o.get(\'progressTotal\')}\\\\\\")\\n    \\n    # Show 
+sources\\n    print(\'\\\\\\\\n=== Sources ===\')\\n    for o in objs:\\n       
+if o.get(\'type\') == \'source\':\\n            print(f\\\\\\"Energy: 
+{o.get(\'energy\')}/{o.get(\'energyCapacity\')}, Regen: 
+{o.get(\'ticksToRegeneration\')}\\\\\\")\\n    \\n    # Show tower\\n    
+print(\'\\\\\\\\n=== Towers ===\')\\n    for o in objs:\\n        if 
+o.get(\'type\') == \'tower\':\\n            print(f\\\\\\"Hits: 
+{o.get(\'hits\')}/{o.get(\'hitsMax\')}, Store: {o.get(\'store\')}\\\\\\")\\n    
+\\n    # Show storage\\n    print(\'\\\\\\\\n=== Storage ===\')\\n    for o in 
+objs:\\n        if o.get(\'type\') == \'storage\':\\n            
+print(f\\\\\\"Hits: {o.get(\'hits\')}/{o.get(\'hitsMax\')}, Store: 
+{o.get(\'store\')}\\\\\\")\\nelse:\\n    print(\'No objects data\')\\n    
+print(data)\\n\\""}'
+    ),
+    extras=None
+)
+ToolCall(
+    type='function',
+    id='toolu_01XEy5rCTtPZSEQkfNGfoUvE',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "source .env && curl -s 
+\\"https://screeps.com/api/user/console\\" -H \\"X-Token: $SCREEPS_TOKEN\\" -H 
+\\"Content-Type: application/json\\" -d \'{\\"expression\\": 
+\\"JSON.stringify({tick: Game.time, creeps: Object.keys(Game.creeps).length, 
+spawns: Object.keys(Game.spawns).map(s => ({name: s, spawning: 
+Game.spawns[s].spawning, energy: Game.spawns[s].store.energy}))})\\", 
+\\"shard\\": \\"shard3\\"}\'"}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.073135,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=1219,
+        input_cache_read=10125,
+        input_cache_creation=4501
+    ),
+    message_id='msg_01YA5oL4jzZNFmdWz4wih3sj'
+)
+ToolResult(
+    tool_call_id='toolu_01QKBmVRFqDeT9G867m1RQWG',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output="=== Object Types ===\nconstructedWall: 43\nconstructionSite: 
+9\ncontroller: 1\ncreep: 1\nextension: 21\nmineral: 1\nrampart: 2\nsource: 
+2\nspawn: 1\nstorage: 1\ntower: 1\n\n=== Creeps ===\nName: harvester76835728, 
+Hits: 400/400, TTL: N/A\n  Body: [{'type': 'work', 'hits': 100}, {'type': 
+'work', 'hits': 100}, {'type': 'carry', 'hits': 100}, {'type': 'move', 'hits': 
+100}]\n  Store: {'energy': 0}\n\n=== Spawns ===\nName: Spawn1, Hits: 5000/5000\n
+Store: {'energy': 300}\n  Spawning: {'name': 'harvester76835728', 'needTime': 
+12, 'spawnTime': 76840809}\n\n=== Controller ===\nLevel: 5, Progress: 3492/0\n  
+Downgrade: 76855315, SafeMode: 76628783\n\n=== Extensions ===\nExtension count: 
+21\n\n=== Construction Sites ===\nType: extension, Progress: 1500/3000\nType: 
+extension, Progress: 0/3000\nType: extension, Progress: 0/3000\nType: extension,
+Progress: 0/3000\nType: extension, Progress: 0/3000\nType: extension, Progress: 
+0/3000\nType: extension, Progress: 0/3000\nType: extension, Progress: 
+0/3000\nType: extension, Progress: 0/3000\n\n=== Sources ===\nEnergy: 3000/3000,
+Regen: 300\nEnergy: 3000/3000, Regen: 300\n\n=== Towers ===\nHits: 3000/3000, 
+Store: {'energy': 500}\n\n=== Storage ===\nHits: 10000/10000, Store: {'energy': 
+0}\n",
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+ToolResult(
+    tool_call_id='toolu_01XEy5rCTtPZSEQkfNGfoUvE',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='{"ok":1,"result":{"ok":1,"n":1},"ops":[{"user":"695ceeec11c0dd00
+12abe528","expression":"JSON.stringify({tick: Game.time, creeps: 
+Object.keys(Game.creeps).length, spawns: Object.keys(Game.spawns).map(s => 
+({name: s, spawning: Game.spawns[s].spawning, energy: 
+Game.spawns[s].store.energy}))})","shard":"shard3","_id":"696757a2ece2040012d804
+21"}],"insertedCount":1,"insertedIds":["696757a2ece2040012d80421"]}',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=4)
+TextPart(
+    type='text',
+    text='让我查看当前的 main.js 代码和最新 session 日志中的问题：'
+)
+ToolCall(
+    type='function',
+    id='toolu_01PnSZCwbe6rEeDAjoF8zdP6',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "tail -300 logs/session_4_20260114_154448.log | 
+head -200"}'
+    ),
+    extras=None
+)
+ToolCall(
+    type='function',
+    id='toolu_01Fuwe89TDcDopCwJRBMj2mF',
+    function=FunctionBody(name='ReadFile', arguments=''),
+    extras=None
+)
+ToolResult(
+    tool_call_id='toolu_01PnSZCwbe6rEeDAjoF8zdP6',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='c.get(\\\'body\\\', [])\\\\n        parts = {}\\\\n        for p
+in body:\\\\n            \npt = p.get(\\\'type\\\', \\\'?\\\')\\\\n            
+parts[pt] = parts.get(pt, 0) + 1\\\\n   \nparts_str = 
+\\\'/\\\'.join([f\\\'{v}{k[0].upper()}\\\' for k, v in parts.items()])\\\\n   
+\nspawning = \\\'(spawning)\\\' if c.get(\\\'spawning\\\') else \\\'\\\'\\\\n   
+ttl = \nc.get(\\\'ageTime\\\', 0) - game_time if \\\'ageTime\\\' in c and 
+game_time else \n\\\'?\\\'\\\\n        print(f\\\'  - {name}: {parts_str} 
+TTL={ttl} \n{spawning}\\\')\\\\n\\\\""}\'\n    ),\n    
+extras=None\n)\nStatusUpdate(\n    context_usage=0.16479,\n    
+token_usage=TokenUsage(\n        input_other=1,\n        output=742,\n        
+input_cache_read=32687,\n        input_cache_creation=270\n    ),\n    
+message_id=\'msg_01Rrp94Sj2ziabQwEUJGovVm\'\n)\nToolResult(\n    
+tool_call_id=\'toolu_01M6s2VABT2vJNvom71beYk2\',\n    
+return_value=ToolReturnValue(\n        is_error=False,\n        output=\'=== 
+Game Time: 0 ===\\nSpawn: energy=300\\n  Spawning: \nharvester76835728\\n  Need 
+Time: 12 ticks\\n  Spawn Time: 76839585\\n  Remaining: ?\nticks\\n\\nCreeps: 
+1\\n  - harvester76835728: 2W/1C/1M TTL=? (spawning)\\n\',\n        
+message=\'Command executed successfully.\',\n        display=[],\n        
+extras=None\n    )\n)\nStepBegin(n=9)\nTextPart(\n    type=\'text\',\n    
+text=\'Harvester 正在孵化。需要 12 ticks 完成。由于 API 返回的 gameTime 是 
+\n0（可能是 REST API 的限制），让我通过 Memory 检查更准确的 
+tick：\'\n)\nToolCall(\n    type=\'function\',\n    
+id=\'toolu_0196p1DAw9xteUHENRkffraW\',\n    function=FunctionBody(\n        
+name=\'Shell\',\n        arguments=\'{"command": "source .env && curl -s 
+\n\\\\"https://screeps.com/api/user/memory?shard=shard3\\\\" -H \\\\"X-Token: 
+\n$SCREEPS_TOKEN\\\\" 2>/dev/null | python3 -c \\\\"\\\\nimport json, sys, 
+base64, \ngzip\\\\ndata = json.load(sys.stdin)\\\\nif data.get(\\\'ok\\\') and 
+\ndata.get(\\\'data\\\'):\\\\n    raw = data[\\\'data\\\']\\\\n    if 
+\nraw.startswith(\\\'gz:\\\'):\\\\n        decoded = 
+base64.b64decode(raw[3:])\\\\n       \ndecompressed = 
+gzip.decompress(decoded).decode()\\\\n        mem = 
+\njson.loads(decompressed)\\\\n        print(\\\'Memory keys:\\\', 
+list(mem.keys()))\\\\n \nprint(\\\'lastTick:\\\', 
+mem.get(\\\'lastTick\\\'))\\\\n        if \\\'events\\\' in mem:\\\\n  \nevents 
+= mem.get(\\\'events\\\', {})\\\\n            print(\\\'events.lastCreeps:\\\', 
+\nevents.get(\\\'lastCreeps\\\'))\\\\n    else:\\\\n        print(\\\'Raw:\\\', 
+\nraw)\\\\nelse:\\\\n    print(\\\'No data:\\\', data)\\\\n\\\\""}\'\n    ),\n  
+extras=None\n)\nStatusUpdate(\n    context_usage=0.169045,\n    
+token_usage=TokenUsage(\n        input_other=1,\n        output=365,\n        
+input_cache_read=32957,\n        input_cache_creation=851\n    ),\n    
+message_id=\'msg_013zz55vAiB63Ee3jPmno39n\'\n)\nToolResult(\n    
+tool_call_id=\'toolu_0196p1DAw9xteUHENRkffraW\',\n    
+return_value=ToolReturnValue(\n        is_error=False,\n        output="Memory 
+keys: [\'creeps\', \'stats\', \'events\', \'combatLog\', \n\'sourceSlots\', 
+\'rooms\', \'debug\', \'status\', \'check\', \'lastCheck\', \'check2\', 
+\n\'latest\', \'sd\', \'creepCheck\', \'logic\', \'tick\', \'check3\', \'st\', 
+\'after\', \'tt\', \n\'creepState\', \'spawnCheck\', \'detailed\', \'t1\', 
+\'t2\', \'spawnDebug\', \'timeCheck\', \n\'rawSpawning\', \'creepInfo\', \'cs\',
+\'afterCancel\', \'afterSuicide\', \'newCreep\', \n\'spawnInfo\', \'final\', 
+\'nowStatus\', \'fullStatus\', \'live\', \'lastTick\', \n\'spawnDetail\', 
+\'suicideResult\', \'cancelResult\']\\nlastTick: \n76839588\\nevents.lastCreeps:
+[\'harvester76835728\']\\n",\n        message=\'Command executed 
+successfully.\',\n        display=[],\n        extras=None\n    
+)\n)\nStepBegin(n=10)\nTextPart(\n    type=\'text\',\n    
+text=\'很好！代码正在运行，`lastTick` 是 76839588。harvester76835728 已经在 
+\n`lastCreeps` 
+列表中，说明它已经孵化完成了！\\n\\n让我检查最新状态：\'\n)\nToolCall(\n    
+type=\'function\',\n    id=\'toolu_01XiHuc9x1hZBWGYwbre2KcT\',\n    
+function=FunctionBody(\n        name=\'Shell\',\n        arguments=\'{"command":
+"source .env && curl -s 
+\n\\\\"https://screeps.com/api/game/room-objects?room=E13S35&shard=shard3\\\\" 
+-H \n\\\\"X-Token: $SCREEPS_TOKEN\\\\" 2>/dev/null | python3 -c \\\\"\\\\nimport
+json, \nsys\\\\ndata = json.load(sys.stdin)\\\\nif \\\'objects\\\' in data:\\\\n
+objs = \ndata[\\\'objects\\\'] if isinstance(data[\\\'objects\\\'], list) else 
+\nlist(data[\\\'objects\\\'].values())\\\\n    \\\\n    # Count key info\\\\n   
+creeps = [o\nfor o in objs if o.get(\\\'type\\\') == \\\'creep\\\']\\\\n    
+spawns = [o for o in objs \nif o.get(\\\'type\\\') == \\\'spawn\\\']\\\\n    ext
+= [o for o in objs if o.get(\\\'type\\\')\n== \\\'extension\\\']\\\\n    \\\\n  
+total_ext_energy = sum(e.get(\\\'store\\\', \n{}).get(\\\'energy\\\', 0) for e 
+in ext)\\\\n    spawn_energy = sum(s.get(\\\'store\\\', 
+\n{}).get(\\\'energy\\\', 0) for s in spawns)\\\\n    \\\\n    
+print(f\\\'Creeps: \n{len(creeps)}\\\')\\\\n    for c in creeps:\\\\n        
+name = c.get(\\\'name\\\', \n\\\'?\\\')\\\\n        body = c.get(\\\'body\\\', 
+[])\\\\n        parts = {}\\\\n        for p\nin body:\\\\n            pt = 
+p.get(\\\'type\\\', \\\'?\\\')\\\\n            parts[pt] = \nparts.get(pt, 0) + 
+1\\\\n        parts_str = \\\'/\\\'.join([f\\\'{v}{k[0].upper()}\\\' \nfor k, v 
+in parts.items()])\\\\n        store = c.get(\\\'store\\\', 
+\n{}).get(\\\'energy\\\', 0)\\\\n        print(f\\\'  - {name}: {parts_str}, 
+\ncarry={store}\\\')\\\\n    \\\\n    print(f\\\'\\\\\\\\nSpawn energy: 
+\n{spawn_energy}/300\\\')\\\\n    print(f\\\'Extension energy: 
+\n{total_ext_energy}/{len(ext)*50}\\\')\\\\n    print(f\\\'Total capacity: 
+{spawn_energy\n+ total_ext_energy}/{300 + len(ext)*50}\\\')\\\\n    \\\\n    for
+s in spawns:\\\\n     \nspawning = s.get(\\\'spawning\\\')\\\\n        if 
+spawning:\\\\n            \nprint(f\\\'\\\\\\\\nSpawning: 
+{spawning.get(\\\\\\\\\\\\"name\\\\\\\\\\\\")}\\\')\\\\n\\\\""}\'\n    ),\n    
+extras=None\n)\nStatusUpdate(\n    context_usage=0.17215,\n    
+token_usage=TokenUsage(\n        input_other=1,\n        output=664,\n        
+input_cache_read=33808,\n        input_cache_creation=621\n    ),\n    
+message_id=\'msg_01QktMJ7juHnVWHttfxjfd5x\'\n)\nToolResult(\n    
+tool_call_id=\'toolu_01XiHuc9x1hZBWGYwbre2KcT\',\n    
+return_value=ToolReturnValue(\n        is_error=False,\n        output=\'Creeps:
+1\\n  - harvester76835728: 2W/1C/1M, carry=0\\n\\nSpawn \nenergy: 
+300/300\\nExtension energy: 0/1050\\nTotal capacity: 
+300/1350\\n\\nSpawning:\nharvester76835728\\n\',\n        message=\'Command 
+executed successfully.\',\n        display=[],\n        extras=None\n    
+)\n)\nStepBegin(n=11)\nTextPart(\n    type=\'text\',\n    
+text=\'**恢复进展**：\\n1. ✅ 第一个 harvester 已孵化完成（2W/1C/1M）\\n2. 🔄 
+\n正在采集能量\\n3. Spawn 满能量（300），准备孵化下一个 creep\\n4. 目标：3 
+\nharvesters, 3 builders, 3 upgraders\\n\\n由于只有 300 
+\n能量且处于紧急模式（harvester < 2），代码会用 200 能量孵化另一个小 
+\nharvester。\\n\\n**当前系统运行正常，无需干预。**\\n\\n让我更新 AGENTS.md 
+\n中的状态记录，然后 git commit：\'\n)\nToolCall(\n    type=\'function\',\n    
+id=\'toolu_0161H5bjw2nEaJqQHzRrVKCY\',\n    function=FunctionBody(\n        
+name=\'Shell\',\n        arguments=\'{"command": "date \\\\"+%Y-%m-%d 
+%H:%M\\\\""}\'\n    ),\n    extras=None\n)\nStatusUpdate(\n    
+context_usage=0.1759,\n    token_usage=TokenUsage(\n        input_other=1,\n    
+output=249,\n        input_cache_read=34429,\n        input_cache_creation=750\n
+),\n    message_id=\'msg_01H4EwykmBUmTn541UHJx1DA\'\n)\nToolResult(\n    
+tool_call_id=\'toolu_0161H5bjw2nEaJqQHzRrVKCY\',\n    
+return_value=ToolReturnValue(\n        is_error=False,\n        
+output=\'2026-01-14 15:47\\n\',\n        message=\'Command executed 
+successfully.\',\n        display=[],\n        extras=None\n    
+)\n)\nStepBegin(n=12)\nToolCall(\n    type=\'function\',\n    
+id=\'toolu_01YW1tLpzKeD3uAVm4FKDa7d\',\n    function=FunctionBody(\n        
+name=\'StrReplaceFile\',\n        arguments=\'{"path": 
+"/Users/moonshot/dev/infinite-screeps/AGENTS.md", \n"edit": {"old":"### Recovery
+Status (2026-01-14 14:45)\\\\n- Code running on \nserver ✅\\\\n- First 
+harvester spawning now (4 parts)\\\\n- Sources at full energy \n(3000/3000 x2) -
+ready to harvest\\\\n- Automatic recovery in progress - no \nintervention 
+needed\\\\n- Safe Mode protecting room from attacks\\\\n- Estimated \nfull 
+recovery: 10-15 minutes","new":"### Recovery Status (2026-01-14 15:47)\\\\n- 
+\nCode running on server ✅ (lastTick: 76839588)\\\\n- First harvester 
+completed: \nharvester76835728 (2W/1C/1M)\\\\n- Sources at full energy 
+(3000/3000 x2) - \nharvesting\\\\n- Spawn energy: 300/300 - ready for next 
+spawn\\\\n- Automatic \nrecovery in progress - no intervention needed\\\\n- Safe
+Mode active: 76M+ ticks \nprotection\\\\n- Next: Will spawn more creeps as 
+energy flows"}}\'\n',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+ToolCallPart(arguments_part='{"path": "screeps/main.js"}')
+StatusUpdate(
+    context_usage=0.08296,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=140,
+        input_cache_read=14626,
+        input_cache_creation=1965
+    ),
+    message_id='msg_016dZtASp18CyiFBKRTDs8eE'
+)
+ToolResult(
+    tool_call_id='toolu_01Fuwe89TDcDopCwJRBMj2mF',
+    return_value=ToolOk(
+        is_error=False,
+        output="     1\t/**\n     2\t * Screeps Eternal - Event-Driven v4\n     
+3\t * \n     4\t * 事件系统: 输出到控制台供 watcher 监听\n     5\t * 战斗日志: 
+使用 room.getEventLog() 记录攻击详情到 Memory\n     6\t */\n     7\t\n     8\t//
+========== 事件系统 ==========\n     9\t\n    10\tfunction emitEvent(type, value
+= '') {\n    11\t    const msg = value ? `[EVENT:${type}:${value}]` : 
+`[EVENT:${type}]`;\n    12\t    console.log(msg);\n    13\t}\n    14\t\n    
+15\t// 记录战斗日志 (只在检测到战斗时调用)\n    16\tfunction 
+recordCombatLog(room, trigger) {\n    17\t    const events = 
+room.getEventLog();\n    18\t    \n    19\t    // 筛选攻击和摧毁事件\n    20\t  
+const combatEvents = events.filter(e => \n    21\t        e.event === 
+EVENT_ATTACK || \n    22\t        e.event === EVENT_OBJECT_DESTROYED\n    23\t  
+);\n    24\t    \n    25\t    if (combatEvents.length === 0) return;\n    26\t  
+\n    27\t    // 构建战斗日志\n    28\t    const log = {\n    29\t        time: 
+Game.time,\n    30\t        trigger: trigger,\n    31\t        events: 
+combatEvents.map(e => {\n    32\t            const attacker = 
+Game.getObjectById(e.objectId);\n    33\t            const target = 
+e.data.targetId ? Game.getObjectById(e.data.targetId) : null;\n    34\t         
+\n    35\t            return {\n    36\t                type: e.event === 
+EVENT_ATTACK ? 'ATTACK' : 'DESTROYED',\n    37\t                attackerId: 
+e.objectId,\n    38\t                attackerOwner: attacker ? (attacker.owner ?
+attacker.owner.username : 'unknown') : 'gone',\n    39\t                
+targetId: e.data.targetId,\n    40\t                targetType: e.data.type || 
+(target ? target.structureType || 'creep' : 'unknown'),\n    41\t               
+damage: e.data.damage,\n    42\t                attackType: e.data.attackType\n 
+43\t            };\n    44\t        })\n    45\t    };\n    46\t    \n    47\t  
+// 保存到 Memory (保留最近 20 条)\n    48\t    Memory.combatLog = 
+Memory.combatLog || [];\n    49\t    Memory.combatLog.unshift(log);\n    50\t   
+if (Memory.combatLog.length > 20) {\n    51\t        Memory.combatLog = 
+Memory.combatLog.slice(0, 20);\n    52\t    }\n    53\t}\n    54\t\n    
+55\tfunction checkEvents(room, spawn) {\n    56\t    const mem = Memory.events 
+|| {};\n    57\t    const controller = room.controller;\n    58\t    let 
+combatDetected = false;\n    59\t    let combatTrigger = '';\n    60\t    \n    
+61\t    // ===== 敌人检测 =====\n    62\t    const hostiles = 
+room.find(FIND_HOSTILE_CREEPS);\n    63\t    if (hostiles.length > 0) {\n    
+64\t        if (!mem.hostileDetected) {\n    65\t            // 新敌人出现\n    
+66\t            const info = hostiles.map(h => 
+`${h.owner.username}(${h.body.length}parts)`).join(',');\n    67\t            
+emitEvent('HOSTILE', `${hostiles.length}:${info}`);\n    68\t            
+combatDetected = true;\n    69\t            combatTrigger = 
+'hostile_detected';\n    70\t        }\n    71\t        mem.hostileDetected = 
+Game.time;\n    72\t    } else {\n    73\t        mem.hostileDetected = null;\n 
+74\t    }\n    75\t    \n    76\t    // ===== Spawn 被攻击 =====\n    77\t    if
+(spawn.hits < spawn.hitsMax) {\n    78\t        if (!mem.spawnAttacked) {\n    
+79\t            emitEvent('SPAWN_ATTACKED', `${spawn.hits}/${spawn.hitsMax}`);\n
+80\t            mem.spawnAttacked = true;\n    81\t            combatDetected = 
+true;\n    82\t            combatTrigger = 'spawn_attacked';\n    83\t        
+}\n    84\t    } else {\n    85\t        mem.spawnAttacked = false;\n    86\t   
+}\n    87\t    \n    88\t    // ===== RCL 升级 =====\n    89\t    if 
+(mem.lastLevel !== undefined && controller.level > mem.lastLevel) {\n    90\t   
+emitEvent('RCL_UP', controller.level);\n    91\t    }\n    92\t    mem.lastLevel
+= controller.level;\n    93\t    \n    94\t    // ===== 控制器降级警告 (分级) 
+=====\n    95\t    const ttd = controller.ticksToDowngrade;\n    96\t    if (ttd
+< 1000 && mem.downgradeLevel !== 'CRITICAL') {\n    97\t        
+emitEvent('DOWNGRADE_CRITICAL', ttd);\n    98\t        mem.downgradeLevel = 
+'CRITICAL';\n    99\t    } else if (ttd < 5000 && ttd >= 1000 && 
+mem.downgradeLevel !== 'URGENT') {\n   100\t        
+emitEvent('DOWNGRADE_URGENT', ttd);\n   101\t        mem.downgradeLevel = 
+'URGENT';\n   102\t    } else if (ttd < 20000 && ttd >= 5000 && 
+mem.downgradeLevel !== 'WARNING') {\n   103\t        
+emitEvent('DOWNGRADE_WARNING', ttd);\n   104\t        mem.downgradeLevel = 
+'WARNING';\n   105\t    } else if (ttd >= 20000) {\n   106\t        
+mem.downgradeLevel = null;\n   107\t    }\n   108\t    \n   109\t    // ===== 
+Creep 死亡检测 =====\n   110\t    const currentCreeps = 
+Object.keys(Game.creeps);\n   111\t    const lastCreeps = mem.lastCreeps || 
+[];\n   112\t    \n   113\t    for (const name of lastCreeps) {\n   114\t       
+if (!Game.creeps[name]) {\n   115\t            const role = mem.creepRoles ? 
+mem.creepRoles[name] : 'unknown';\n   116\t            emitEvent('CREEP_DIED', 
+`${role}:${name}`);\n   117\t            combatDetected = true;\n   118\t       
+combatTrigger = `creep_died:${role}`;\n   119\t        }\n   120\t    }\n   
+121\t    \n   122\t    mem.lastCreeps = currentCreeps;\n   123\t    
+mem.creepRoles = mem.creepRoles || {};\n   124\t    for (const name in 
+Game.creeps) {\n   125\t        mem.creepRoles[name] = 
+Game.creeps[name].memory.role;\n   126\t    }\n   127\t    for (const name in 
+mem.creepRoles) {\n   128\t        if (!Game.creeps[name]) delete 
+mem.creepRoles[name];\n   129\t    }\n   130\t    \n   131\t    if 
+(currentCreeps.length === 0 && lastCreeps.length > 0) {\n   132\t        
+emitEvent('NO_CREEPS');\n   133\t    }\n   134\t    \n   135\t    // ===== Creep
+受伤检测 =====\n   136\t    mem.creepHits = mem.creepHits || {};\n   137\t    
+for (const name in Game.creeps) {\n   138\t        const creep = 
+Game.creeps[name];\n   139\t        const lastHits = mem.creepHits[name] !== 
+undefined ? mem.creepHits[name] : creep.hitsMax;\n   140\t        \n   141\t    
+if (creep.hits < lastHits) {\n   142\t            const role = 
+creep.memory.role;\n   143\t            const hpPercent = Math.round(creep.hits 
+/ creep.hitsMax * 100);\n   144\t            emitEvent('CREEP_HURT', 
+`${role}:${name}:${hpPercent}%`);\n   145\t            combatDetected = true;\n 
+146\t            combatTrigger = `creep_hurt:${role}`;\n   147\t        }\n   
+148\t        mem.creepHits[name] = creep.hits;\n   149\t    }\n   150\t    for 
+(const name in mem.creepHits) {\n   151\t        if (!Game.creeps[name]) delete 
+mem.creepHits[name];\n   152\t    }\n   153\t    \n   154\t    // ===== Creep 
+寿命警告 =====\n   155\t    mem.agingWarned = mem.agingWarned || {};\n   156\t  
+for (const name in Game.creeps) {\n   157\t        const creep = 
+Game.creeps[name];\n   158\t        if (creep.ticksToLive === undefined) 
+continue; // spawning\n   159\t        const spawnTime = creep.body.length * 3; 
+// CREEP_SPAWN_TIME = 3\n   160\t        const threshold = spawnTime * 2; // 
+给余量让替代 creep 孵化\n   161\t        if (creep.ticksToLive <= threshold && 
+!mem.agingWarned[name]) {\n   162\t            const role = creep.memory.role;\n
+163\t            emitEvent('CREEP_AGING', 
+`${role}:${name}:${creep.ticksToLive}t`);\n   164\t            
+mem.agingWarned[name] = true;\n   165\t        }\n   166\t    }\n   167\t    for
+(const name in mem.agingWarned) {\n   168\t        if (!Game.creeps[name]) 
+delete mem.agingWarned[name];\n   169\t    }\n   170\t    \n   171\t    // =====
+低能量 =====\n   172\t    if (room.energyAvailable < 200 && currentCreeps.length
+=== 0) {\n   173\t        emitEvent('LOW_ENERGY', room.energyAvailable);\n   
+174\t    }\n   175\t    \n   176\t    // ===== 记录战斗日志 (只在检测到战斗时) 
+=====\n   177\t    if (combatDetected) {\n   178\t        recordCombatLog(room, 
+combatTrigger);\n   179\t    }\n   180\t    \n   181\t    // ===== 建筑完成检测 
+(每 10 ticks) =====\n   182\t    if (Game.time % 10 === 0) {\n   183\t        
+const structures = room.find(FIND_MY_STRUCTURES);\n   184\t        const counts 
+= {};\n   185\t        for (const s of structures) {\n   186\t            
+counts[s.structureType] = (counts[s.structureType] || 0) + 1;\n   187\t        
+}\n   188\t        \n   189\t        if (mem.extensionCount !== undefined && 
+(counts.extension || 0) > mem.extensionCount) {\n   190\t            
+emitEvent('EXTENSION_BUILT', counts.extension);\n   191\t        }\n   192\t    
+mem.extensionCount = counts.extension || 0;\n   193\t        \n   194\t        
+if (mem.towerCount !== undefined && (counts.tower || 0) > mem.towerCount) {\n   
+195\t            emitEvent('TOWER_BUILT', counts.tower);\n   196\t        }\n   
+197\t        mem.towerCount = counts.tower || 0;\n   198\t        \n   199\t    
+if (mem.storageCount !== undefined && (counts.storage || 0) > mem.storageCount) 
+{\n   200\t            emitEvent('STORAGE_BUILT', counts.storage);\n   201\t    
+}\n   202\t        mem.storageCount = counts.storage || 0;\n   203\t    }\n   
+204\t    \n   205\t    Memory.events = mem;\n   206\t}\n   207\t\n   208\t// 
+========== 配置 ==========\n   209\t\n   210\tfunction getCreepTargets(room) {\n
+211\t    const level = room.controller.level;\n   212\t    // 只计算重要的 
+construction sites (extension/tower/storage/rampart)\n   213\t    // 忽略 
+road/container 等低优先级建筑\n   214\t    const importantTypes = 
+[STRUCTURE_EXTENSION, STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_RAMPART, 
+STRUCTURE_SPAWN];\n   215\t    const sites = 
+room.find(FIND_MY_CONSTRUCTION_SITES, {\n   216\t        filter: s => 
+importantTypes.includes(s.structureType)\n   217\t    }).length;\n   218\t    \n
+219\t    // 2 Sources 最多产 20 energy/tick\n   220\t    // 3 Harvester (9 WORK)
+= 18 energy/tick, 足够\n   221\t    if (level <= 2) {\n   222\t        return { 
+harvester: 4, builder: sites > 0 ? 3 : 1, upgrader: 3 };\n   223\t    } else if 
+(level === 3) {\n   224\t        // RCL3: 优先升级到 RCL4\n   225\t        
+return { harvester: 3, builder: sites > 0 ? 2 : 0, upgrader: 4 };\n   226\t    }
+else if (level === 4) {\n   227\t        // RCL4: 建造完成后全力升级\n   228\t  
+// 无工地时: 3h + 4u = 最大化升级速度\n   229\t        return { harvester: 3, 
+builder: sites > 0 ? 2 : 1, upgrader: sites > 0 ? 3 : 4 };\n   230\t    } else 
+if (level === 5) {\n   231\t        // RCL5: 建造 10 个新 extension，需要更多 
+builder\n   232\t        if (sites > 5) {\n   233\t            return { 
+harvester: 3, builder: 3, upgrader: 3 };\n   234\t        } else if (sites > 0) 
+{\n   235\t            return { harvester: 3, builder: 2, upgrader: 3 };\n   
+236\t        } else {\n   237\t            return { harvester: 3, builder: 1, 
+upgrader: 4 };\n   238\t        }\n   239\t    } else {\n   240\t        // 
+RCL6+: 平衡配置\n   241\t        return { harvester: 3, builder: sites > 0 ? 2 :
+1, upgrader: 3 };\n   242\t    }\n   243\t}\n   244\t\n   245\tfunction 
+getBody(role, energy) {\n   246\t    if (energy >= 550) {\n   247\t        if 
+(role === 'harvester' || role === 'upgrader') {\n   248\t            return 
+[WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE];\n   249\t        }\n   250\t
+return [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE];\n   251\t    } else 
+if (energy >= 400) {\n   252\t        return [WORK, WORK, CARRY, CARRY, MOVE, 
+MOVE];\n   253\t    } else if (energy >= 300) {\n   254\t        return [WORK, 
+WORK, CARRY, MOVE];\n   255\t    }\n   256\t    return [WORK, CARRY, MOVE];\n   
+257\t}\n   258\t\n   259\tfunction getBuildPositions(spawn) {\n   260\t    const
+sx = spawn.pos.x, sy = spawn.pos.y;\n   261\t    return {\n   262\t        // 
+RCL2: 5, RCL3: 10, RCL4: 20, RCL5: 30, RCL6: 40\n   263\t        // 
+包含大量备用位置以适应不同地形\n   264\t        extensions: [\n   265\t         
+// Ring 1 - dist 1-2 (直接相邻)\n   266\t            {x: sx, y: sy-1}, {x: sx, 
+y: sy+1}, {x: sx+1, y: sy}, {x: sx-1, y: sy-1},\n   267\t            {x: sx+1, 
+y: sy-1}, {x: sx-1, y: sy+1}, {x: sx+1, y: sy+1},\n   268\t            // Ring 2
+- dist 2 (斜对角和直线)\n   269\t            {x: sx+2, y: sy}, {x: sx-2, y: sy},
+{x: sx, y: sy-2}, {x: sx, y: sy+2},\n   270\t            {x: sx+2, y: sy-1}, {x:
+sx-2, y: sy-1}, {x: sx+2, y: sy+1}, {x: sx-2, y: sy+1},\n   271\t            // 
+Ring 3 - dist 3 (更远位置)\n   272\t            {x: sx+3, y: sy}, {x: sx-3, y: 
+sy}, {x: sx, y: sy-3}, {x: sx, y: sy+3},\n   273\t            {x: sx+1, y: 
+sy-2}, {x: sx-1, y: sy-2}, {x: sx+1, y: sy+2}, {x: sx-1, y: sy+2},\n   274\t    
+{x: sx+2, y: sy-2}, {x: sx-2, y: sy-2}, {x: sx+2, y: sy+2}, {x: sx-2, y: 
+sy+2},\n   275\t            {x: sx+3, y: sy-1}, {x: sx-3, y: sy-1}, {x: sx+3, y:
+sy+1}, {x: sx-3, y: sy+1},\n   276\t            // Ring 4 - dist 4 (RCL5+ 
+使用)\n   277\t            {x: sx+4, y: sy}, {x: sx-4, y: sy}, {x: sx, y: sy-4},
+{x: sx, y: sy+4},\n   278\t            {x: sx+1, y: sy-3}, {x: sx-1, y: sy-3}, 
+{x: sx+1, y: sy+3}, {x: sx-1, y: sy+3},\n   279\t            {x: sx+3, y: sy-2},
+{x: sx-3, y: sy-2}, {x: sx+3, y: sy+2}, {x: sx-3, y: sy+2},\n   280\t           
+{x: sx+4, y: sy-1}, {x: sx-4, y: sy-1}, {x: sx+4, y: sy+1}, {x: sx-4, y: 
+sy+1},\n   281\t            // Ring 5 - dist 5 (RCL6+ 备用)\n   282\t           
+{x: sx+5, y: sy}, {x: sx-5, y: sy}, {x: sx, y: sy-5}, {x: sx, y: sy+5},\n   
+283\t            {x: sx+2, y: sy-3}, {x: sx-2, y: sy-3}, {x: sx+2, y: sy+3}, {x:
+sx-2, y: sy+3},\n   284\t            {x: sx+3, y: sy-3}, {x: sx-3, y: sy-3}, {x:
+sx+3, y: sy+3}, {x: sx-3, y: sy+3},\n   285\t            {x: sx+4, y: sy-2}, {x:
+sx-4, y: sy-2}, {x: sx+4, y: sy+2}, {x: sx-4, y: sy+2}\n   286\t        ],\n   
+287\t        towers: [{x: sx, y: sy-2}, {x: sx-2, y: sy-2}, {x: sx+2, y: sy-2}],
+// up to 3 towers\n   288\t        storage: [{x: sx-1, y: sy}, {x: sx+1, y: sy}]
+// Storage alternatives\n   289\t    };\n   290\t}\n   291\t\n   292\t// 
+========== 主循环 ==========\n   293\t\n   294\tmodule.exports.loop = function 
+() {\n   295\t    // 记录代码执行时间（调试用）\n   296\t    Memory.lastTick = 
+Game.time;\n   297\t    \n   298\t    // 清理\n   299\t    for (const name in 
+Memory.creeps) {\n   300\t        if (!Game.creeps[name]) delete 
+Memory.creeps[name];\n   301\t    }\n   302\t    \n   303\t    // 获取 Spawn\n  
+304\t    const spawns = Object.values(Game.spawns);\n   305\t    if 
+(spawns.length === 0) {\n   306\t        emitEvent('NO_SPAWN');\n   307\t       
+return;\n   308\t    }\n   309\t    const spawn = spawns[0];\n   310\t    const 
+room = spawn.room;\n   311\t    const controller = room.controller;\n   312\t   
+\n   313\t    // 检测事件\n   314\t    checkEvents(room, spawn);\n   315\t    \n
+316\t    // Creep 管理\n   317\t    const targets = getCreepTargets(room);\n   
+318\t    const counts = { harvester: 0, builder: 0, upgrader: 0 };\n   319\t    
+for (const name in Game.creeps) {\n   320\t        const role = 
+Game.creeps[name].memory.role;\n   321\t        if (counts[role] !== undefined) 
+counts[role]++;\n   322\t    }\n   323\t    \n   324\t    // 建筑规划\n   325\t 
+if (Game.time % 50 === 0) planBuildings(room, controller.level, spawn);\n   
+326\t    \n   327\t    // 孵化\n   328\t    if (!spawn.spawning) {\n   329\t    
+const energy = room.energyAvailable;\n   330\t        const capacity = 
+room.energyCapacityAvailable;\n   331\t        const totalCreeps = 
+Object.keys(Game.creeps).length;\n   332\t        const totalNeeded = 
+targets.harvester + targets.builder + targets.upgrader;\n   333\t        \n   
+334\t        // 检查是否有 creep 即将死亡（需要预防性孵化）\n   335\t        // 
+TTL < 孵化时间(body*3) + 移动到Source时间(~50) + 缓冲(50) ≈ 150 ticks\n   336\t 
+const creepsByRole = { harvester: [], builder: [], upgrader: [] };\n   337\t    
+for (const name in Game.creeps) {\n   338\t            const creep = 
+Game.creeps[name];\n   339\t            const role = creep.memory.role;\n   
+340\t            if (creepsByRole[role]) {\n   341\t                
+creepsByRole[role].push(creep);\n   342\t            }\n   343\t        }\n   
+344\t        \n   345\t        // 确定孵化优先级和能量门槛\n   346\t        
+const isEmergency = counts.harvester < 2;  // 紧急：几乎没有 harvester\n   347\t
+const isLowHarvester = counts.harvester < 3;\n   348\t        // 
+检查是否有任何角色低于目标（不仅仅是总数）\n   349\t        const isUnderTarget 
+= counts.harvester < targets.harvester || \n   350\t                            
+counts.builder < targets.builder || \n   351\t                              
+counts.upgrader < targets.upgrader;\n   352\t        const isRecovery = 
+isUnderTarget;\n   353\t        \n   354\t        // 
+找出需要孵化的角色（按优先级）\n   355\t        // 1. 首先确保基础 harvester 
+数量\n   356\t        // 2. 然后按比例孵化其他角色\n   357\t        let 
+roleToSpawn = null;\n   358\t        \n   359\t        if (counts.harvester < 
+targets.harvester) {\n   360\t            roleToSpawn = 'harvester';\n   361\t  
+} else if (counts.builder < targets.builder) {\n   362\t            roleToSpawn 
+= 'builder';\n   363\t        } else if (counts.upgrader < targets.upgrader) {\n
+364\t            roleToSpawn = 'upgrader';\n   365\t        }\n   366\t        
+\n   367\t        // 如果所有角色都达到目标，检查是否需要预防性替换\n   368\t   
+// 只有当角色数量正好等于目标且有 creep 快死时才替换\n   369\t        if 
+(!roleToSpawn) {\n   370\t            for (const role of ['harvester', 
+'builder', 'upgrader']) {\n   371\t                const roleCreeps = 
+creepsByRole[role];\n   372\t                const dyingCount = 
+roleCreeps.filter(c => c.ticksToLive && c.ticksToLive < 150).length;\n   373\t  
+// 只有当数量刚好等于目标且有 creep 快死时才预防性孵化\n   374\t                
+if (dyingCount > 0 && roleCreeps.length === targets[role]) {\n   375\t          
+roleToSpawn = role;\n   376\t                    break;\n   377\t               
+}\n   378\t            }\n   379\t        }\n   380\t        \n   381\t        
+// 设置能量门槛\n   382\t        let minSpawnEnergy;\n   383\t        if 
+(isEmergency) {\n   384\t            minSpawnEnergy = 200;  // 最紧急：任何 
+creep 都行\n   385\t        } else if (isLowHarvester) {\n   386\t            
+minSpawnEnergy = 300;  // 能量采集不足：快速补充\n   387\t        } else if 
+(isRecovery) {\n   388\t            minSpawnEnergy = 400;  // 恢复中：孵化较强 
+creep\n   389\t        } else {\n   390\t            minSpawnEnergy = 
+Math.min(550, capacity);  // 正常：等待最强 creep\n   391\t        }\n   392\t  
+\n   393\t        // 执行孵化\n   394\t        if (roleToSpawn && energy >= 
+minSpawnEnergy) {\n   395\t            const useEnergy = Math.min(capacity, 
+energy);\n   396\t            const body = getBody(roleToSpawn, useEnergy);\n   
+397\t            const name = roleToSpawn + Game.time;\n   398\t            if 
+(spawn.spawnCreep(body, name, { memory: { role: roleToSpawn } }) === OK) {\n   
+399\t                emitEvent('SPAWN_COMPLETE', `${name}:${roleToSpawn}`);\n   
+400\t            }\n   401\t        }\n   402\t    }\n   403\t    \n   404\t    
+// 运行 Creep\n   405\t    for (const name in Game.creeps) {\n   406\t        
+const creep = Game.creeps[name];\n   407\t        const role = 
+creep.memory.role;\n   408\t        if (role === 'harvester') 
+runHarvester(creep);\n   409\t        else if (role === 'upgrader') 
+runUpgrader(creep);\n   410\t        else if (role === 'builder') 
+runBuilder(creep);\n   411\t    }\n   412\t    \n   413\t    // Tower 防御\n   
+414\t    runTowers(room);\n   415\t    \n   416\t    // 状态 (每 100 ticks)\n   
+417\t    if (Game.time % 100 === 0) {\n   418\t        const cpu = 
+Game.cpu.getUsed();\n   419\t        console.log(`[STATUS] T:${Game.time} 
+CPU:${cpu.toFixed(1)} Creeps:${Object.keys(Game.creeps).length} 
+RCL:${controller.level}`);\n   420\t    }\n   421\t};\n   422\t\n   423\t// 
+========== 建筑规划 ==========\n   424\t\n   425\tfunction planBuildings(room, 
+level, spawn) {\n   426\t    const plans = getBuildPositions(spawn);\n   427\t  
+\n   428\t    const maxExt = 
+CONTROLLER_STRUCTURES[STRUCTURE_EXTENSION][level];\n   429\t    const curExt = 
+room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === 
+STRUCTURE_EXTENSION }).length;\n   430\t    const siteExt = 
+room.find(FIND_MY_CONSTRUCTION_SITES, { filter: s => s.structureType === 
+STRUCTURE_EXTENSION }).length;\n   431\t    \n   432\t    let needed = maxExt - 
+curExt - siteExt;\n   433\t    for (const pos of plans.extensions) {\n   434\t  
+if (needed <= 0) break;\n   435\t        if (canBuildAt(room, pos.x, pos.y)) {\n
+436\t            if (room.createConstructionSite(pos.x, pos.y, 
+STRUCTURE_EXTENSION) === OK) needed--;\n   437\t        }\n   438\t    }\n   
+439\t    \n   440\t    // Tower (RCL3+)\n   441\t    if (level >= 3) {\n   442\t
+const maxTowers = CONTROLLER_STRUCTURES[STRUCTURE_TOWER][level];\n   443\t      
+const curTowers = room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType 
+=== STRUCTURE_TOWER }).length;\n   444\t        const siteTowers = 
+room.find(FIND_MY_CONSTRUCTION_SITES, { filter: s => s.structureType === 
+STRUCTURE_TOWER }).length;\n   445\t        \n   446\t        if (curTowers + 
+siteTowers < maxTowers) {\n   447\t            for (const pos of plans.towers) 
+{\n   448\t                if (canBuildAt(room, pos.x, pos.y)) {\n   449\t      
+room.createConstructionSite(pos.x, pos.y, STRUCTURE_TOWER);\n   450\t           
+break;\n   451\t                }\n   452\t            }\n   453\t        }\n   
+454\t    }\n   455\t    \n   456\t    // Storage (RCL4+)\n   457\t    if (level 
+>= 4 && plans.storage) {\n   458\t        const curStorage = 
+room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === 
+STRUCTURE_STORAGE }).length;\n   459\t        const siteStorage = 
+room.find(FIND_MY_CONSTRUCTION_SITES, { filter: s => s.structureType === 
+STRUCTURE_STORAGE }).length;\n   460\t        \n   461\t        if (curStorage +
+siteStorage === 0) {\n   462\t            for (const pos of plans.storage) {\n  
+463\t                if (canBuildAt(room, pos.x, pos.y)) {\n   464\t            
+room.createConstructionSite(pos.x, pos.y, STRUCTURE_STORAGE);\n   465\t         
+break;\n   466\t                }\n   467\t            }\n   468\t        }\n   
+469\t    }\n   470\t    \n   471\t    // Rampart 保护关键建筑 (RCL2+)\n   472\t 
+if (level >= 2) {\n   473\t        // 保护 Spawn\n   474\t        const 
+spawnRampart = room.lookForAt(LOOK_STRUCTURES, spawn.pos.x, spawn.pos.y)\n   
+475\t            .some(s => s.structureType === STRUCTURE_RAMPART);\n   476\t   
+const spawnRampartSite = room.lookForAt(LOOK_CONSTRUCTION_SITES, spawn.pos.x, 
+spawn.pos.y)\n   477\t            .some(s => s.structureType === 
+STRUCTURE_RAMPART);\n   478\t        if (!spawnRampart && !spawnRampartSite) {\n
+479\t            room.createConstructionSite(spawn.pos.x, spawn.pos.y, 
+STRUCTURE_RAMPART);\n   480\t        }\n   481\t        \n   482\t        // 
+保护 Tower\n   483\t        const towers = room.find(FIND_MY_STRUCTURES, { 
+filter: s => s.structureType === STRUCTURE_TOWER });\n   484\t        for (const
+tower of towers) {\n   485\t            const hasRampart = 
+room.lookForAt(LOOK_STRUCTURES, tower.pos.x, tower.pos.y)\n   486\t             
+.some(s => s.structureType === STRUCTURE_RAMPART);\n   487\t            const 
+hasSite = room.lookForAt(LOOK_CONSTRUCTION_SITES, tower.pos.x, tower.pos.y)\n   
+488\t                .some(s => s.structureType === STRUCTURE_RAMPART);\n   
+489\t            if (!hasRampart && !hasSite) {\n   490\t                
+room.createConstructionSite(tower.pos.x, tower.pos.y, STRUCTURE_RAMPART);\n   
+491\t            }\n   492\t        }\n   493\t    }\n   494\t}\n   495\t\n   
+496\tfunction canBuildAt(room, x, y) {\n   497\t    if (x < 1 || x > 48 || y < 1
+|| y > 48) return false;\n   498\t    return room.lookForAt(LOOK_STRUCTURES, x, 
+y).length === 0 &&\n   499\t           room.lookForAt(LOOK_CONSTRUCTION_SITES, 
+x, y).length === 0 &&\n   500\t           room.getTerrain().get(x, y) !== 
+TERRAIN_MASK_WALL;\n   501\t}\n   502\t\n   503\t// ========== Tower 
+==========\n   504\t\n   505\tfunction runTowers(room) {\n   506\t    const 
+towers = room.find(FIND_MY_STRUCTURES, { filter: s => s.structureType === 
+STRUCTURE_TOWER });\n   507\t    \n   508\t    for (const tower of towers) {\n  
+509\t        // 优先攻击敌人\n   510\t        const enemy = 
+tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);\n   511\t        if (enemy) {
+tower.attack(enemy); continue; }\n   512\t        \n   513\t        // 
+修复受损建筑 (不含 walls)\n   514\t        const damaged = 
+tower.pos.findClosestByRange(FIND_STRUCTURES, {\n   515\t            filter: s 
+=> s.hits < s.hitsMax * 0.5 && \n   516\t                        s.structureType
+!== STRUCTURE_WALL\n   517\t        });\n   518\t        if (damaged && 
+tower.store[RESOURCE_ENERGY] > 500) { tower.repair(damaged); continue; }\n   
+519\t        \n   520\t        // 空闲时加固 Ramparts (目标 100K HP，与 builder 
+保持一致)\n   521\t        const weakRampart = 
+tower.pos.findClosestByRange(FIND_MY_STRUCTURES, {\n   522\t            filter: 
+s => s.structureType === STRUCTURE_RAMPART && s.hits < 100000\n   523\t        
+});\n   524\t        if (weakRampart && tower.store[RESOURCE_ENERGY] > 700) 
+tower.repair(weakRampart);\n   525\t    }\n   526\t}\n   527\t\n   528\t// 
+========== Creep 行为 ==========\n   529\t\n   530\tfunction runHarvester(creep)
+{\n   531\t    if (creep.memory.working && creep.store[RESOURCE_ENERGY] === 0) 
+{\n   532\t        creep.memory.working = false;\n   533\t        delete 
+creep.memory.targetId;\n   534\t    }\n   535\t    if (!creep.memory.working && 
+creep.store.getFreeCapacity() === 0) {\n   536\t        creep.memory.working = 
+true;\n   537\t        delete creep.memory.targetId;\n   538\t    }\n   539\t   
+\n   540\t    if (creep.memory.working) {\n   541\t        let target = 
+Game.getObjectById(creep.memory.targetId);\n   542\t        if (!target || 
+(target.store && target.store.getFreeCapacity(RESOURCE_ENERGY) === 0)) {\n   
+543\t            // 优先填充 Spawn 和 Extensions (用于孵化)\n   544\t           
+target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {\n   545\t            
+filter: s => (s.structureType === STRUCTURE_SPAWN ||\n   546\t                  
+s.structureType === STRUCTURE_EXTENSION) &&\n   547\t                           
+s.store.getFreeCapacity(RESOURCE_ENERGY) > 0\n   548\t            });\n   549\t 
+// 其次填充 Tower (保持防御)\n   550\t            if (!target) {\n   551\t      
+target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {\n   552\t            
+filter: s => s.structureType === STRUCTURE_TOWER &&\n   553\t                   
+s.store.getFreeCapacity(RESOURCE_ENERGY) > 0\n   554\t                });\n   
+555\t            }\n   556\t            // 最后存入 Storage\n   557\t           
+if (!target) {\n   558\t                target = 
+creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {\n   559\t                    
+filter: s => s.structureType === STRUCTURE_STORAGE &&\n   560\t                 
+s.store.getFreeCapacity(RESOURCE_ENERGY) > 0\n   561\t                });\n   
+562\t            }\n   563\t            creep.memory.targetId = target ? 
+target.id : null;\n   564\t        }\n   565\t        if (target) {\n   566\t   
+if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) 
+creep.moveTo(target, {reusePath: 5});\n   567\t        } else {\n   568\t       
+if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) 
+creep.moveTo(creep.room.controller, {reusePath: 5});\n   569\t        }\n   
+570\t    } else {\n   571\t        // 紧急恢复：如果 spawn 能量不足且有 
+container，从 container 取\n   572\t        const spawn = 
+creep.room.find(FIND_MY_SPAWNS)[0];\n   573\t        const needSpawnEnergy = 
+spawn && spawn.store.getFreeCapacity(RESOURCE_ENERGY) > 0;\n   574\t        \n  
+575\t        if (needSpawnEnergy) {\n   576\t            // 优先从 Container 
+取能量（用于快速恢复）\n   577\t            const container = 
+creep.pos.findClosestByPath(FIND_STRUCTURES, {\n   578\t                filter: 
+s => s.structureType === STRUCTURE_CONTAINER && \n   579\t                      
+s.store[RESOURCE_ENERGY] > 50\n   580\t            });\n   581\t            if 
+(container) {\n   582\t                if (creep.withdraw(container, 
+RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {\n   583\t                    
+creep.moveTo(container, {reusePath: 5});\n   584\t                }\n   585\t   
+return;\n   586\t            }\n   587\t        }\n   588\t        \n   589\t   
+// 从 Storage 取能量\n   590\t        const storage = creep.room.storage;\n   
+591\t        if (storage && storage.store[RESOURCE_ENERGY] > 0) {\n   592\t     
+if (creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {\n   593\t  
+creep.moveTo(storage, {reusePath: 5});\n   594\t            }\n   595\t         
+return;\n   596\t        }\n   597\t        // 否则采集\n   598\t        let 
+source = Game.getObjectById(creep.memory.sourceId);\n   599\t        if (!source
+|| source.energy === 0) {\n   600\t            source = 
+creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);\n   601\t            
+creep.memory.sourceId = source ? source.id : null;\n   602\t        }\n   603\t 
+if (source && creep.harvest(source) === ERR_NOT_IN_RANGE) creep.moveTo(source, 
+{reusePath: 5});\n   604\t    }\n   605\t}\n   606\t\n   607\tfunction 
+runUpgrader(creep) {\n   608\t    if (creep.memory.working && 
+creep.store[RESOURCE_ENERGY] === 0) creep.memory.working = false;\n   609\t    
+if (!creep.memory.working && creep.store.getFreeCapacity() === 0) 
+creep.memory.working = true;\n   610\t    \n   611\t    if 
+(creep.memory.working) {\n   612\t        if 
+(creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) 
+creep.moveTo(creep.room.controller, {reusePath: 5});\n   613\t    } else {\n   
+614\t        // 优先从 Storage 取能量\n   615\t        const storage = 
+creep.room.storage;\n   616\t        if (storage && 
+storage.store[RESOURCE_ENERGY] > 0) {\n   617\t            if 
+(creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {\n   618\t     
+creep.moveTo(storage, {reusePath: 5});\n   619\t            }\n   620\t         
+return;\n   621\t        }\n   622\t        // 次选：从 Container 取能量\n   
+623\t        const container = creep.pos.findClosestByPath(FIND_STRUCTURES, {\n 
+624\t            filter: s => s.structureType === STRUCTURE_CONTAINER && \n   
+625\t                         s.store[RESOURCE_ENERGY] > 100\n   626\t        
+});\n   627\t        if (container) {\n   628\t            if 
+(creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {\n   629\t   
+creep.moveTo(container, {reusePath: 5});\n   630\t            }\n   631\t       
+return;\n   632\t        }\n   633\t        // 否则采集\n   634\t        let 
+source = Game.getObjectById(creep.memory.sourceId);\n   635\t        if (!source
+|| source.energy === 0) {\n   636\t            source = 
+creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);\n   637\t            
+creep.memory.sourceId = source ? source.id : null;\n   638\t        }\n   639\t 
+if (source && creep.harvest(source) === ERR_NOT_IN_RANGE) creep.moveTo(source, 
+{reusePath: 5});\n   640\t    }\n   641\t}\n   642\t\n   643\tfunction 
+runBuilder(creep) {\n   644\t    if (creep.memory.working && 
+creep.store[RESOURCE_ENERGY] === 0) {\n   645\t        creep.memory.working = 
+false;\n   646\t        delete creep.memory.targetId;\n   647\t    }\n   648\t  
+if (!creep.memory.working && creep.store.getFreeCapacity() === 0) {\n   649\t   
+creep.memory.working = true;\n   650\t        delete creep.memory.targetId;\n   
+651\t    }\n   652\t    \n   653\t    // === 紧急模式：当 harvester 
+不足时，builder 临时变成 harvester ===\n   654\t    const harvesters = 
+_.filter(Game.creeps, c => c.memory.role === 'harvester');\n   655\t    const 
+isEmergency = harvesters.length === 0;\n   656\t    \n   657\t    if 
+(isEmergency && creep.memory.working) {\n   658\t        // 紧急模式：优先填充 
+spawn/extension\n   659\t        let target = 
+creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {\n   660\t            filter: s
+=> (s.structureType === STRUCTURE_SPAWN ||\n   661\t                         
+s.structureType === STRUCTURE_EXTENSION) &&\n   662\t                         
+s.store.getFreeCapacity(RESOURCE_ENERGY) > 0\n   663\t        });\n   664\t     
+if (target) {\n   665\t            if (creep.transfer(target, RESOURCE_ENERGY) 
+=== ERR_NOT_IN_RANGE) {\n   666\t                creep.moveTo(target, 
+{reusePath: 5});\n   667\t            }\n   668\t            return;\n   669\t  
+}\n   670\t    }\n   671\t    \n   672\t    if (creep.memory.working) {\n   
+673\t        let target = Game.getObjectById(creep.memory.targetId);\n   674\t  
+\n   675\t        // 验证目标是否仍然有效\n   676\t        if (target) {\n   
+677\t            // 如果是 Rampart 且已达到目标 HP，清除缓存\n   678\t          
+if (target.structureType === STRUCTURE_RAMPART && target.hits >= 100000) {\n   
+679\t                target = null;\n   680\t                delete 
+creep.memory.targetId;\n   681\t            }\n   682\t        }\n   683\t      
+\n   684\t        if (!target) {\n   685\t            // 优先级: 工地 > 弱 
+Ramparts > 升级控制器\n   686\t            const sites = 
+creep.room.find(FIND_MY_CONSTRUCTION_SITES);\n   687\t            target = 
+sites.find(s => s.structureType === STRUCTURE_TOWER) ||\n   688\t               
+sites.find(s => s.structureType === STRUCTURE_EXTENSION) ||\n   689\t           
+sites[0];\n   690\t            \n   691\t            // 如果没有工地，修复 
+Ramparts (目标 100K HP)\n   692\t            if (!target) {\n   693\t           
+// 找最弱的 Rampart 优先修复\n   694\t                const weakRamparts = 
+creep.room.find(FIND_MY_STRUCTURES, {\n   695\t                    filter: s => 
+s.structureType === STRUCTURE_RAMPART && s.hits < 100000\n   696\t              
+});\n   697\t                if (weakRamparts.length > 0) {\n   698\t           
+weakRamparts.sort((a, b) => a.hits - b.hits);\n   699\t                    
+target = weakRamparts[0];\n   700\t                }\n   701\t            }\n   
+702\t            creep.memory.targetId = target ? target.id : null;\n   703\t   
+}\n   704\t        \n   705\t        if (target) {\n   706\t            // 
+判断是建造还是修复\n   707\t            if (target.progressTotal !== undefined) 
+{\n   708\t                // Construction site\n   709\t                if 
+(creep.build(target) === ERR_NOT_IN_RANGE) creep.moveTo(target, {reusePath: 
+5});\n   710\t            } else {\n   711\t                // Repair rampart\n 
+712\t                if (creep.repair(target) === ERR_NOT_IN_RANGE) 
+creep.moveTo(target, {reusePath: 5});\n   713\t            }\n   714\t        } 
+else {\n   715\t            // 没有任务时升级控制器\n   716\t            if 
+(creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) 
+creep.moveTo(creep.room.controller, {reusePath: 5});\n   717\t        }\n   
+718\t    } else {\n   719\t        // 优先从 Container 
+取能量（特别是紧急恢复时）\n   720\t        const container = 
+creep.pos.findClosestByPath(FIND_STRUCTURES, {\n   721\t            filter: s =>
+s.structureType === STRUCTURE_CONTAINER && \n   722\t                         
+s.store[RESOURCE_ENERGY] > 50\n   723\t        });\n   724\t        if 
+(container) {\n   725\t            if (creep.withdraw(container, 
+RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {\n   726\t                
+creep.moveTo(container, {reusePath: 5});\n   727\t            }\n   728\t       
+return;\n   729\t        }\n   730\t        // 次选：从 Storage 取能量\n   731\t
+const storage = creep.room.storage;\n   732\t        if (storage && 
+storage.store[RESOURCE_ENERGY] > 0) {\n   733\t            if 
+(creep.withdraw(storage, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {\n   734\t     
+creep.moveTo(storage, {reusePath: 5});\n   735\t            }\n   736\t         
+return;\n   737\t        }\n   738\t        // 否则采集\n   739\t        let 
+source = Game.getObjectById(creep.memory.sourceId);\n   740\t        if (!source
+|| source.energy === 0) {\n   741\t            source = 
+creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);\n   742\t            
+creep.memory.sourceId = source ? source.id : null;\n   743\t        }\n   744\t 
+if (source && creep.harvest(source) === ERR_NOT_IN_RANGE) creep.moveTo(source, 
+{reusePath: 5});\n   745\t    }\n   746\t}\n",
+        message='746 lines read from file starting from line 1. End of file 
+reached.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=5)
+TextPart(
+    type='text',
+    text='我现在了解了当前状态：\n\n## 当前状态总结\n\n| 项目 | 状态 
+|\n|------|------|\n| **RCL** | 5 (Progress: 3,492/1,800,000) |\n| **Creeps** | 
+1 (harvester76835728 - 2W/1C/1M) |\n| **Spawn** | 满能量 (300/300)，正在孵化 
+harvester |\n| **Extensions** | 21 built + 9 construction sites |\n| **Tower** |
+500 能量 |\n| **Storage** | 空 |\n| **Sources** | 2x (3000/3000) - 
+满能量等待采集 |\n| **Safe Mode** | Active (76M+ ticks) |\n\n**恢复进度正常！** 
+第一个 harvester 已孵化完成，正在采集能量。Spawn 满能量，准备孵化第二个 
+creep。\n\n系统正在自动恢复中，代码运行正常（lastTick 
+持续更新）。由于处于紧急模式（harvester < 2），会以 200 能量快速孵化小 
+harvester，逐步恢复经济。\n\n让我更新 AGENTS.md 记录当前状态：'
+)
+ToolCall(
+    type='function',
+    id='toolu_01WtREDoSJnxLbfKP7gv3GaY',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "date \\"+%Y-%m-%d %H:%M\\""}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.16554,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=409,
+        input_cache_read=16591,
+        input_cache_creation=16516
+    ),
+    message_id='msg_015CrRCnrovj7M566LexbVLg'
+)
+ToolResult(
+    tool_call_id='toolu_01WtREDoSJnxLbfKP7gv3GaY',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='2026-01-14 16:45\n',
+        message='Command executed successfully.',
+        display=[],
+        extras=None
+    )
+)
+StepBegin(n=6)
+ToolCall(
+    type='function',
+    id='toolu_01Qq4cAKutMQ8oojW8wtfnf5',
+    function=FunctionBody(
+        name='StrReplaceFile',
+        arguments='{"path": "/Users/moonshot/dev/infinite-screeps/AGENTS.md", 
+"edit": {"old":"### Recovery Status (2026-01-14 15:47)\\n- Code running on 
+server ✅ (lastTick: 76839588)\\n- First harvester completed: harvester76835728 
+(2W/1C/1M)\\n- Sources at full energy (3000/3000 x2) - harvesting\\n- Spawn 
+energy: 300/300 - ready for next spawn\\n- Automatic recovery in progress - no 
+intervention needed\\n- Safe Mode active: 76M+ ticks protection\\n- Next: Will 
+spawn more creeps as energy flows","new":"### Recovery Status (2026-01-14 
+16:45)\\n- Code running on server ✅\\n- Creeps: 1 harvester (2W/1C/1M) - 
+actively harvesting\\n- Spawn energy: 300/300 - spawning next creep\\n- Sources 
+at full energy (3000/3000 x2)\\n- Tower: 500/1000 energy\\n- Automatic recovery 
+in progress\\n- Safe Mode active: 76M+ ticks protection\\n- Next: Continue 
+spawning until 3h/3b/3u target reached"}}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.16774,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=369,
+        input_cache_read=33107,
+        input_cache_creation=440
+    ),
+    message_id='msg_01KFoYS8PzMSkWRTPpMotYue'
+)
+ToolResult(
+    tool_call_id='toolu_01Qq4cAKutMQ8oojW8wtfnf5',
+    return_value=ToolReturnValue(
+        is_error=False,
+        output='',
+        message='File successfully edited. Applied 1 edit(s) with 1 total 
+replacement(s).',
+        display=[
+            DiffDisplayBlock(
+                type='diff',
+                path='/Users/moonshot/dev/infinite-screeps/AGENTS.md',
+                old_text='- Energy Capacity: ~1350 (300 spawn + 21*50 ext)\n- 
+**Safe Mode: ACTIVE** (76M+ ticks = ~886 days)\n\n### Recovery Status 
+(2026-01-14 15:47)\n- Code running on server ✅ (lastTick: 76839588)\n- First 
+harvester completed: harvester76835728 (2W/1C/1M)\n- Sources at full energy 
+(3000/3000 x2) - harvesting\n- Spawn energy: 300/300 - ready for next spawn\n- 
+Automatic recovery in progress - no intervention needed\n- Safe Mode active: 
+76M+ ticks protection\n- Next: Will spawn more creeps as energy flows\n\n### 
+Critical Incident (2026-01-14 11:00)\n- **CODE WAS EMPTY ON SERVER!** Main.js 
+had 0 bytes',
+                new_text='- Energy Capacity: ~1350 (300 spawn + 21*50 ext)\n- 
+**Safe Mode: ACTIVE** (76M+ ticks = ~886 days)\n\n### Recovery Status 
+(2026-01-14 16:45)\n- Code running on server ✅\n- Creeps: 1 harvester 
+(2W/1C/1M) - actively harvesting\n- Spawn energy: 300/300 - spawning next 
+creep\n- Sources at full energy (3000/3000 x2)\n- Tower: 500/1000 energy\n- 
+Automatic recovery in progress\n- Safe Mode active: 76M+ ticks protection\n- 
+Next: Continue spawning until 3h/3b/3u target reached\n\n### Critical Incident 
+(2026-01-14 11:00)\n- **CODE WAS EMPTY ON SERVER!** Main.js had 0 bytes'
+            )
+        ],
+        extras=None
+    )
+)
+StepBegin(n=7)
+ToolCall(
+    type='function',
+    id='toolu_01Woan4ZKvPUB2mZ41pe3DNU',
+    function=FunctionBody(
+        name='Shell',
+        arguments='{"command": "cd /Users/moonshot/dev/infinite-screeps && git 
+add -A && git commit -m \\"[status] Session 6: Recovery in progress - 1 
+harvester active, auto-spawning\\""}'
+    ),
+    extras=None
+)
+StatusUpdate(
+    context_usage=0.16978,
+    token_usage=TokenUsage(
+        input_other=1,
+        output=96,
+        input_cache_read=33547,
+        input_cache_creation=408
+    ),
+    message_id='msg_01WKhasNtepssLt9LYy2Sk1Q'
+)
