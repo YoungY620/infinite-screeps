@@ -86,20 +86,25 @@ ROOM=W13N45
 - Storage: 1 ✅ (empty)
 - Tower: 1 ✅
 - Ramparts: 2 ✅ - protecting Spawn and Tower
-- Container: 1 (2000 energy - critical for recovery)
-- **Creeps: RECOVERING** - was attacked by "gone" player
-  - Currently rebuilding from 1 builder
+- Container: GONE (decayed)
+- **Creeps: EMERGENCY RECOVERY** 
+  - 1 harvester spawning
   - Target: 3h/3b/3u
 - Construction Sites: 9 extensions
 - Energy Capacity: ~1350
 
-### Recent Incident (2026-01-12 14:00)
+### Critical Incident (2026-01-14 11:00)
+- **CODE WAS EMPTY ON SERVER!** Main.js had 0 bytes
+- All creeps died due to no code running
+- Container decayed (no maintenance)
+- Storage empty
+- **Fix:** Re-uploaded main.js to server
+- System now recovering with emergency spawning
+
+### Previous Incident (2026-01-12 14:00)
 - Multiple creeps killed by player "gone"
 - Economy collapsed (0 harvesters)
 - **Fix applied:** Emergency recovery mode
-  - Builder now fetches from container when no harvester
-  - Builder fills spawn/extension in emergency
-  - All creeps can use container as energy source
 
 - **Spawning logic:**
   - Emergency (harvester<2): 200 energy
@@ -120,5 +125,5 @@ ROOM=W13N45
 - **Next goal: RCL6!**
   - Need 1,800,000 progress
   - RCL6 unlocks: 40 Extensions, 2 Towers, 3 Links, Extractor, Terminal
-- **Code version:** Event-Driven v4.3 (deployed 2026-01-12 14:03)
-- Last updated: 2026-01-12 14:03
+- **Code version:** Event-Driven v4.3 (re-deployed 2026-01-14 11:01)
+- Last updated: 2026-01-14 11:01
