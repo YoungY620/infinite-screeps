@@ -85,21 +85,26 @@ ROOM=W13N45
 - Extensions: 21 built + 9 under construction (target: 30)
 - Storage: 1 ✅ (empty)
 - Tower: 1 ✅
-- Ramparts: 2 ✅ - protecting Spawn and Tower
+- Ramparts: 2 ✅ (~2M HP each)
 - Container: GONE (decayed)
-- **Creeps: EMERGENCY RECOVERY** 
-  - 1 harvester spawning
-  - Target: 3h/3b/3u
+- **Creeps: RECOVERING** 
+  - 1 harvester active, more spawning
+  - Target: 3h/3b/3u (RCL5 with sites>5)
 - Construction Sites: 9 extensions
 - Energy Capacity: ~1350
+- **Safe Mode: ACTIVE** (protecting room)
+
+### Recovery Progress (2026-01-14 12:42)
+- Code verified running on server (29KB)
+- Harvester spawning normally
+- Sources at full energy (3000/3000 x2)
+- Automatic recovery in progress
 
 ### Critical Incident (2026-01-14 11:00)
 - **CODE WAS EMPTY ON SERVER!** Main.js had 0 bytes
 - All creeps died due to no code running
 - Container decayed (no maintenance)
-- Storage empty
 - **Fix:** Re-uploaded main.js to server
-- System now recovering with emergency spawning
 
 ### Previous Incident (2026-01-12 14:00)
 - Multiple creeps killed by player "gone"
@@ -117,13 +122,13 @@ ROOM=W13N45
   - RCL5 no sites: 3h/1b/4u
 - **Defense status:**
   - Tower auto-attacks hostiles
-  - Ramparts protecting Spawn and Tower
+  - Ramparts protecting Spawn and Tower (~2M HP)
 - **RCL5 unlocks:**
-  - 30 Extensions (was 20) - building now
+  - 30 Extensions (was 20) - building 9 more
   - 2 Towers (was 1) - can add 2nd
   - 2 Links (new!) - for remote energy transfer
 - **Next goal: RCL6!**
-  - Need 1,800,000 progress
+  - Need 1,800,000 progress (currently 3,492)
   - RCL6 unlocks: 40 Extensions, 2 Towers, 3 Links, Extractor, Terminal
-- **Code version:** Event-Driven v4.3 (re-deployed 2026-01-14 11:01)
-- Last updated: 2026-01-14 11:01
+- **Code version:** Event-Driven v4.3
+- Last updated: 2026-01-14 12:42

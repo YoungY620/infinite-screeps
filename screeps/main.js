@@ -292,6 +292,9 @@ function getBuildPositions(spawn) {
 // ========== 主循环 ==========
 
 module.exports.loop = function () {
+    // 记录代码执行时间（调试用）
+    Memory.lastTick = Game.time;
+    
     // 清理
     for (const name in Memory.creeps) {
         if (!Game.creeps[name]) delete Memory.creeps[name];
