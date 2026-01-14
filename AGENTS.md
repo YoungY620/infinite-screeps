@@ -88,18 +88,19 @@ ROOM=W13N45
 - Ramparts: 2 ✅ (~2M HP each)
 - Container: GONE (decayed)
 - **Creeps: RECOVERING** 
-  - 1 harvester spawning
+  - 1 harvester (4 parts: 2W/1C/1M) spawning
   - Target: 3h/3b/3u (RCL5 with sites>5)
 - Construction Sites: 9 extensions
-- Energy Capacity: ~1350
-- **Safe Mode: ACTIVE** (76M+ ticks remaining)
+- Energy Capacity: ~1350 (300 spawn + 21*50 ext)
+- **Safe Mode: ACTIVE** (76M+ ticks = ~886 days)
 
-### Recovery Status (2026-01-14 13:45)
-- Code verified running on server (29KB)
-- First harvester spawning now
-- Sources at full energy (3000/3000 x2)
+### Recovery Status (2026-01-14 14:45)
+- Code running on server ✅
+- First harvester spawning now (4 parts)
+- Sources at full energy (3000/3000 x2) - ready to harvest
 - Automatic recovery in progress - no intervention needed
 - Safe Mode protecting room from attacks
+- Estimated full recovery: 10-15 minutes
 
 ### Critical Incident (2026-01-14 11:00)
 - **CODE WAS EMPTY ON SERVER!** Main.js had 0 bytes
